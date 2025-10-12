@@ -1,11 +1,8 @@
-<ion-content [fullscreen]="true"
-    class="calendar_section">
+<ion-content [fullscreen]="true" class="calendar_section">
     <div class="calendar_section_inner">
         <!-- Header -->
         <header class="calendar_header">
-            <button
-                class="button-menu"
-                (click)="previousMonth()">
+            <button class="button-menu" (click)="previousMonth()">
                 <svg fill="currentColor" height="18" viewBox="0 0 256 256" width="18"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -14,9 +11,7 @@
                 </svg>
             </button>
             <h1 class="">{{ getMonthYearLabel() }}</h1>
-            <button
-                class="button-menu"
-                (click)="nextMonth()">
+            <button class="button-menu" (click)="nextMonth()">
                 <svg fill="currentColor" height="18" viewBox="0 0 256 256" width="18"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -56,4 +51,5 @@
             </ion-button>
         </ion-fab>
     </div>
+    <div id="add-dream-modal" #modalOpener="appShowDreamsList" appShowDreamsList></div>
 </ion-content>

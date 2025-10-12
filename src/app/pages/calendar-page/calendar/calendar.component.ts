@@ -1,27 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { DreamService } from '../../../services/dream.service';
+import { DreamService } from '../../../shared/services/dream.service';
 import { Dream } from '../../../models/dream.model';
 import { AddDreamComponent } from '../../add-dream/add-dream.component';
 import { DreamListComponent } from '../../dream-list/dream-list.component';
+import { ShowDreamsListDirective } from 'src/app/shared/directives/add-dream-open-modal.directive';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule, ShowDreamsListDirective]
 })
 export class CalendarComponent implements OnInit {
   currentDate = new Date();
   selectedDate?: string;
+  modalSendDate?: string;
   calendarDays: CalendarDay[] = [];
   daysOfWeek = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+  @ViewChild('modalOpener') modalOpener!: ShowDreamsListDirective;
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -93,15 +96,9 @@ export class CalendarComponent implements OnInit {
   }
 
   async showDreamsList(date: string) {
-    const modal = await this.modalController.create({
-      component: DreamListComponent,
-      componentProps: {
-        selectedDate: date
-      },
-      presentingElement: await this.modalController.getTop()
-    });
-
-    await modal.present();
+    this.modalSendDate = date;
+    console.log(this.modalSendDate);
+    this.modalOpener.trigger(date);
   }
 
   async addDream() {

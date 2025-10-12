@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { DreamService } from '../../services/dream.service';
+import { DreamService } from '../../shared/services/dream.service';
 import { Dream } from '../../models/dream.model';
 import { AddDreamComponent } from '../add-dream/add-dream.component';
 import { DreamDetailComponent } from '../dream-detail/dream-detail.component';

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController, ActionSheetController } from '@ionic/angular';
-import { DreamService } from '../../services/dream.service';
-import { AuthService } from '../../services/auth.service';
-import { LanguageService } from '../../services/language.service';
-import { UserProfile } from '../../models/dream.model';
+import { DreamService } from '../../shared/services/dream.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { LanguageService } from '../../shared/services/language.service';
+import { DreamStatistics, UserProfile } from '../../models/dream.model';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +21,13 @@ export class ProfileComponent implements OnInit {
     darkMode: true
   };
   currentUser: any = null;
+
+  statistics: DreamStatistics = {
+    streakDays: 0,
+    totalDreams: 0,
+    goodDreams: 0,
+    badDreams: 0
+  };
 
   constructor(
     private dreamService: DreamService,

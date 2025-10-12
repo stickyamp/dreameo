@@ -18,9 +18,9 @@
       <ion-label i18n="@@tabs.history" class="text-xs font-medium">Historial</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button [routerLink]="['/tabs/add']" routerLinkActive="tab-selected"
+    <ion-tab-button (click)="openAddDream()"
       class="flex h-12 w-16 -translate-y-3 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
-      <ion-icon name="add" ios="add-outline" md="add" class="text-3xl"></ion-icon>
+      <ion-icon name="add" ios="add-outline" md="add" class="text-3xl add-button"></ion-icon>
     </ion-tab-button>
 
     <ion-tab-button [routerLink]="['/tabs/ai']" routerLinkActive="tab-selected"
@@ -35,4 +35,5 @@
       <ion-label i18n="@@tabs.profile" class="text-xs font-medium">Perfil</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
+  <div id="add-dream-modal" #modalOpener="appShowDreamsList" appShowDreamsList></div>
 </div>

@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { IonicModule, Platform } from '@ionic/angular';
 // import { StatusBar, Style } from '@capacitor/status-bar';
 // import { SplashScreen } from '@capacitor/splash-screen';
-import { DreamService } from './services/dream.service';
+import { DreamService } from './shared/services/dream.service';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     try {
       // Enable dark mode by default
       document.documentElement.classList.add('ion-palette-dark');
-      
+
       // Load user preferences (with error handling)
       try {
         this.dreamService.userProfile$.subscribe(profile => {

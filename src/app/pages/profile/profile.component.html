@@ -11,19 +11,56 @@
 
 <ion-content [fullscreen]="true" class="dream-container">
     <div class="profile-container">
-        <!-- User Profile Section -->
-        <div class="profile-header">
-            <div class="avatar-container">
-                <div class="profile-avatar">
-                    👤
+        <!-- First section -->
+        <div class="first-section">
+            <!-- User Profile Section -->
+            <div class="profile-header">
+                <div class="avatar-container">
+                    <div class="profile-avatar">
+                        👤
+                    </div>
+                </div>
+                <h1 class="profile-name">{{ currentUser?.username || userProfile.name }}</h1>
+                <p class="profile-email">{{ currentUser?.email || userProfile.email }}</p>
+            </div>
+            <!-- User Profile Section END -->
+
+            <!-- Statistics Section -->
+            <div class="statistics-section">
+                <h2 class="statistics-title" i18n="@@calendar.statistics">Estadísticas</h2>
+
+                <div class="statistics-grid">
+                    <div class="stat-card streak">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-number">{{ statistics.streakDays }}</div>
+                        <div class="stat-label" i18n="@@calendar.streak">Racha de días</div>
+                    </div>
+
+                    <div class="stat-card total">
+                        <div class="stat-icon">🌙</div>
+                        <div class="stat-number">{{ statistics.totalDreams }}</div>
+                        <div class="stat-label" i18n="@@calendar.total.dreams">Total de sueños</div>
+                    </div>
+
+                    <div class="stat-card good">
+                        <div class="stat-icon">😊</div>
+                        <div class="stat-number">{{ statistics.goodDreams }}</div>
+                        <div class="stat-label" i18n="@@calendar.good.dreams">Sueños buenos</div>
+                    </div>
+
+                    <div class="stat-card bad">
+                        <div class="stat-icon">😰</div>
+                        <div class="stat-number">{{ statistics.badDreams }}</div>
+                        <div class="stat-label" i18n="@@calendar.bad.dreams">Sueños malos</div>
+                    </div>
                 </div>
             </div>
-            <h1 class="profile-name">{{ currentUser?.username || userProfile.name }}</h1>
-            <p class="profile-email">{{ currentUser?.email || userProfile.email }}</p>
         </div>
+        <!-- Statistics Section END -->
 
         <!-- Settings List -->
         <div class="settings-list">
+            <h2 class="settings-title">Configuración</h2>
             <!-- Language Selection -->
             <ion-item class="setting-item" (click)="openLanguageSelector()">
                 <div class="setting-content">
@@ -105,19 +142,6 @@
                     Todos tus datos se almacenan localmente en tu dispositivo.
                 </p>
             </div>
-
-            <div class="info-section">
-                <h3 i18n="@@profile.features">Características</h3>
-                <ul>
-                    <li i18n="@@profile.feature.calendar">📅 Calendario mensual interactivo</li>
-                    <li i18n="@@profile.feature.text">✍️ Registro de sueños con texto</li>
-                    <li i18n="@@profile.feature.voice">🎤 Grabación de voz</li>
-                    <li i18n="@@profile.feature.theme">🌙 Tema nocturno</li>
-                    <li i18n="@@profile.feature.storage">📱 Almacenamiento local seguro</li>
-                    <li i18n="@@profile.feature.export">📤 Exportación de datos</li>
-                </ul>
-            </div>
-
             <div class="app-version">
                 <p i18n="@@profile.version">Versión 1.0.0</p>
             </div>

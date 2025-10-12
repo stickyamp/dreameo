@@ -4,7 +4,7 @@ import { DreamService } from './dream.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { DreamsByDate, Dream } from '../models/dream.model';
+import { DreamsByDate, Dream } from '../../models/dream.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +62,7 @@ export class SyncService {
 
       // Detectar conflictos y resolverlos
       const conflicts = this.detectConflicts(localDreams, firebaseDreams);
-      
+
       if (conflicts.length > 0) {
         console.log('Conflicts detected:', conflicts);
         // Por ahora, priorizar Firebase (último en ganar)
@@ -105,7 +105,7 @@ export class SyncService {
       if (localDreams[date]) {
         for (const localDream of localDreams[date]) {
           const firebaseDream = this.findDreamById(firebaseDreams, localDream.id);
-          
+
           if (firebaseDream && this.hasConflict(localDream, firebaseDream)) {
             conflicts.push(localDream);
           }
@@ -130,7 +130,7 @@ export class SyncService {
     // Considerar conflicto si las fechas de actualización son diferentes
     const localUpdated = localDream.updatedAt || localDream.createdAt;
     const firebaseUpdated = firebaseDream.updatedAt || firebaseDream.createdAt;
-    
+
     return localUpdated !== firebaseUpdated;
   }
 
@@ -146,7 +146,7 @@ export class SyncService {
       if (localDreams[date]) {
         for (const localDream of localDreams[date]) {
           const firebaseDream = this.findDreamById(firebaseDreams, localDream.id);
-          
+
           if (!firebaseDream) {
             // Subir a Firebase
             try {
@@ -165,7 +165,7 @@ export class SyncService {
       if (firebaseDreams[date]) {
         for (const firebaseDream of firebaseDreams[date]) {
           const localDream = this.findDreamById(localDreams, firebaseDream.id);
-          
+
           if (!localDream) {
             // Descargar a local
             try {

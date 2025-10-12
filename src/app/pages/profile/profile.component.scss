@@ -6,8 +6,6 @@
 
 .profile-header {
     text-align: center;
-    margin-bottom: 40px;
-    padding: 30px 0;
 }
 
 .avatar-container {
@@ -111,6 +109,7 @@
 .app-info {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 30px;
+    padding-bottom: 100px;
 }
 
 .info-section {
@@ -154,4 +153,90 @@
         font-size: 12px;
         margin: 0;
     }
+}
+
+
+
+.statistics-section {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.statistics-title {
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    text-align: left;
+}
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    &.streak {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    }
+
+    &.total {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    &.good {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    &.bad {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+}
+
+.stat-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.first-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-title {
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    text-align: left;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { Dream, DreamsByDate, UserProfile, DreamStatistics } from '../models/dream.model';
+import { Dream, DreamsByDate, UserProfile, DreamStatistics } from '../../models/dream.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({

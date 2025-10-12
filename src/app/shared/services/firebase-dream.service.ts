@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, getDoc, query, where, orderBy, onSnapshot } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { FirebaseAuthService, UserProfile } from './firebase-auth.service';
-import { Dream, DreamsByDate, DreamStatistics } from '../models/dream.model';
+import { Dream, DreamsByDate, DreamStatistics } from '../../models/dream.model';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
@@ -54,11 +54,11 @@ export class FirebaseDreamService {
     onSnapshot(userDreamsQuery, async (snapshot) => {
       try {
         const dreams: DreamsByDate = {};
-        
+
         snapshot.forEach((doc) => {
           const dream = { id: doc.id, ...doc.data() } as Dream;
           const dateKey = dream.date;
-          
+
           if (!dreams[dateKey]) {
             dreams[dateKey] = [];
           }
@@ -67,10 +67,10 @@ export class FirebaseDreamService {
 
         this.dreamsSubject.next(dreams);
         this.syncStatusSubject.next(true);
-        
+
         // Guardar backup local
         await this.saveLocalBackup(dreams);
-        
+
         console.log('Dreams synced from Firebase:', dreams);
       } catch (error) {
         console.error('Error syncing dreams:', error);
@@ -134,7 +134,7 @@ export class FirebaseDreamService {
       }
 
       await updateDoc(dreamRef, updateData);
-      
+
       console.log('Dream updated in Firebase:', dreamId);
       return { id: dreamId, ...updates } as Dream;
     } catch (error) {
@@ -159,7 +159,7 @@ export class FirebaseDreamService {
 
       const dreamRef = doc(this.firestore, this.DREAMS_COLLECTION, dreamId);
       await deleteDoc(dreamRef);
-      
+
       console.log('Dream deleted from Firebase:', dreamId);
       return true;
     } catch (error) {
@@ -231,13 +231,13 @@ export class FirebaseDreamService {
       const dreamsRef = collection(this.firestore, this.DREAMS_COLLECTION);
       const userDreamsQuery = query(dreamsRef, where('userId', '==', user.uid));
       const snapshot = await getDocs(userDreamsQuery);
-      
+
       const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
       await Promise.all(deletePromises);
 
       // Limpiar backup local
       await Preferences.remove({ key: this.LOCAL_DREAMS_KEY });
-      
+
       this.dreamsSubject.next({});
       console.log('All dreams cleared from Firebase');
     } catch (error) {
@@ -336,13 +336,13 @@ export class FirebaseDreamService {
       // Convertir file:// a blob
       const response = await fetch(audioPath);
       const blob = await response.blob();
-      
+
       const fileName = `audio_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.wav`;
       const audioRef = ref(this.storage, `${this.AUDIO_FOLDER}/${userId}/${fileName}`);
-      
+
       const snapshot = await uploadBytes(audioRef, blob);
       const downloadURL = await getDownloadURL(snapshot.ref);
-      
+
       console.log('Audio file uploaded:', downloadURL);
       return downloadURL;
     } catch (error) {

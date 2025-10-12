@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
-import { DreamService } from '../../services/dream.service';
-import { AudioService } from '../../services/audio.service';
+import { DreamService } from '../../shared/services/dream.service';
+import { AudioService } from '../../shared/services/audio.service';
 import { Dream } from '../../models/dream.model';
 
 @Component({
