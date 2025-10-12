@@ -1,17 +1,14 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map, take, delay } from 'rxjs/operators';
-import { AuthService } from '../shared/services/auth.service';
+import { Injectable } from "@angular/core";
+import { CanActivate, Router } from "@angular/router";
+import { Observable, of } from "rxjs";
+import { map, take, delay } from "rxjs/operators";
+import { AuthService } from "../shared/services/auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): Observable<boolean> {
     // Give a small delay to ensure auth service is initialized
@@ -19,12 +16,13 @@ export class AuthGuard implements CanActivate {
       delay(100),
       map(() => {
         const isAuthenticated = this.authService.isAuthenticated();
-        console.log('Auth guard check - isAuthenticated:', isAuthenticated);
+        console.log("Auth guard check - isAuthenticated:", isAuthenticated);
 
         if (isAuthenticated) {
+          console.log("holi");
           return true;
         } else {
-          this.router.navigate(['/login']);
+          this.router.navigate(["/login"]);
           return false;
         }
       })
