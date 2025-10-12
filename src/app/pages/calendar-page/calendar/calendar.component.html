@@ -1,0 +1,59 @@
+<ion-content [fullscreen]="true"
+    class="calendar_section">
+    <div class="calendar_section_inner">
+        <!-- Header -->
+        <header class="calendar_header">
+            <button
+                class="button-menu"
+                (click)="previousMonth()">
+                <svg fill="currentColor" height="18" viewBox="0 0 256 256" width="18"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M165.66 202.34a8 8 0 0 1-11.32 11.32l-80-80a8 8 0 0 1 0-11.32l80-80a8 8 0 0 1 11.32 11.32L91.31 128Z">
+                    </path>
+                </svg>
+            </button>
+            <h1 class="">{{ getMonthYearLabel() }}</h1>
+            <button
+                class="button-menu"
+                (click)="nextMonth()">
+                <svg fill="currentColor" height="18" viewBox="0 0 256 256" width="18"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M181.66 133.66l-80 80a8 8 0 0 1-11.32-11.32L164.69 128 90.34 53.66a8 8 0 0 1 11.32-11.32l80 80a8 8 0 0 1 11.32 11.32Z">
+                    </path>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Calendar Content -->
+        <main class="calendar-main">
+            <!-- Days of Week Header -->
+            <div class="days-header">
+                <div class="day-header" *ngFor="let day of daysOfWeek">{{ day }}</div>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div class="calendar-grid">
+                <div *ngFor="let day of calendarDays; trackBy: trackByDay" class="calendar-day"
+                    [class.col-start-4]="isFirstDayOfMonth(day)" (click)="selectDay(day)">
+                    <button class="day-button" [class.selected]="isSelected(day.date)"
+                        [class.other-month]="!day.currentMonth">
+                        <span class="day-number">{{ day.day }}</span>
+                        <div *ngIf="hasDreams(day.date)" class="dream-indicator">
+                            <span class="material-symbols-outlined">nightlight</span>
+                            <span>{{ getDreamCount(day.date) }}</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Button -->
+        <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+            <ion-button class="fab-dream" (click)="addDream()">
+                <ion-icon name="add"></ion-icon>
+            </ion-button>
+        </ion-fab>
+    </div>
+</ion-content>

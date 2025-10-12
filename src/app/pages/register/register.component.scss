@@ -1,0 +1,120 @@
+.register-content {
+  --background: linear-gradient(135deg, #0d0d0d 0%, #1a0f3d 100%);
+  --color: white;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.register-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+.moon-icon-container {
+  margin: 10px 0 15px 0;
+}
+
+.moon-icon {
+  font-size: 60px;
+  color: #8a2be2;
+}
+
+.main-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.register-form {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  --background: rgba(255, 255, 255, 0.1);
+  --border-radius: 12px;
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 4px;
+  height: 48px;
+}
+
+.form-input.error {
+  --border-color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.password-toggle {
+  --color: rgba(255, 255, 255, 0.7);
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.register-button {
+  --background: linear-gradient(135deg, #8a2be2 0%, #9932cc 100%);
+  --border-radius: 12px;
+  --color: white;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.register-button:disabled {
+  --background: rgba(138, 43, 226, 0.5);
+  --color: rgba(255, 255, 255, 0.7);
+}
+
+.login-link {
+  text-align: center;
+}
+
+.login-text {
+  color: white;
+  font-size: 14px;
+}
+
+.login-link-text {
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-link-text:hover {
+  text-decoration: underline;
+}

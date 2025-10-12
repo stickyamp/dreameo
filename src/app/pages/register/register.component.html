@@ -1,0 +1,116 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="dream-toolbar">
+    <ion-title i18n="@@register.title">Registrarse</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" fill="clear">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="register-content">
+  <div class="register-container">
+
+    <!-- Moon Icon -->
+    <div class="moon-icon-container">
+      <ion-icon name="moon-outline" class="moon-icon"></ion-icon>
+    </div>
+
+    <!-- Main Title -->
+    <h2 class="main-title" i18n="@@register.main.title">Crear Cuenta</h2>
+
+    <!-- Register Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="register-form">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label class="form-label" i18n="@@register.username">Nombre de Usuario</label>
+        <ion-input
+          formControlName="username"
+          type="text"
+          i18n-placeholder="@@register.username.placeholder" placeholder="Ingresa tu nombre de usuario"
+          class="form-input"
+          [class.error]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+        </ion-input>
+        <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="error-message" i18n="@@register.username.error">
+          Username is required
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label class="form-label" i18n="@@register.email">Correo Electrónico</label>
+        <ion-input
+          formControlName="email"
+          type="email"
+          i18n-placeholder="@@register.email.placeholder" placeholder="Ingresa tu correo electrónico"
+          class="form-input"
+          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        </ion-input>
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message" i18n="@@register.email.error">
+          Please enter a valid email
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label class="form-label" i18n="@@register.password">Contraseña</label>
+        <ion-input
+          formControlName="password"
+          [type]="showPassword ? 'text' : 'password'"
+          i18n-placeholder="@@register.password.placeholder" placeholder="Ingresa tu contraseña"
+          class="form-input"
+          [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          <ion-button
+            fill="clear"
+            slot="end"
+            (click)="togglePasswordVisibility()"
+            class="password-toggle">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </ion-button>
+        </ion-input>
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message" i18n="@@register.password.error">
+          Password must be at least 6 characters
+        </div>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label class="form-label" i18n="@@register.confirm.password">Confirmar Contraseña</label>
+        <ion-input
+          formControlName="confirmPassword"
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          i18n-placeholder="@@register.confirm.password.placeholder" placeholder="Confirma tu contraseña"
+          class="form-input"
+          [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+          <ion-button
+            fill="clear"
+            slot="end"
+            (click)="toggleConfirmPasswordVisibility()"
+            class="password-toggle">
+            <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </ion-button>
+        </ion-input>
+        <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="error-message" i18n="@@register.confirm.password.error">
+          Passwords do not match
+        </div>
+      </div>
+
+      <!-- Register Button -->
+      <ion-button
+        type="submit"
+        expand="block"
+        class="register-button"
+        [disabled]="registerForm.invalid || isLoading">
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading" i18n="@@register.button">Registrarse</span>
+      </ion-button>
+    </form>
+
+    <!-- Login Link -->
+    <div class="login-link">
+      <span class="login-text" i18n="@@register.login.text">¿Ya tienes cuenta? </span>
+      <a (click)="goToLogin()" class="login-link-text" i18n="@@register.login.link">Inicia Sesión</a>
+    </div>
+  </div>
+</ion-content>

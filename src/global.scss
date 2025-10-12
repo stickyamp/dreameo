@@ -1,0 +1,202 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+// Dream Journal Custom Styles
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// Enable dark mode by default
+html.ion-palette-dark {
+  --ion-background-color: #0d0d0d;
+  --ion-background-color-rgb: 13, 13, 13;
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+}
+
+// Dream Journal specific classes
+.dream-container {
+  background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
+  min-height: 100vh;
+}
+
+.dream-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 8px;
+  padding: 16px;
+}
+
+.dream-icon {
+  font-size: 24px;
+  color: var(--ion-color-moon);
+}
+
+.moon-icon {
+  color: #ffd700;
+  font-size: 16px;
+}
+
+.audio-icon {
+  color: var(--ion-color-primary);
+  font-size: 16px;
+}
+
+// Calendar specific styles
+.calendar-day {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.has-dreams {
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+    color: white;
+    
+    &::after {
+      content: '🌙';
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      font-size: 12px;
+    }
+  }
+
+  &.selected {
+    background: var(--ion-color-primary);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  &.today {
+    border: 2px solid var(--ion-color-primary);
+  }
+
+  &:hover {
+    background: rgba(138, 43, 226, 0.3);
+    transform: scale(1.05);
+  }
+}
+
+// Button styles
+.dream-button {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --border-radius: 25px;
+  --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+  --color: white;
+  font-weight: 600;
+  text-transform: none;
+  margin: 8px;
+}
+
+.fab-dream {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+}
+
+// Profile avatar
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--ion-color-primary);
+  margin: 20px auto;
+  display: block;
+}
+
+// Recording animation
+.recording-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Modal styles
+.dream-modal {
+  --background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
+  --color: white;
+  
+  .modal-wrapper {
+    background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+// Text areas and inputs
+.dream-input {
+  --background: rgba(255, 255, 255, 0.1);
+  --border-radius: 12px;
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.7);
+  margin: 8px 0;
+}
+
+// List items
+.dream-list-item {
+  --background: rgba(255, 255, 255, 0.05);
+  --border-radius: 12px;
+  --color: white;
+  margin: 4px 0;
+  
+  &:hover {
+    --background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Toolbar styles
+.dream-toolbar {
+  --background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
+  --color: white;
+}
+
+// Tab bar styles
+.dream-tabs {
+  --background: #2d1b69;
+  --color: rgba(255, 255, 255, 0.7);
+  --color-selected: white;
+}

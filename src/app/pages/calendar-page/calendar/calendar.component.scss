@@ -1,0 +1,284 @@
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+
+// Custom CSS variables for the calendar theme
+:host {
+    --primary-color: rgb(20, 13, 27);
+    --secondary-color: rgba(46, 65, 94, 0.3);
+    --background-light: #f7f6f8;
+        --background-light-med: #8216ee;
+    --background-dark: #191022;
+    --111: rgb(148 163 184 / var(1, 1))
+}
+
+// Font family for display text
+.font-display {
+    font-family: 'Epilogue', sans-serif;
+}
+
+// Background colors
+.bg-background-light {
+    background-color: var(--background-light);
+}
+
+.bg-background-dark {
+    background-color: var(--background-dark);
+}
+
+// Text colors
+.text-slate-800 {
+    color: #1e293b;
+}
+
+.text-slate-200 {
+    color: #e2e8f0;
+}
+
+.text-slate-900 {
+    color: #0f172a;
+}
+
+.text-slate-500 {
+    color: #64748b;
+}
+
+.text-slate-400 {
+    color: #94a3b8;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+// Primary color
+.bg-primary {
+    background-color: var(--primary);
+}
+
+.text-primary {
+    color: var(--primary);
+}
+
+// Dark mode support
+.dark {
+    .bg-background-light {
+        background-color: var(--background-dark);
+    }
+
+    .text-slate-800 {
+        color: #e2e8f0;
+    }
+
+    .text-slate-900 {
+        color: #ffffff;
+    }
+
+    .text-slate-500 {
+        color: #94a3b8;
+    }
+
+    .text-slate-400 {
+        color: #64748b;
+    }
+}
+
+// Material Symbols styling
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.calendar_section{
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primary-color);
+}
+.calendar_section_inner{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+}
+.calendar_header{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+// Calendar main container
+.calendar-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 16px;
+    padding-top: 16px;
+    overflow: hidden;
+    min-height: 80vh;
+    width: 100%;
+}
+
+// Days of week header
+.days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.day-header {
+    text-align: center;
+    font-weight: 500;
+    color: var(--text-slate-500);
+    padding: 8px 4px;
+    font-size: 14px;
+}
+
+// Calendar grid specific styling
+.calendar-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    grid-auto-rows: 1fr !important; /* cada fila tiene el mismo tamaño */
+    flex: 1;
+    min-height: 400px;
+    gap: 4px;
+}
+
+.calendar-day {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px;
+    background-color: var(--secondary-color);
+    height: 100%;
+    width: 100%;
+}
+
+.dark .calendar-day {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.day-button {
+  width: 100%;
+  height: 100%;
+    position: relative;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-slate-800);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-button:hover {
+    background-color: rgba(127, 19, 236, 0.1);
+    transform: scale(1.02);
+}
+
+.day-button.selected {
+    background-color: var(--primary);
+    color: white;
+}
+
+.day-button.other-month {
+    opacity: 0.3;
+}
+
+.day-number {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.dream-indicator {
+  position: absolute;
+  bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    color: var(--text-slate-500);
+}
+
+.dream-indicator .material-symbols-outlined {
+    font-size: 12px;
+}
+
+// Calendar day hover effects
+button {
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+}
+
+// FAB styling
+.fab-dream {
+    --background: var(--primary);
+    --box-shadow: 0 4px 20px rgba(127, 19, 236, 0.4);
+    width: 56px;
+    height: 56px;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .calendar-grid {
+        height: calc(100vh - 180px) !important;
+        min-height: 350px !important;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}
+
+// Ensure proper height for calendar
+ion-content {
+    --background: var(--primary-color);
+}
+
+.dark ion-content {
+    --background: var(--background-dark);
+}
+
+// Force grid layout
+.grid {
+    display: grid !important;
+}
+
+.flex {
+    display: flex !important;
+}
+
+.flex-1 {
+    flex: 1 1 0% !important;
+}
+
+.button-menu{
+  background-color: var(--secondary-color);
+  padding: 10px;
+  border-radius: 100%;
+  aspect-ratio: 1/1;
+
+}

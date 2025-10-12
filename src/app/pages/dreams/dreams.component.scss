@@ -1,0 +1,193 @@
+.dreams-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dreams-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dreams-header h2 {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.dreams-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  margin: 0;
+}
+
+.dreams-list {
+  margin-bottom: 80px;
+}
+
+.dreams-by-date {
+  margin-bottom: 32px;
+}
+
+.date-header {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  padding: 8px 16px;
+  background: rgba(138, 43, 226, 0.2);
+  border-radius: 12px;
+  border-left: 4px solid var(--ion-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.moon-icons {
+  display: flex;
+  gap: 4px;
+}
+
+.header-moon-icon {
+  color: var(--ion-color-moon);
+  font-size: 18px;
+}
+
+.dream-count {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.dream-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
+  }
+
+  ion-card-content {
+    padding: 16px;
+  }
+}
+
+.dream-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.dream-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  flex: 1;
+}
+
+.dream-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+.dream-type-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 10px;
+
+  &.good {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+  }
+
+  &.bad {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    color: white;
+  }
+
+  ion-icon {
+    font-size: 10px;
+  }
+}
+
+.audio-icon {
+  color: var(--ion-color-primary);
+  font-size: 16px;
+}
+
+.chevron-icon {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+.dream-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.dream-meta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dream-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.time-icon {
+  font-size: 12px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.empty-state p {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+}
+
+.fab-dream {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+  width: 56px;
+  height: 56px;
+}

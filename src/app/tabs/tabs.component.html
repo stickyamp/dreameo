@@ -1,0 +1,38 @@
+<div class="tab-container">
+  <div class="tab-content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <ion-tab-bar
+    class="dream-tabs shrink-0 border-t border-slate-200 bg-background-light px-2 pt-2 pb-4 dark:border-slate-800 dark:bg-background-dark/80"
+    slot="bottom">
+    <ion-tab-button [routerLink]="['/tabs/calendar']" routerLinkActive="tab-selected"
+      class="flex flex-1 flex-col items-center gap-1 text-primary">
+      <ion-icon name="calendar" ios="calendar-outline" md="calendar"></ion-icon>
+      <ion-label i18n="@@tabs.calendar" class="text-xs font-medium">Calendario</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/tabs/history']" routerLinkActive="tab-selected"
+      class="flex flex-1 flex-col items-center gap-1 text-slate-500 dark:text-slate-400">
+      <ion-icon name="time" ios="time-outline" md="time"></ion-icon>
+      <ion-label i18n="@@tabs.history" class="text-xs font-medium">Historial</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/tabs/add']" routerLinkActive="tab-selected"
+      class="flex h-12 w-16 -translate-y-3 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
+      <ion-icon name="add" ios="add-outline" md="add" class="text-3xl"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/tabs/ai']" routerLinkActive="tab-selected"
+      class="flex flex-1 flex-col items-center gap-1 text-slate-500 dark:text-slate-400">
+      <ion-icon name="sparkles-sharp"></ion-icon>
+      <ion-label i18n="@@tabs.ai" class="text-xs font-medium">IA</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/tabs/profile']" routerLinkActive="tab-selected"
+      class="flex flex-1 flex-col items-center gap-1 text-slate-500 dark:text-slate-400">
+      <ion-icon name="person" ios="person-outline" md="person"></ion-icon>
+      <ion-label i18n="@@tabs.profile" class="text-xs font-medium">Perfil</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</div>

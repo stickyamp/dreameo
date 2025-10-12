@@ -1,0 +1,82 @@
+.splash-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: white;
+}
+
+.splash-content {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  padding: 60px 0;
+}
+
+.logo-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dream-logo {
+  font-size: 120px;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.app-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  background: linear-gradient(135deg, #ffffff, #e0b3ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-description {
+  font-size: 16px;
+  line-height: 1.5;
+  opacity: 0.9;
+  margin: 0;
+  max-width: 300px;
+}
+
+.action-container {
+  padding-top: 40px;
+}
+
+.continue-button {
+  --background: linear-gradient(135deg, #8a2be2, #3dc2ff);
+  --border-radius: 25px;
+  --box-shadow: 0 8px 30px rgba(138, 43, 226, 0.4);
+  --color: white;
+  font-weight: 600;
+  font-size: 16px;
+  height: 50px;
+  margin: 0;
+  text-transform: none;
+}
+
+.continue-button:hover {
+  --box-shadow: 0 12px 40px rgba(138, 43, 226, 0.6);
+  transform: translateY(-2px);
+}

@@ -1,0 +1,12 @@
+{
+  "name": "dream-journal",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "proxies": [],
+  "serve": {
+    "port": 8100,
+    "host": "localhost"
+  }
+}

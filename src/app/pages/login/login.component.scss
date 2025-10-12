@@ -1,0 +1,153 @@
+.login-content {
+  --background: linear-gradient(135deg, #0d0d0d 0%, #1a0f3d 100%);
+  --color: white;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+.app-icon-container {
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+.app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
+  border-radius: 16px;
+  position: relative;
+}
+
+.phone-icon {
+  font-size: 32px;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.app-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  position: absolute;
+  bottom: 8px;
+}
+
+.welcome-text {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-form {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  --background: rgba(255, 255, 255, 0.1);
+  --border-radius: 12px;
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 4px;
+  height: 48px;
+}
+
+.form-input.error {
+  --border-color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.password-toggle {
+  --color: rgba(255, 255, 255, 0.7);
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.forgot-link {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.login-button {
+  --background: linear-gradient(135deg, #8a2be2 0%, #9932cc 100%);
+  --border-radius: 12px;
+  --color: white;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.login-button:disabled {
+  --background: rgba(138, 43, 226, 0.5);
+  --color: rgba(255, 255, 255, 0.7);
+}
+
+.signup-link {
+  text-align: center;
+}
+
+.signup-text {
+  color: white;
+  font-size: 14px;
+}
+
+.signup-link-text {
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.signup-link-text:hover {
+  text-decoration: underline;
+}

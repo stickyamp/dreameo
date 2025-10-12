@@ -1,0 +1,172 @@
+.calendar-container {
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.month-year {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+}
+
+.calendar-days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.day-header {
+  text-align: center;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 8px 4px;
+  font-size: 14px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-weight: 500;
+
+  &.has-dreams {
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+    color: white;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+  }
+
+  &.selected {
+    background: var(--ion-color-primary);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.5);
+  }
+
+  &.today {
+    border: 2px solid var(--ion-color-moon);
+  }
+
+  &.other-month {
+    opacity: 0.3;
+  }
+
+  &:hover {
+    background: rgba(138, 43, 226, 0.3);
+    transform: scale(1.02);
+  }
+
+  .day-number {
+    font-size: 16px;
+  }
+
+  .dream-indicator {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    font-size: 8px;
+    color: #ffd700;
+    font-weight: bold;
+  }
+}
+
+.fab-dream {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+  width: 56px;
+  height: 56px;
+}
+
+.statistics-section {
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.statistics-title {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  text-align: left;
+}
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  &.streak {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  }
+
+  &.total {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  &.good {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  &.bad {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  }
+}
+
+.stat-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
