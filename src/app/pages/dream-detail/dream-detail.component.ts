@@ -70,19 +70,19 @@ export class DreamDetailComponent implements OnInit {
     return this.getDreamType() === 'good' ? 'heart' : 'warning';
   }
 
-  async playAudio() {
-    if (!this.dream.audioPath) return;
+  // async playAudio() {
+  //   if (!this.dream.audioPath) return;
 
-    try {
-      this.isPlayingAudio = true;
-      await this.audioService.playAudio(this.dream.audioPath);
-    } catch (error) {
-      console.error('Error playing audio:', error);
-      await this.showAlert('Error', 'No se pudo reproducir el audio.');
-    } finally {
-      this.isPlayingAudio = false;
-    }
-  }
+  //   try {
+  //     this.isPlayingAudio = true;
+  //     await this.audioService.playAudio(this.dream.audioPath);
+  //   } catch (error) {
+  //     console.error('Error playing audio:', error);
+  //     await this.showAlert('Error', 'No se pudo reproducir el audio.');
+  //   } finally {
+  //     this.isPlayingAudio = false;
+  //   }
+  // }
 
   async editDream() {
     const modal = await this.modalController.create({

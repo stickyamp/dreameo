@@ -11,14 +11,6 @@
 
 <ion-content [fullscreen]="true" class="dream-container">
   <div class="dreams-container">
-    <!-- Dreams Header -->
-    <div class="dreams-header">
-      <h2>{{ getHeaderTitle() }}</h2>
-      <p class="dreams-subtitle" *ngIf="recentDreams.length > 0">
-        Tus sueños más recientes
-      </p>
-    </div>
-
     <!-- Dreams List -->
     <div class="dreams-list" *ngIf="recentDreams.length > 0">
       <div class="dreams-by-date" *ngFor="let group of dreamGroups; trackBy: trackByDate">

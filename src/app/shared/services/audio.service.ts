@@ -1,69 +1,71 @@
 import { Injectable } from '@angular/core';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { GenericResponse, RecordingData, VoiceRecorder } from 'capacitor-voice-recorder';
+import { SpeechRecognition } from '@capacitor-community/speech-recognition';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AudioService {
-  private mediaRecorder: MediaRecorder | null = null;
-  private audioChunks: Blob[] = [];
-  private isRecording = false;
 
-  constructor() {}
+  private recording: boolean = false;
 
-  async startRecording(): Promise<void> {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      this.mediaRecorder = new MediaRecorder(stream);
-      this.audioChunks = [];
+  // requestRecordingPermission(): Promise<GenericResponse> {
+  //   return VoiceRecorder.requestAudioRecordingPermission();
+  // }
+  // async startRecording(): Promise<void> {
+  //   if (this.recording) return;
+  //   this.recording = true;
+  //   VoiceRecorder.startRecording();
+  // }
 
-      this.mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          this.audioChunks.push(event.data);
-        }
-      };
+  // async stopRecording(): Promise<void> {
+  //   if (!this.recording) return;
+  //   this.recording = false;
+  //   VoiceRecorder.stopRecording().then(async (result: RecordingData) => {
+  //     const recordedData = result.value.recordDataBase64;
+  //     const fileName = new Date().getTime() + '.wav'
+  //     await Filesystem.writeFile({
+  //       path: fileName,
+  //       directory: Directory.Data,
+  //       data: recordedData ?? ''
+  //     })
+  //   });
+  // }
 
-      this.mediaRecorder.start();
-      this.isRecording = true;
-    } catch (error) {
-      console.error('Error starting recording:', error);
-      throw error;
+  isListening = false;
+  transcript = '';
+
+  async toggleListening() {
+    if (!this.isListening) {
+      await this.startListening();
+    } else {
+      await this.stopListening();
     }
   }
 
-  async stopRecording(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      if (!this.mediaRecorder || !this.isRecording) {
-        reject(new Error('Not recording'));
-        return;
-      }
+  async startListening() {
+    const available = await SpeechRecognition.available();
+    if (!available) {
+      console.warn('Reconocimiento de voz no disponible');
+      return;
+    }
 
-      this.mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        this.isRecording = false;
-        
-        // Stop all tracks to release the microphone
-        if (this.mediaRecorder?.stream) {
-          this.mediaRecorder.stream.getTracks().forEach(track => track.stop());
-        }
-        
-        resolve(audioUrl);
-      };
+    await SpeechRecognition.requestPermissions();
+    this.isListening = true;
 
-      this.mediaRecorder.stop();
+    // Inicia el reconocimiento
+    const { matches } = await SpeechRecognition.start({
+      language: 'es-ES',
+      partialResults: true
     });
+
+    // Algunos dispositivos devuelven resultados al finalizar
+    this.transcript = matches?.[0] || '';
+    console.log('Texto reconocido:', matches);
   }
 
-  getRecordingState(): boolean {
-    return this.isRecording;
-  }
-
-  playAudio(audioPath: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const audio = new Audio(audioPath);
-      audio.onended = () => resolve();
-      audio.onerror = () => reject(new Error('Error playing audio'));
-      audio.play().catch(reject);
-    });
+  async stopListening() {
+    await SpeechRecognition.stop();
+    this.isListening = false;
+    console.log('Grabación detenida');
   }
 }

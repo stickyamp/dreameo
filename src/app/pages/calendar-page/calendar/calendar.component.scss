@@ -2,86 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
 
-// Custom CSS variables for the calendar theme
-:host {
-    --primary-color: rgb(20, 13, 27);
-    --secondary-color: rgba(46, 65, 94, 0.3);
-    --background-light: #f7f6f8;
-        --background-light-med: #8216ee;
-    --background-dark: #191022;
-    --111: rgb(148 163 184 / var(1, 1))
-}
-
-// Font family for display text
-.font-display {
-    font-family: 'Epilogue', sans-serif;
-}
-
-// Background colors
-.bg-background-light {
-    background-color: var(--background-light);
-}
-
-.bg-background-dark {
-    background-color: var(--background-dark);
-}
-
-// Text colors
-.text-slate-800 {
-    color: #1e293b;
-}
-
-.text-slate-200 {
-    color: #e2e8f0;
-}
-
-.text-slate-900 {
-    color: #0f172a;
-}
-
-.text-slate-500 {
-    color: #64748b;
-}
-
-.text-slate-400 {
-    color: #94a3b8;
-}
-
-.text-white {
-    color: #ffffff;
-}
-
-// Primary color
-.bg-primary {
-    background-color: var(--primary);
-}
-
-.text-primary {
-    color: var(--primary);
-}
-
-// Dark mode support
-.dark {
-    .bg-background-light {
-        background-color: var(--background-dark);
-    }
-
-    .text-slate-800 {
-        color: #e2e8f0;
-    }
-
-    .text-slate-900 {
-        color: #ffffff;
-    }
-
-    .text-slate-500 {
-        color: #94a3b8;
-    }
-
-    .text-slate-400 {
-        color: #64748b;
-    }
-}
 
 // Material Symbols styling
 .material-symbols-outlined {
@@ -100,23 +20,25 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.calendar_section{
-  display: flex;
-  flex-direction: column;
-  background-color: var(--primary-color);
+.calendar_section {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
 }
-.calendar_section_inner{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--primary-color);
+
+.calendar_section_inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
 }
-.calendar_header{
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  align-items: center;
+
+.calendar_header {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
 }
 
 // Calendar main container
@@ -153,7 +75,8 @@
 .calendar-grid {
     display: grid !important;
     grid-template-columns: repeat(7, 1fr) !important;
-    grid-auto-rows: 1fr !important; /* cada fila tiene el mismo tamaño */
+    grid-auto-rows: 1fr !important;
+    /* cada fila tiene el mismo tamaño */
     flex: 1;
     min-height: 400px;
     gap: 4px;
@@ -174,8 +97,8 @@
 }
 
 .day-button {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
     position: relative;
     border: none;
     border-radius: 6px;
@@ -211,8 +134,8 @@
 }
 
 .dream-indicator {
-  position: absolute;
-  bottom: 16px;
+    position: absolute;
+    bottom: 16px;
     display: flex;
     align-items: center;
     gap: 2px;
@@ -275,10 +198,10 @@ ion-content {
     flex: 1 1 0% !important;
 }
 
-.button-menu{
-  background-color: var(--secondary-color);
-  padding: 10px;
-  border-radius: 100%;
-  aspect-ratio: 1/1;
+.button-menu {
+    background-color: var(--secondary-color);
+    padding: 10px;
+    border-radius: 100%;
+    aspect-ratio: 1/1;
 
 }

@@ -61,7 +61,7 @@ export class AddDreamComponent implements OnInit {
 
   async startRecording() {
     try {
-      await this.audioService.startRecording();
+      await this.audioService.startListening();
       this.isRecording = true;
     } catch (error) {
       console.error('Error starting recording:', error);
@@ -71,7 +71,7 @@ export class AddDreamComponent implements OnInit {
 
   async stopRecording() {
     try {
-      this.audioPath = await this.audioService.stopRecording();
+      await this.audioService.stopListening();
       this.isRecording = false;
     } catch (error) {
       console.error('Error stopping recording:', error);
@@ -80,19 +80,19 @@ export class AddDreamComponent implements OnInit {
     }
   }
 
-  async playAudio() {
-    if (!this.audioPath) return;
+  // async playAudio() {
+  //   if (!this.audioPath) return;
 
-    try {
-      this.isPlayingAudio = true;
-      await this.audioService.playAudio(this.audioPath);
-    } catch (error) {
-      console.error('Error playing audio:', error);
-      await this.showAlert('Error', 'No se pudo reproducir el audio.');
-    } finally {
-      this.isPlayingAudio = false;
-    }
-  }
+  //   try {
+  //     this.isPlayingAudio = true;
+  //     await this.audioService.playAudio(this.audioPath);
+  //   } catch (error) {
+  //     console.error('Error playing audio:', error);
+  //     await this.showAlert('Error', 'No se pudo reproducir el audio.');
+  //   } finally {
+  //     this.isPlayingAudio = false;
+  //   }
+  // }
 
   async deleteAudio() {
     const alert = await this.alertController.create({

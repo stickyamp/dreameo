@@ -69,6 +69,10 @@ addIcons({
   warning
 });
 
+import { defineCustomElements } from '@ionic/core/loader';
+
+defineCustomElements(window);
+
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

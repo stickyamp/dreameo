@@ -90,14 +90,23 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
 
+  position: relative;
+
   ion-label {
     color: white !important;
   }
 
-  ion-input, ion-textarea {
+  ion-input,
+  ion-textarea {
     --color: white !important;
     --placeholder-color: rgba(255, 255, 255, 0.5) !important;
   }
+}
+
+.recording-controls {
+  position: absolute;
+  right: 70px;
+  bottom: 70px;
 }
 
 .recording-pulse {
@@ -109,10 +118,12 @@
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.05);
     opacity: 0.8;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;

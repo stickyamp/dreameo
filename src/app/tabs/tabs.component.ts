@@ -17,7 +17,7 @@ export class TabsComponent {
   constructor() { }
 
   async openAddDream() {
-    this.modalOpener.trigger(new Date().toISOString().split('T')[0]);
+    this.modalOpener.addDream(new Date().toISOString().split('T')[0]);
   }
 
 }

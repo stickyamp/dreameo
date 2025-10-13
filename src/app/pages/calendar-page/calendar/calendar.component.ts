@@ -98,7 +98,7 @@ export class CalendarComponent implements OnInit {
   async showDreamsList(date: string) {
     this.modalSendDate = date;
     console.log(this.modalSendDate);
-    this.modalOpener.trigger(date);
+    this.modalOpener.goToDayDreamList(date);
   }
 
   async addDream() {

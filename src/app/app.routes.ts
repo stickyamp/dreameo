@@ -4,7 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/tabs/calendar',
     pathMatch: 'full'
   },
   {
@@ -22,7 +22,7 @@ export const routes: Routes = [
   {
     path: 'tabs',
     loadComponent: () => import('./tabs/tabs.component').then(m => m.TabsComponent),
-    canActivate: [AuthGuard],
+    canActivate: [],
     children: [
       {
         path: '',
@@ -34,7 +34,7 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/calendar-page/calendar/calendar.component').then(m => m.CalendarComponent)
       },
       {
-        path: 'dreams',
+        path: 'history',
         loadComponent: () => import('./pages/dreams/dreams.component').then(m => m.DreamsComponent)
       },
       {
