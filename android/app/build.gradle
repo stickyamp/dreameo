@@ -3,6 +3,11 @@ apply plugin: 'com.android.application'
 android {
     namespace "com.dreamjournal.app"
     compileSdkVersion rootProject.ext.compileSdkVersion
+    compileOptions {
+        // Enforce Java 17 to avoid accidental use of unsupported source level 21
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
     defaultConfig {
         applicationId "com.dreamjournal.app"
         minSdkVersion rootProject.ext.minSdkVersion

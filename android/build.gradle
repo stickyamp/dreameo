@@ -24,6 +24,20 @@ allprojects {
     }
 }
 
+// Enforce Java 17 across all Android subprojects to avoid accidental source 21
+subprojects { subproj ->
+    afterEvaluate {
+        if (subproj.hasProperty('android')) {
+            subproj.android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
