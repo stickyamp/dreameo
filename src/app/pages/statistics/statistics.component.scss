@@ -8,20 +8,23 @@
   min-height: 100vh;
 }
 
-// Header
+// Header Section
+.header-section {
+  margin-bottom: 24px;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  
+  margin-bottom: 16px;
+
   .title {
     font-size: 28px;
     font-weight: 700;
-    color: #1a1a1a;
     margin: 0;
   }
-  
+
   .menu-button {
     --color: #666;
     --padding-start: 8px;
@@ -31,14 +34,13 @@
 
 // Period Selector
 .period-selector {
-  margin-bottom: 24px;
-  
+
   ion-segment {
     --background: transparent;
     border-radius: 12px;
     padding: 4px;
     background: rgba(255, 255, 255, 0.8);
-    
+
     ion-segment-button {
       --color: #666;
       --color-checked: #fff;
@@ -47,7 +49,7 @@
       border-radius: 8px;
       margin: 0 2px;
       min-height: 40px;
-      
+
       ion-label {
         font-weight: 500;
         font-size: 14px;
@@ -61,47 +63,46 @@
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
-  
+
   .metric-card {
     flex: 1;
     margin: 0;
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    
+
     ion-card-content {
       padding: 20px 16px;
-      
+
       .metric-content {
         text-align: center;
-        
+
         .metric-title {
           font-size: 12px;
           color: #666;
           margin-bottom: 8px;
           font-weight: 500;
         }
-        
+
         .metric-value {
           font-size: 32px;
           font-weight: 700;
-          color: #1a1a1a;
           margin-bottom: 4px;
         }
-        
+
         .metric-unit {
           font-size: 12px;
           color: #666;
           font-weight: 500;
         }
-        
+
         .metric-change {
           font-size: 12px;
           font-weight: 500;
-          
+
           &.positive {
             color: #4CAF50;
           }
-          
+
           &.negative {
             color: #F44336;
           }
@@ -116,54 +117,66 @@
   margin: 0 0 24px 0;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  
+
   ion-card-header {
     padding: 20px 20px 0 20px;
-    
+
     ion-card-title {
       font-size: 18px;
       font-weight: 600;
-      color: #1a1a1a;
     }
   }
-  
+
   ion-card-content {
     padding: 20px;
-    
+
     .chart-container {
       height: 200px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      
-      .chart-bars {
+
+      .chart-area {
+        height: 100%;
         display: flex;
         align-items: flex-end;
-        justify-content: space-between;
-        width: 100%;
-        height: 100%;
-        gap: 8px;
-        
-        .chart-bar-container {
+        justify-content: center;
+
+        .chart-bars {
           display: flex;
-          flex-direction: column;
-          align-items: center;
+          align-items: flex-end;
+          justify-content: space-between;
+          width: 100%;
           height: 100%;
-          flex: 1;
-          
-          .chart-bar {
-            width: 100%;
-            min-height: 4px;
-            border-radius: 4px 4px 0 0;
-            transition: all 0.3s ease;
-            margin-bottom: 8px;
-          }
-          
-          .chart-label {
-            font-size: 12px;
-            color: #999;
-            font-weight: 500;
-            margin-top: auto;
+          gap: 8px;
+
+          .chart-bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            flex: 1;
+
+            .chart-bar-wrapper {
+              flex: 1;
+              display: flex;
+              align-items: flex-end;
+              width: 100%;
+              justify-content: center;
+            }
+
+            .chart-bar {
+              width: 100%;
+              min-height: 4px;
+              border-radius: 4px 4px 0 0;
+              transition: all 0.3s ease;
+              max-width: 24px;
+            }
+
+            .chart-label {
+              font-size: 12px;
+              color: #999;
+              font-weight: 500;
+              margin-top: 8px;
+              text-align: center;
+            }
           }
         }
       }
@@ -176,45 +189,44 @@
   margin: 0;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  
+
   ion-card-header {
     padding: 20px 20px 0 20px;
-    
+
     ion-card-title {
       font-size: 18px;
       font-weight: 600;
-      color: #1a1a1a;
     }
   }
-  
+
   ion-card-content {
     padding: 20px;
-    
+
     .sentiment-list {
       display: flex;
       flex-direction: column;
       gap: 16px;
-      
+
       .sentiment-item {
         display: flex;
         align-items: center;
         gap: 12px;
-        
+
         .sentiment-emoji {
           font-size: 24px;
           width: 32px;
           text-align: center;
         }
-        
+
         .sentiment-progress-container {
           flex: 1;
-          
+
           .sentiment-progress-bar {
             height: 8px;
             background: #E0E0E0;
             border-radius: 4px;
             overflow: hidden;
-            
+
             .sentiment-progress-fill {
               height: 100%;
               border-radius: 4px;
@@ -222,11 +234,10 @@
             }
           }
         }
-        
+
         .sentiment-percentage {
           font-size: 14px;
           font-weight: 600;
-          color: #1a1a1a;
           min-width: 40px;
           text-align: right;
         }
@@ -240,13 +251,8 @@
   .statistics-container {
     padding: 12px;
   }
-  
-  .metrics-cards {
-    flex-direction: column;
-    gap: 16px;
-  }
-  
+
   .chart-container {
-    height: 150px !important;
+    height: 200px !important;
   }
 }

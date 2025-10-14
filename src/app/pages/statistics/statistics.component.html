@@ -1,29 +1,51 @@
+<ion-header>
+  <ion-toolbar class="dream-toolbar">
+    <ion-title i18n="@@add.dream.title.edit">Estadísticas</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content class="statistics-content">
   <div class="statistics-container">
-    <!-- Header -->
-    <div class="header">
-      <h1 class="title">Estadísticas</h1>
-      <ion-button fill="clear" class="menu-button">
-        <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
-      </ion-button>
-    </div>
-
-    <!-- Time Period Selector -->
-    <div class="period-selector">
-      <ion-segment [(ngModel)]="selectedPeriod" (ionChange)="onPeriodChange($event)">
-        <ion-segment-button value="week">
-          <ion-label>Semana</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="month">
-          <ion-label>Mes</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="year">
-          <ion-label>Año</ion-label>
-        </ion-segment-button>
-      </ion-segment>
+    <!-- Header with Period Selector -->
+    <div class="header-section">
+      <!-- Time Period Selector in Header -->
+      <div class="period-selector">
+        <ion-segment [(ngModel)]="selectedPeriod" (ionChange)="onPeriodChange($event)">
+          <ion-segment-button value="week">
+            <ion-label>Semana</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="month">
+            <ion-label>Mes</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="year">
+            <ion-label>Año</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
     </div>
 
     <!-- Key Metrics Cards -->
+    <div class="metrics-cards">
+      <ion-card class="metric-card">
+        <ion-card-content>
+          <div class="metric-content">
+            <div class="metric-title">Promedio diario</div>
+            <div class="metric-value">{{ dailyAverage | number:'1.1-1' }}</div>
+            <div class="metric-unit">sueños</div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="metric-card">
+        <ion-card-content>
+          <div class="metric-content">
+            <div class="metric-title">Sueños lúcidos</div>
+            <div class="metric-value">{{ lucidDreams }}</div>
+            <div class="metric-change positive">{{ lucidDreamsChange }}</div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
     <div class="metrics-cards">
       <ion-card class="metric-card">
         <ion-card-content>
@@ -53,11 +75,15 @@
       </ion-card-header>
       <ion-card-content>
         <div class="chart-container">
-          <div class="chart-bars">
-            <div *ngFor="let item of dreamFrequency; trackBy: trackByDay" class="chart-bar-container">
-              <div class="chart-bar" [style.height.%]="getBarHeight(item.count)"
-                [style.background]="item.count > 0 ? '#6C63FF' : '#E0E0E0'"></div>
-              <div class="chart-label">{{ item.day }}</div>
+          <div class="chart-area">
+            <div class="chart-bars">
+              <div *ngFor="let item of dreamFrequency; trackBy: trackByDay" class="chart-bar-container">
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar" [style.height.%]="getBarHeight(item.count)"
+                    [style.background]="item.count > 0 ? '#6C63FF' : '#E0E0E0'"></div>
+                </div>
+                <div class="chart-label">{{ item.day }}</div>
+              </div>
             </div>
           </div>
         </div>

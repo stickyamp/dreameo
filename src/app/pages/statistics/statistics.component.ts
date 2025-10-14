@@ -21,16 +21,8 @@ export class StatisticsComponent implements OnInit {
   lucidDreams: number = 7;
   lucidDreamsChange: string = '+2 esta semana';
 
-  // Dream frequency data (for chart)
-  dreamFrequency: { day: string; count: number }[] = [
-    { day: 'Lun', count: 1 },
-    { day: 'Mar', count: 2 },
-    { day: 'Mié', count: 0 },
-    { day: 'Jue', count: 1 },
-    { day: 'Vie', count: 3 },
-    { day: 'Sáb', count: 2 },
-    { day: 'Dom', count: 1 }
-  ];
+  // Dream frequency data (for chart) - will be updated based on selected period
+  dreamFrequency: { day: string; count: number }[] = [];
 
   // Dream sentiment data
   dreamSentiment: { emoji: string; label: string; percentage: number; color: string }[] = [
@@ -49,6 +41,55 @@ export class StatisticsComponent implements OnInit {
       this.loadDreams();
       this.calculateStatistics();
     });
+
+    // Initialize with sample data for testing
+    this.initializeSampleData();
+  }
+
+  initializeSampleData() {
+    // Add some sample dreams for testing different periods
+    const sampleDreams: Dream[] = [
+      {
+        id: '1',
+        date: '2024-01-15', // January
+        title: 'Sample Dream 1',
+        description: 'Test dream',
+        type: 'good',
+        createdAt: '2024-01-15T10:00:00Z'
+      },
+      {
+        id: '2',
+        date: '2024-02-20', // February
+        title: 'Sample Dream 2',
+        description: 'Test dream',
+        type: 'good',
+        createdAt: '2024-02-20T10:00:00Z'
+      },
+      {
+        id: '3',
+        date: '2024-03-10', // March
+        title: 'Sample Dream 3',
+        description: 'Test dream',
+        type: 'good',
+        createdAt: '2024-03-10T10:00:00Z'
+      },
+      {
+        id: '4',
+        date: '2024-04-05', // April
+        title: 'Sample Dream 4',
+        description: 'Test dream',
+        type: 'good',
+        createdAt: '2024-04-05T10:00:00Z'
+      }
+    ];
+
+    // Add sample dreams to the service if they don't exist
+    const existingDreams = this.dreamService.getAllDreams();
+    if (existingDreams.length === 0) {
+      sampleDreams.forEach(dream => {
+        this.dreamService.addDream(dream);
+      });
+    }
   }
 
   loadDreams() {
@@ -103,14 +144,37 @@ export class StatisticsComponent implements OnInit {
         day,
         count: dayCounts[index]
       }));
-    } else {
-      // For month/year, show weekly aggregates or monthly data
-      this.dreamFrequency = [
-        { day: 'Sem 1', count: 5 },
-        { day: 'Sem 2', count: 3 },
-        { day: 'Sem 3', count: 7 },
-        { day: 'Sem 4', count: 4 }
-      ];
+    } else if (this.selectedPeriod === 'month') {
+      // Group by week of month
+      const weekCounts = [0, 0, 0, 0]; // 4 weeks
+      const weekNames = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'];
+
+      dreams.forEach(dream => {
+        const date = new Date(dream.date);
+        const weekOfMonth = Math.floor((date.getDate() - 1) / 7);
+        if (weekOfMonth < 4) {
+          weekCounts[weekOfMonth]++;
+        }
+      });
+
+      this.dreamFrequency = weekNames.map((week, index) => ({
+        day: week,
+        count: weekCounts[index]
+      }));
+    } else if (this.selectedPeriod === 'year') {
+      // Group by month of year
+      const monthCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // 12 months
+      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+      dreams.forEach(dream => {
+        const month = new Date(dream.date).getMonth();
+        monthCounts[month]++;
+      });
+
+      this.dreamFrequency = monthNames.map((month, index) => ({
+        day: month,
+        count: monthCounts[index]
+      }));
     }
   }
 
