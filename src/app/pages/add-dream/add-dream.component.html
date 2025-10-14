@@ -29,8 +29,9 @@
     <div class="form-section">
       <ion-item class="dream-input">
         <ion-label position="stacked" i18n="@@add.dream.description.label">Descripción</ion-label>
-        <ion-textarea [(ngModel)]="dreamData.description" i18n-placeholder="@@add.dream.description.placeholder"
-          placeholder="Describe tu sueño..." rows="8" maxlength="1000">
+        <ion-textarea autoGrow="true" [(ngModel)]="dreamData.description"
+          i18n-placeholder="@@add.dream.description.placeholder" placeholder="Describe tu sueño..." rows="8"
+          maxlength="2000">
         </ion-textarea>
 
         <div class="recording-controls">

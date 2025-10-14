@@ -106,9 +106,9 @@ export class DreamsComponent implements OnInit {
   }
 
   getTruncatedDescription(description: string): string {
-    if (description.length > 80) {
-      return description.substring(0, 80) + '...';
-    }
+    // if (description.length > 80) {
+    //   return description.substring(0, 80) + '...';
+    // }
     return description;
   }
 

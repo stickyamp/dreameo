@@ -4,7 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/tabs/calendar',
+    redirectTo: '/tabs/history',
     pathMatch: 'full'
   },
   {
