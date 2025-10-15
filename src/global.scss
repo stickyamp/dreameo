@@ -25,6 +25,19 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+// dark mode by stitch
+html {
+  --color-bg: #080414;
+  --color-surface: #1a1f2c;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a5a9b5;
+  --color-accent: #a78bfa; /* morado principal */
+  --color-accent-hover: #b9a6ff;
+  --color-active: #c4b5fd;
+  --color-border: #2b3040;
+  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   --primary-color: rgb(20, 13, 27);
@@ -36,25 +49,12 @@ body {
 }
 
 // Enable dark mode by default
-html.ion-palette-dark {
-  --ion-background-color: #0d0d0d;
-  --ion-background-color-rgb: 13, 13, 13;
-  --ion-text-color: #ffffff;
-  --ion-text-color-rgb: 255, 255, 255;
-}
-
-// dark mode by stitch
-.palette-dark {
-  --color-bg: #0e1320;
-  --color-surface: #1a1f2c;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a5a9b5;
-  --color-accent: #a78bfa; /* morado principal */
-  --color-accent-hover: #b9a6ff;
-  --color-active: #c4b5fd;
-  --color-border: #2b3040;
-  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
+// html.ion-palette-dark {
+//   --ion-background-color: #0d0d0d;
+//   --ion-background-color-rgb: 13, 13, 13;
+//   --ion-text-color: #ffffff;
+//   --ion-text-color-rgb: 255, 255, 255;
+// }
 
 // Enable light mode
 .palette-light {
@@ -99,8 +99,8 @@ html.ion-palette-dark {
   font-size: 16px;
 }
 
-// Calendar specific styles
-.calendar-day {
+// Calendar specific styles (solo para Dream Journal)
+.dream-container .calendar-day {
   position: relative;
   width: 40px;
   height: 40px;
@@ -111,39 +111,84 @@ html.ion-palette-dark {
   margin: 2px;
   cursor: pointer;
   transition: all 0.3s ease;
-
-  &.has-dreams {
-    background: linear-gradient(
-      135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary)
-    );
-    color: white;
-
-    &::after {
-      content: "🌙";
-      position: absolute;
-      bottom: -2px;
-      right: -2px;
-      font-size: 12px;
-    }
-  }
-
-  &.selected {
-    background: var(--ion-color-primary);
-    color: white;
-    transform: scale(1.1);
-  }
-
-  &.today {
-    border: 2px solid var(--ion-color-primary);
-  }
-
-  &:hover {
-    background: rgba(138, 43, 226, 0.3);
-    transform: scale(1.05);
-  }
 }
+
+.dream-container .calendar-day.has-dreams {
+  background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
+  color: white;
+}
+
+.dream-container .calendar-day.has-dreams::after {
+  content: "🌙";
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  font-size: 12px;
+}
+
+.dream-container .calendar-day.selected {
+  background: var(--ion-color-primary);
+  color: white;
+  transform: scale(1.1);
+}
+
+.dream-container .calendar-day.today {
+  border: 2px solid var(--ion-color-primary);
+}
+
+.dream-container .calendar-day:hover {
+  background: rgba(138, 43, 226, 0.3);
+  transform: scale(1.05);
+}
+// Calendar specific styles
+// .calendar-day {
+//   position: relative;
+//   width: 40px;
+//   height: 40px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 50%;
+//   margin: 2px;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+
+//   &.has-dreams {
+//     background: linear-gradient(
+//       135deg,
+//       var(--ion-color-primary),
+//       var(--ion-color-secondary)
+//     );
+//     color: white;
+
+//     &::after {
+//       content: "🌙";
+//       position: absolute;
+//       bottom: -2px;
+//       right: -2px;
+//       font-size: 12px;
+//     }
+//   }
+
+//   &.selected {
+//     background: var(--ion-color-primary);
+//     color: white;
+//     transform: scale(1.1);
+//   }
+
+//   &.today {
+//     border: 2px solid var(--ion-color-primary);
+//   }
+
+//   &:hover {
+//     background: rgba(138, 43, 226, 0.3);
+//     transform: scale(1.05);
+//   }
+// }
 
 // Button styles
 .dream-button {
@@ -244,4 +289,52 @@ html.ion-palette-dark {
   --background: #2d1b69;
   --color: rgba(255, 255, 255, 0.7);
   --color-selected: white;
+}
+
+/* Ionic Datetime header layout globally to match design */
+ion-datetime::part(header) {
+  position: relative;
+}
+ion-datetime::part(title) {
+  justify-content: center;
+}
+ion-datetime::part(calendar-month-year) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+ion-datetime::part(prev-button) {
+  position: absolute;
+  left: 8px;
+  color: var(--color-text-primary);
+}
+ion-datetime::part(next-button) {
+  position: absolute;
+  right: 8px;
+  color: var(--color-text-primary);
+}
+
+/* Stronger selector for our calendar instance */
+.dj-datetime::part(header) {
+  position: relative;
+}
+.dj-datetime::part(title) {
+  justify-content: center;
+}
+.dj-datetime::part(calendar-month-year) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.dj-datetime::part(prev-button) {
+  position: absolute;
+  left: 8px;
+  color: var(--color-text-primary);
+}
+.dj-datetime::part(next-button) {
+  position: absolute;
+  right: 8px;
+  color: var(--color-text-primary);
 }
