@@ -7,7 +7,35 @@
   <div class="statistics-container">
     <!-- Header with Period Selector -->
     <div class="header-section">
+      <ion-item lines="none" class="section-title">
+        <ion-label>Resumen</ion-label>
+      </ion-item>
+      <!-- Key Metrics Cards -->
+      <div class="metrics-cards">
+        <ion-card class="metric-card">
+          <ion-card-content>
+            <div class="metric-content">
+              <div class="metric-title">Total sueños</div>
+              <div class="metric-value">{{ dailyAverage | number:'1.1-1' }}</div>
+              <div class="metric-unit">sueños</div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="metric-card">
+          <ion-card-content>
+            <div class="metric-content">
+              <div class="metric-title">Total sueños lúcidos</div>
+              <div class="metric-value">{{ lucidDreams }}</div>
+              <div class="metric-change positive">{{ lucidDreamsChange }}</div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
       <!-- Time Period Selector in Header -->
+      <ion-item lines="none" class="section-subtitle">
+        <ion-label>Periodo</ion-label>
+      </ion-item>
       <div class="period-selector">
         <ion-segment [(ngModel)]="selectedPeriod" (ionChange)="onPeriodChange($event)">
           <ion-segment-button value="week">
@@ -21,29 +49,6 @@
           </ion-segment-button>
         </ion-segment>
       </div>
-    </div>
-
-    <!-- Key Metrics Cards -->
-    <div class="metrics-cards">
-      <ion-card class="metric-card">
-        <ion-card-content>
-          <div class="metric-content">
-            <div class="metric-title">Promedio diario</div>
-            <div class="metric-value">{{ dailyAverage | number:'1.1-1' }}</div>
-            <div class="metric-unit">sueños</div>
-          </div>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="metric-card">
-        <ion-card-content>
-          <div class="metric-content">
-            <div class="metric-title">Sueños lúcidos</div>
-            <div class="metric-value">{{ lucidDreams }}</div>
-            <div class="metric-change positive">{{ lucidDreamsChange }}</div>
-          </div>
-        </ion-card-content>
-      </ion-card>
     </div>
 
     <div class="metrics-cards">
@@ -76,6 +81,12 @@
       <ion-card-content>
         <div class="chart-container">
           <div class="chart-area">
+            <div class="chart-y-axis">
+              <div *ngFor="let tick of getYAxisTicks(); trackBy: trackByTick" class="chart-y-tick">
+                <span class="chart-y-label">{{ tick }}</span>
+                <span class="chart-y-grid"></span>
+              </div>
+            </div>
             <div class="chart-bars">
               <div *ngFor="let item of dreamFrequency; trackBy: trackByDay" class="chart-bar-container">
                 <div class="chart-bar-wrapper">
@@ -85,27 +96,6 @@
                 <div class="chart-label">{{ item.day }}</div>
               </div>
             </div>
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Dream Sentiment Section -->
-    <ion-card class="sentiment-card">
-      <ion-card-header>
-        <ion-card-title>Sentimiento de los sueños</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="sentiment-list">
-          <div *ngFor="let sentiment of dreamSentiment; trackBy: trackBySentiment" class="sentiment-item">
-            <div class="sentiment-emoji">{{ sentiment.emoji }}</div>
-            <div class="sentiment-progress-container">
-              <div class="sentiment-progress-bar">
-                <div class="sentiment-progress-fill" [style.width.%]="sentiment.percentage"
-                  [style.background-color]="sentiment.color"></div>
-              </div>
-            </div>
-            <div class="sentiment-percentage">{{ sentiment.percentage }}%</div>
           </div>
         </div>
       </ion-card-content>

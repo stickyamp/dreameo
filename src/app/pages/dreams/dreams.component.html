@@ -1,16 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="dream-toolbar">
-    <ion-title i18n="@@dreams.title">Sueños</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="addDream()" fill="clear">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-searchbar class="dream-searchbar" placeholder="Buscar sueños" debounce="250"
+      (ionInput)="onSearchChange($event)">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="dream-container">
   <div class="dreams-container">
+
     <!-- Dreams List -->
     <div class="dreams-list" *ngIf="recentDreams.length > 0">
       <div class="dreams-by-date" *ngFor="let group of dreamGroups; trackBy: trackByDate">
@@ -43,12 +41,6 @@
             <p class="dream-description" *ngIf="dream.description">
               {{ getTruncatedDescription(dream.description) }}
             </p>
-            <div class="dream-meta">
-              <span class="dream-time">
-                <ion-icon name="time" class="time-icon"></ion-icon>
-                {{ getFormattedTime(dream.createdAt) }}
-              </span>
-            </div>
           </ion-card-content>
         </ion-card>
       </div>
@@ -65,11 +57,4 @@
       </ion-button>
     </div>
   </div>
-
-  <!-- Floating Action Button -->
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="recentDreams.length > 0">
-    <ion-button class="fab-dream" (click)="addDream()">
-      <ion-icon name="add"></ion-icon>
-    </ion-button>
-  </ion-fab>
 </ion-content>

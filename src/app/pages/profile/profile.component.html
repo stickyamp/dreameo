@@ -19,37 +19,6 @@
                 <p class="profile-email">{{ currentUser?.email || userProfile.email }}</p>
             </div>
             <!-- User Profile Section END -->
-
-            <!-- Statistics Section -->
-            <div class="statistics-section">
-                <h2 class="statistics-title" i18n="@@calendar.statistics">Estadísticas</h2>
-
-                <div class="statistics-grid">
-                    <div class="stat-card streak">
-                        <div class="stat-icon">🔥</div>
-                        <div class="stat-number">{{ statistics.streakDays }}</div>
-                        <div class="stat-label" i18n="@@calendar.streak">Racha de días</div>
-                    </div>
-
-                    <div class="stat-card total">
-                        <div class="stat-icon">🌙</div>
-                        <div class="stat-number">{{ statistics.totalDreams }}</div>
-                        <div class="stat-label" i18n="@@calendar.total.dreams">Total de sueños</div>
-                    </div>
-
-                    <div class="stat-card good">
-                        <div class="stat-icon">😊</div>
-                        <div class="stat-number">{{ statistics.goodDreams }}</div>
-                        <div class="stat-label" i18n="@@calendar.good.dreams">Sueños buenos</div>
-                    </div>
-
-                    <div class="stat-card bad">
-                        <div class="stat-icon">😰</div>
-                        <div class="stat-number">{{ statistics.badDreams }}</div>
-                        <div class="stat-label" i18n="@@calendar.bad.dreams">Sueños malos</div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- Statistics Section END -->
 

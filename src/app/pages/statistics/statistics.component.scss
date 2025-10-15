@@ -6,11 +6,44 @@
   padding: 16px;
   background: #f8f9fa;
   min-height: 100vh;
+  margin-bottom: 5vh;
 }
 
 // Header Section
 .header-section {
   margin-bottom: 24px;
+}
+
+.section-title,
+.section-subtitle {
+  --background: transparent;
+  --inner-padding-end: 0;
+  --inner-padding-start: 0;
+  padding-left: 0;
+  padding-right: 0;
+
+  ion-label {
+    font-weight: 700;
+    color: #1f2937; // slate-800
+  }
+}
+
+.section-title {
+  margin: 8px 0 12px 0;
+
+  ion-label {
+    font-size: 18px;
+  }
+}
+
+.section-subtitle {
+  margin: 12px 0 8px 0;
+
+  ion-label {
+    font-size: 14px;
+    color: #4b5563; // slate-600
+    font-weight: 600;
+  }
 }
 
 .header {
@@ -135,9 +168,9 @@
 
       .chart-area {
         height: 100%;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 44px 1fr; // Y-axis + bars
+        align-items: end;
 
         .chart-bars {
           display: flex;
@@ -176,6 +209,35 @@
               font-weight: 500;
               margin-top: 8px;
               text-align: center;
+            }
+          }
+        }
+
+        .chart-y-axis {
+          height: 100%;
+          display: grid;
+          grid-template-rows: repeat(5, 1fr); // 5 ticks including 0
+          align-items: center;
+          margin-right: 8px;
+
+          .chart-y-tick {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .chart-y-label {
+              font-size: 12px;
+              color: #9ca3af; // slate-400
+              width: 36px;
+              text-align: right;
+              padding-right: 8px;
+            }
+
+            .chart-y-grid {
+              flex: 1;
+              height: 1px;
+              background: rgba(156, 163, 175, 0.3);
             }
           }
         }

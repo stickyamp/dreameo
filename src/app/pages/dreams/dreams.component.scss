@@ -40,15 +40,12 @@
   font-weight: 600;
   margin: 0 0 16px 0;
   padding: 8px 16px;
-  background: rgba(138, 43, 226, 0.2);
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-left: 4px solid var(--ion-color-primary);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 95%;
+  width: 90%;
   margin-left: auto;
+  margin-right: auto;
 }
 
 .moon-icons {
@@ -200,4 +197,8 @@
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
   width: 56px;
   height: 56px;
+}
+
+.dream-searchbar {
+  padding-top: none;
 }

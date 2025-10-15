@@ -84,17 +84,5 @@
         <span i18n="@@add.dream.delete">Eliminar</span>
       </ion-button>
     </div>
-
-    <!-- Dream Metadata -->
-    <div class="dream-metadata">
-      <div class="metadata-item">
-        <span class="metadata-label" i18n="@@dream.detail.created">Creado:</span>
-        <span class="metadata-value">{{ getFullFormattedDate(dream.createdAt) }}</span>
-      </div>
-      <div *ngIf="dream.updatedAt" class="metadata-item">
-        <span class="metadata-label" i18n="@@dream.detail.updated">Actualizado:</span>
-        <span class="metadata-value">{{ getFullFormattedDate(dream.updatedAt) }}</span>
-      </div>
-    </div>
   </div>
 </ion-content>

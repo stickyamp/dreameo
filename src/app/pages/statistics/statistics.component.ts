@@ -195,6 +195,20 @@ export class StatisticsComponent implements OnInit {
     return (count / max) * 100;
   }
 
+  getYAxisTicks(): number[] {
+    const max = this.getMaxFrequency();
+    const steps = 4; // 5 tick labels including 0
+    const ticks: number[] = [];
+    for (let i = steps; i >= 0; i--) {
+      ticks.push(Math.round((max * i) / steps));
+    }
+    return ticks;
+  }
+
+  trackByTick(index: number, value: number): number {
+    return value;
+  }
+
   trackByDay(index: number, item: { day: string; count: number }): string {
     return item.day;
   }

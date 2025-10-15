@@ -22,13 +22,6 @@ export class ProfileComponent implements OnInit {
   };
   currentUser: any = null;
 
-  statistics: DreamStatistics = {
-    streakDays: 0,
-    totalDreams: 0,
-    goodDreams: 0,
-    badDreams: 0
-  };
-
   constructor(
     private dreamService: DreamService,
     private authService: AuthService,

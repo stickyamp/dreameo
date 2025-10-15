@@ -16,6 +16,8 @@ import { AddDreamComponent } from '../add-dream/add-dream.component';
 export class DreamsComponent implements OnInit {
   recentDreams: Dream[] = [];
   dreamGroups: DreamGroup[] = [];
+  private allDreams: Dream[] = [];
+  searchQuery: string = '';
 
   constructor(
     private dreamService: DreamService,
@@ -32,11 +34,23 @@ export class DreamsComponent implements OnInit {
   }
 
   loadRecentDreams() {
-    this.recentDreams = this.dreamService.getAllDreams().slice(0, 50); // Last 50 dreams
-    this.groupDreamsByDate();
+    this.allDreams = this.dreamService.getAllDreams();
+    this.applyFilterAndGroup();
   }
 
-  groupDreamsByDate() {
+  private applyFilterAndGroup() {
+    const normalizedQuery = this.searchQuery.trim().toLowerCase();
+    const source = this.allDreams.slice(0, 200); // cap for performance
+
+    const filtered = normalizedQuery
+      ? source.filter(d =>
+        (d.title || '').toLowerCase().includes(normalizedQuery) ||
+        (d.description || '').toLowerCase().includes(normalizedQuery)
+      )
+      : source;
+
+    this.recentDreams = filtered.slice(0, 50);
+
     const groups: { [key: string]: Dream[] } = {};
 
     this.recentDreams.forEach(dream => {
@@ -55,6 +69,11 @@ export class DreamsComponent implements OnInit {
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         )
       }));
+  }
+
+  onSearchChange(event: any) {
+    this.searchQuery = event.target?.value || event.detail?.value || '';
+    this.applyFilterAndGroup();
   }
 
   getHeaderTitle(): string {
