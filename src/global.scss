@@ -31,7 +31,8 @@ html {
   --color-surface: #1a1f2c;
   --color-text-primary: #ffffff;
   --color-text-secondary: #a5a9b5;
-  --color-accent: #a78bfa; /* morado principal */
+  --color-accent: #a78bfa;
+  /* morado principal */
   --color-accent-hover: #b9a6ff;
   --color-active: #c4b5fd;
   --color-border: #2b3040;
@@ -49,24 +50,89 @@ body {
 }
 
 // Enable dark mode by default
-// html.ion-palette-dark {
-//   --ion-background-color: #0d0d0d;
-//   --ion-background-color-rgb: 13, 13, 13;
-//   --ion-text-color: #ffffff;
-//   --ion-text-color-rgb: 255, 255, 255;
-// }
+html.ion-palette-dark {
+  --ion-background-color: #0d0d0d;
+  --ion-background-color-rgb: 13, 13, 13;
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+  --color-bg: #0e1320;
+  --color-surface: #1a1f2c;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a5a9b5;
+  --color-accent: #a78bfa;
+  /* morado principal */
+  --color-accent-hover: #b9a6ff;
+  --color-active: #c4b5fd;
+  --color-border: #2b3040;
+  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
 
 // Enable light mode
-.palette-light {
+html.ion-palette-light {
   --color-bg: #f7f8fa;
   --color-surface: #ffffff;
   --color-text-primary: #1a1a1f;
-  --color-text-secondary: #5c6170; /* gris neutro para texto secundario */
-  --color-accent: #7c3aed; /* morado principal */
-  --color-accent-hover: #8b5cf6; /* tono más claro al hover */
+  --color-text-secondary: #5c6170;
+  /* gris neutro para texto secundario */
+  --color-accent: #7c3aed;
+  /* morado principal */
+  --color-accent-hover: #8b5cf6;
+  /* tono más claro al hover */
   --color-active: #a78bfa;
   --color-border: #e1e4eb;
   --shadow-elevation: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+:root {
+  --ion-font-family: 'Manrope', sans-serif;
+}
+
+body {
+  font-family: var(--ion-font-family);
+}
+
+body,
+html,
+ion-app,
+ion-content,
+ion-item,
+ion-label,
+ion-title,
+ion-text,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+textarea {
+  font-family: var(--ion-font-family) !important;
+}
+
+/* Material symbols setup */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Default size */
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
 
 // Dream Journal specific classes
@@ -114,11 +180,9 @@ body {
 }
 
 .dream-container .calendar-day.has-dreams {
-  background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   color: white;
 }
 
@@ -144,6 +208,7 @@ body {
   background: rgba(138, 43, 226, 0.3);
   transform: scale(1.05);
 }
+
 // Calendar specific styles
 // .calendar-day {
 //   position: relative;
@@ -192,11 +257,9 @@ body {
 
 // Button styles
 .dream-button {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   --border-radius: 25px;
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
   --color: white;
@@ -206,11 +269,9 @@ body {
 }
 
 .fab-dream {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
 }
 
@@ -279,10 +340,10 @@ body {
 }
 
 // Toolbar styles
-.dream-toolbar {
-  --background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
-  --color: white;
-}
+// .dream-toolbar {
+//   //--background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
+//   //--color: white;
+// }
 
 // Tab bar styles
 .dream-tabs {
@@ -295,20 +356,24 @@ body {
 ion-datetime::part(header) {
   position: relative;
 }
+
 ion-datetime::part(title) {
   justify-content: center;
 }
+
 ion-datetime::part(calendar-month-year) {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
 }
+
 ion-datetime::part(prev-button) {
   position: absolute;
   left: 8px;
   color: var(--color-text-primary);
 }
+
 ion-datetime::part(next-button) {
   position: absolute;
   right: 8px;
@@ -319,20 +384,24 @@ ion-datetime::part(next-button) {
 .dj-datetime::part(header) {
   position: relative;
 }
+
 .dj-datetime::part(title) {
   justify-content: center;
 }
+
 .dj-datetime::part(calendar-month-year) {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
 }
+
 .dj-datetime::part(prev-button) {
   position: absolute;
   left: 8px;
   color: var(--color-text-primary);
 }
+
 .dj-datetime::part(next-button) {
   position: absolute;
   right: 8px;

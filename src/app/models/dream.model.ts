@@ -5,6 +5,8 @@ export interface Dream {
   description?: string;
   audioPath?: string;
   type: 'good' | 'bad'; // Tipo de sueño: bueno o malo
+  favorite?: boolean;
+  tags?: string[];
   createdAt: string;
   updatedAt?: string;
 }

@@ -39,6 +39,8 @@ import {
   time,
   close,
   heart,
+  star,
+  starOutline,
   warning
 } from 'ionicons/icons';
 
@@ -66,6 +68,8 @@ addIcons({
   time,
   close,
   heart,
+  star,
+  'star-outline': starOutline,
   warning
 });
 
