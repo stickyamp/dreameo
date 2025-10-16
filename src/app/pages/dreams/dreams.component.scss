@@ -26,7 +26,9 @@
 }
 
 .dreams-list {
-  margin-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
 
 .month-nav {
@@ -300,6 +302,7 @@
 
 .page-title {
   font-weight: 700;
+  margin-left: 10px !important;
 }
 
 ion-searchbar {
@@ -333,3 +336,400 @@ ion-searchbar {
 //   height: 18px;
 //   opacity: 0.6;
 // }
+
+// DREAM CARD MODERN LAYOUT
+.dream-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.dream-date-col {
+  min-width: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  /* Pull left visually, away from card */
+  padding-top: 0;
+  margin-left: 20px;
+}
+
+.dream-card.modern-card {
+  flex: 1;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.date-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: #dedffb;
+  opacity: 0.67;
+  text-transform: uppercase;
+}
+
+.date-day {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  margin-top: 0;
+}
+
+.dream-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dream-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  word-break: break-word;
+}
+
+.dream-desc {
+  color: #b3b7cc;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 40px;
+  line-clamp: 2;
+  /* standard property for compatibility */
+}
+
+.dream-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 7px;
+}
+
+// Colorful tags (see tagColor pipe/classes)
+.dream-tag {
+  font-size: 11px !important;
+  font-weight: 500;
+  padding: 0 10px;
+  min-height: 22px;
+  border-radius: 12px !important;
+  color: #fff !important;
+  box-shadow: 0 2px 10px rgba(20, 15, 39, 0.08);
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --background: #444a6d !important;
+  --color: #fff !important;
+  background: #444a6d !important;
+}
+
+.dream-tag.Flying {
+  background: linear-gradient(90deg, #6EE7B7 0%, #3B82F6 100%) !important;
+}
+
+.dream-tag.Lucid {
+  background: linear-gradient(90deg, #a78bfa 0%, #6366f1 100%) !important;
+}
+
+.dream-tag.Work {
+  background: linear-gradient(90deg, #fde68a 0%, #f59e42 100%) !important;
+  color: #552a00 !important;
+}
+
+.dream-tag.Anxiety {
+  background: linear-gradient(90deg, #fa709a 0%, #fee140 100%) !important;
+  color: #3b0611 !important;
+}
+
+.dream-tag.Beach {
+  background: linear-gradient(90deg, #38bdf8 0%, #06d6a0 100%) !important;
+}
+
+.dream-tag.Relaxing {
+  background: linear-gradient(90deg, #34d399 0%, #22d3ee 100%) !important;
+}
+
+.dream-tag.Nightmare {
+  background: linear-gradient(90deg, #7f53ac 0%, #647dee 100%) !important;
+}
+
+.dream-tag.Animals {
+  background: linear-gradient(90deg, #fbbf24 0%, #22c55e 100%) !important;
+  color: #213200 !important;
+}
+
+.dream-tag.Romantic {
+  background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%) !important;
+  color: #3b0825 !important;
+}
+
+.dream-tag.Scary {
+  background: linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 100%) !important;
+  color: #113c7f !important;
+}
+
+// Fallback
+.dream-tag {
+  background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%) !important;
+}
+
+// Hide fav/star btn in cards
+.fav-btn {
+  display: none !important;
+}
+
+.dream-toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  position: relative;
+  gap: 0;
+}
+
+.dream-toolbar-row .fade-in-right {
+  animation: fadeInRight 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dream-toolbar-row .fade-out-right {
+  animation: fadeOutRight 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+.dream-toolbar-row .fade-in-left {
+  animation: fadeInLeft 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dream-toolbar-row .fade-out-left {
+  animation: fadeOutLeft 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+
+// Apply transitions to ion-searchbar, ion-title, and buttons
+.dream-toolbar-row ion-searchbar,
+.dream-toolbar-row ion-title,
+.dream-toolbar-row ion-buttons[slot='end'] {
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+ion-searchbar.dream-searchbar {
+  flex: 1 1 220px;
+  max-width: 340px;
+  margin-left: 10px;
+  transition: all 0.23s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+  z-index: 2;
+  background: transparent;
+}
+
+ion-buttons[slot='end'] {
+  margin-left: 8px;
+  z-index: 3;
+}
+
+ion-button {
+  --color: #a78bfa;
+  font-size: 22px;
+}
+
+.dream-toolbar-row ion-searchbar {
+  animation: fadeInSlideRight 0.29s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Make toolbar not stretch vertically
+.topbar.ion-toolbar,
+.dream-toolbar.ion-toolbar {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  box-sizing: border-box;
+  padding: 0 !important;
+}
+
+.dream-toolbar-row ion-title,
+.dream-toolbar-row ion-searchbar,
+.dream-toolbar-row ion-buttons[slot='end'] {
+  flex: 1 1 0%;
+  min-width: 0;
+  margin: 0 !important;
+}
+
+.dream-toolbar-row ion-searchbar.dream-searchbar {
+  max-width: 100% !important;
+  flex: 1 1 100%;
+  min-width: 0;
+  margin: 0 !important;
+  width: 100%;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dream-toolbar-row ion-buttons[slot='end'] {
+  flex: none;
+  margin: 0 !important;
+  z-index: 2;
+}
+
+/* Remove searchbar inner padding/margin that forces input narrow */
+ion-searchbar.dream-searchbar::part(container),
+ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
+  padding-left: 36px !important;
+  width: 100% !important;
+}
+
+/* Force input area to fit toolbar height */
+ion-searchbar.dream-searchbar::part(input) {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  align-items: center;
+}
+
+/* --- FORCE HEADER HEIGHT TO FIX SEARCHBAR JUMP --- */
+.topbar.ion-toolbar,
+.dream-toolbar.ion-toolbar {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+.dream-toolbar-row,
+.dream-toolbar-row * {
+  box-sizing: border-box !important;
+}
+
+.dream-toolbar-row ion-searchbar {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-sizing: border-box !important;
+  line-height: 52px !important;
+}
+
+ion-searchbar.dream-searchbar::part(container),
+ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+ion-searchbar.dream-searchbar::part(input),
+ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 52px !important;
+  border: none !important;
+  box-sizing: border-box !important;
+}
+
+ion-searchbar.dream-searchbar {
+  --background: transparent !important;
+}
+
+/* END FORCE HEADER HEIGHT */

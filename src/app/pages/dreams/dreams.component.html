@@ -1,11 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="topbar dream-toolbar">
-    <ion-title class="page-title">Mis Sueños</ion-title>
-  </ion-toolbar>
-  <ion-toolbar class="dream-toolbar">
-    <ion-searchbar class="dream-searchbar purple" placeholder="Buscar sueños..." debounce="250"
-      show-clear-button="focus" (ionInput)="onSearchChange($event)">
-    </ion-searchbar>
+    <div class="dream-toolbar-row">
+      <ion-title class="page-title" *ngIf="!showSearch"
+        [ngClass]="{'fade-in-left': !showSearch, 'fade-out-left': showSearch}">Mis Sueños</ion-title>
+      <ion-searchbar *ngIf="showSearch" class="dream-searchbar purple fade-in-right" placeholder="Buscar sueños..."
+        debounce="250" show-clear-button="focus" (ionInput)="onSearchChange($event)" [autofocus]="true">
+        <ion-buttons slot="end">
+          <ion-button (click)="hideSearch()">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-searchbar>
+      <ion-buttons slot="end" *ngIf="!showSearch"
+        [ngClass]="{'fade-in-left': !showSearch, 'fade-out-left': showSearch}">
+        <ion-button (click)="showSearchbar()">
+          <ion-icon name="search-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
   </ion-toolbar>
   <ion-toolbar class="month-toolbar dream-toolbar">
     <div class="month-nav">
@@ -25,21 +37,19 @@
 <ion-content [fullscreen]="true" class="dream-container">
   <div class="dreams-container">
     <div class="dreams-list" *ngIf="recentDreams.length > 0">
-      <div class="dream-item card" *ngFor="let dream of recentDreams; trackBy: trackByDream" (click)="viewDream(dream)">
-        <div class="dream-date">
-          <div class="month">{{ (dream.date | date:'MMM') | uppercase }}</div>
-          <div class="day">{{ (dream.date | date:'dd') }}</div>
+      <div class="dream-row" *ngFor="let dream of recentDreams; trackBy: trackByDream">
+        <div class="dream-date-col">
+          <div class="date-label">{{ (dream.date | date:'MMM') | uppercase }}</div>
+          <div class="date-day">{{ (dream.date | date:'dd') }}</div>
         </div>
-        <div class="dream-body">
-          <div class="title-row">
-            <div class="title">{{ dream.title }}</div>
-            <ion-button class="fav-btn" fill="clear" size="small" (click)="toggleFavorite(dream, $event)">
-              <ion-icon [name]="dream.favorite ? 'star' : 'star-outline'"></ion-icon>
-            </ion-button>
-          </div>
-          <div class="content" *ngIf="dream.description">{{ getTruncatedDescription(dream.description) }}</div>
-          <div class="tags" *ngIf="dream.tags?.length">
-            <ion-chip *ngFor="let tag of dream.tags" class="dream-tag" size="small">{{ tag }}</ion-chip>
+        <div class="dream-card modern-card" (click)="viewDream(dream)">
+          <div class="dream-main">
+            <div class="dream-title">{{ dream.title }}</div>
+            <div class="dream-desc">{{ getTruncatedDescription(dream.description || '') }}</div>
+            <div class="dream-tags" *ngIf="dream.tags?.length">
+              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag" [ngClass]="getTagClass(tag)">{{ tag
+                }}</ion-chip>
+            </div>
           </div>
         </div>
       </div>

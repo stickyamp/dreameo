@@ -18,6 +18,19 @@ export class DreamsComponent implements OnInit {
   dreamGroups: DreamGroup[] = [];
   private allDreams: Dream[] = [];
   searchQuery: string = '';
+  showSearch: boolean = false;
+  showSearchbar() {
+    this.showSearch = true;
+    setTimeout(() => {
+      const sb: any = document.querySelector('ion-searchbar');
+      if (sb) sb.setFocus && sb.setFocus();
+    }, 200);
+  }
+  hideSearch() {
+    this.showSearch = false;
+    // Optionally clear search: this.searchQuery = '';
+    // this.applyFilterAndGroup();
+  }
 
   // Month selector state
   months: { label: string; index: number }[] = [
@@ -292,6 +305,20 @@ export class DreamsComponent implements OnInit {
         this.dreamService.updateDream(dream.id, { tags: selectedTags });
       }
     });
+  }
+
+  getTagClass(tag: string): string {
+    // Normalize tag to one-word (remove spaces, capitalize first letter for SCSS match)
+    const normalized = tag.replace(/\s+/g, '');
+    // List your SCSS-defined tag classes:
+    const tagClassList = [
+      'Flying', 'Lucid', 'Work', 'Anxiety', 'Beach', 'Relaxing',
+      'Nightmare', 'Animals', 'Romantic', 'Scary'
+    ];
+    let match = tagClassList.find(sc => normalized.toLowerCase().includes(sc.toLowerCase()));
+    if (match) return match;
+    // fallback
+    return '';
   }
 }
 
