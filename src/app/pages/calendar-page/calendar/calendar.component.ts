@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { IonicModule, ModalController } from "@ionic/angular";
+import { IonicModule, ModalController, NavController } from "@ionic/angular";
 import { DreamService } from "../../../shared/services/dream.service";
 import { Dream } from "../../../models/dream.model";
 import { AddDreamComponent } from "../../add-dream/add-dream.component";
@@ -19,7 +19,8 @@ export class CalendarComponent implements OnInit {
   selectedDate?: string;
   modalSendDate?: string;
   calendarDays: CalendarDay[] = [];
-  daysOfWeek = ["D", "L", "M", "M", "J", "V", "S"];
+  daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
+  weeklyData: WeeklyData[] = [];
   @ViewChild("modalOpener") modalOpener!: ShowDreamsListDirective;
   @ViewChild("dt", { read: ElementRef })
   datetimeEl?: ElementRef<HTMLIonDatetimeElement>;
@@ -27,15 +28,18 @@ export class CalendarComponent implements OnInit {
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private navController: NavController
   ) {}
 
   ngOnInit() {
     this.generateCalendar();
+    this.generateWeeklyData();
 
     // Subscribe to dreams changes to update calendar and refresh moon badges
     this.dreamService.dreams$.subscribe(() => {
       this.generateCalendar();
+      this.generateWeeklyData();
       this.decorateMoonBadges();
     });
   }
@@ -196,7 +200,10 @@ export class CalendarComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    return date.toISOString().split("T")[0];
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 
   getMonthYearLabel(): string {
@@ -222,11 +229,13 @@ export class CalendarComponent implements OnInit {
   previousMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.generateCalendar();
+    this.generateWeeklyData();
   }
 
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.generateCalendar();
+    this.generateWeeklyData();
   }
 
   selectDay(day: CalendarDay) {
@@ -281,10 +290,97 @@ export class CalendarComponent implements OnInit {
   getDreamCount(date: string): number {
     return this.dreamService.getDreamsByDate(date).length;
   }
+
+  // New methods for the updated UI
+  goBack() {
+    this.navController.back();
+  }
+
+  getMonthlyDreamCount(): number {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
+
+    let count = 0;
+    for (
+      let d = new Date(startDate);
+      d <= endDate;
+      d.setDate(d.getDate() + 1)
+    ) {
+      const dateStr = this.formatDate(d);
+      count += this.getDreamCount(dateStr);
+    }
+    return count;
+  }
+
+  getPercentageChange(): number {
+    // Mock percentage change - you can implement real logic here
+    return 12;
+  }
+
+  generateWeeklyData() {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
+
+    this.weeklyData = [];
+    let weekNumber = 1;
+    let currentWeekStart = new Date(startDate);
+
+    while (currentWeekStart <= endDate) {
+      const weekEnd = new Date(currentWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+
+      let weekDreamCount = 0;
+      for (
+        let d = new Date(currentWeekStart);
+        d <= weekEnd && d <= endDate;
+        d.setDate(d.getDate() + 1)
+      ) {
+        const dateStr = this.formatDate(d);
+        weekDreamCount += this.getDreamCount(dateStr);
+      }
+
+      this.weeklyData.push({
+        week: weekNumber.toString(),
+        count: weekDreamCount,
+        height: Math.max(20, (weekDreamCount / 6) * 100), // Igual escalado mínimo
+        isHighest: false,
+      });
+
+      currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+      weekNumber++;
+    }
+
+    // Asegura 7 barras siempre
+    while (this.weeklyData.length < 7) {
+      this.weeklyData.push({
+        week: this.weeklyData.length + 1 + "",
+        count: 0,
+        height: 20,
+        isHighest: false,
+      });
+    }
+
+    // Encuentra la barra mayor
+    const maxCount = Math.max(...this.weeklyData.map((w) => w.count));
+    this.weeklyData.forEach((week) => {
+      week.isHighest = week.count === maxCount && week.count > 0;
+    });
+  }
 }
 
 interface CalendarDay {
   date: string;
   day: number;
   currentMonth: boolean;
+}
+
+interface WeeklyData {
+  week: string;
+  count: number;
+  height: number;
+  isHighest: boolean;
 }

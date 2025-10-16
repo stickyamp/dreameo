@@ -1,93 +1,361 @@
-ion-content.calendar_section {
-  --background: var(--color-bg);
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
-  font-family: "Epilogue", sans-serif;
+// Vibrant dark mode color palette with purple/lilac theme
+:root {
+  --primary-color: #a855f7; // Vibrant purple
+  --primary-dark: #9333ea; // Deep purple
+  --primary-light: #c084fc; // Bright lilac
+  --primary-glow: #d8b4fe; // Glowing lilac
+  --background-dark: #0f0f23; // Deep dark navy
+  --background-darker: #0a0a1a; // Darker navy
+  --surface-dark: #1e1b4b; // Purple-tinted surface
+  --surface-glow: #312e81; // Glowing surface
+  --text-primary: #f8fafc; // Bright white
+  --text-secondary: #cbd5e1; // Light gray
+  --text-muted: #94a3b8; // Muted gray
+  --accent-purple: #8b5cf6; // Bright accent purple
+  --accent-lilac: #a78bfa; // Bright accent lilac
+  --accent-glow: #c4b5fd; // Glowing accent
+  --green-positive: #10b981; // Bright green
+  --border-color: #4c1d95; // Purple border
+  --hover-glow: rgba(168, 85, 247, 0.3); // Purple glow effect
+}
+
+.calendar-container {
+  --background: var(--background-dark);
+  background-color: var(--background-dark);
+  color: var(--text-primary);
+  font-family: "Manrope", sans-serif;
   min-height: 100vh;
-  padding-top: 1.5rem;
+  padding: 0;
+}
+
+// Header Section
+.calendar-header {
+  background: var(--background-dark);
+  padding: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.nav-button {
+  --color: var(--text-primary);
+  --background: transparent;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+}
+
+.month-title {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+// Calendar Section
+.calendar-section {
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 0.5rem;
 }
 
-.calendar_section_inner {
-  background: var(--color-bg);
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  padding-bottom: 2rem;
+.month-navigation {
   display: flex;
   align-items: center;
-  height: 50vh;
-}
-
-/* Ionic Datetime theming (uses html variables from global.scss) */
-ion-datetime {
-  width: 100%;
-  max-width: 420px;
-  height: 100%;
-  border-radius: 12px;
-  box-shadow: var(--shadow-elevation);
-  --background: var(--color-bg);
-  --wheel-background: var(--color-bg);
-  --title-color: var(--color-text-primary);
-  --color: var(--color-text-primary);
-  --ion-color-step-400: var(--color-text-secondary);
-}
-
-/* Header: center month/year, arrows to edges */
-ion-datetime::part(header) {
-  position: relative;
-}
-ion-datetime::part(title) {
   justify-content: center;
+  gap: 1.5rem;
+  padding: 0.25rem;
 }
-ion-datetime::part(calendar-month-year) {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+
+.month-nav-btn,
+.calendar-round-btn,
+ion-fab-button,
+.calendar-floating-btn {
+  --background: linear-gradient(
+    135deg,
+    var(--primary-color) 60%,
+    var(--accent-lilac) 100%
+  );
+  --color: #fff;
+  width: 52px;
+  height: 52px;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 24px 4px rgba(168, 85, 247, 0.14), 0 1.5px 8px 0 #0003;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.22s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.24s;
+  border: none;
+}
+.month-nav-btn ion-icon,
+.calendar-round-btn ion-icon {
+  color: #fff;
+  font-size: 1.7rem;
+  margin: 0 auto;
   pointer-events: none;
 }
-ion-datetime::part(prev-button) {
-  position: absolute;
-  left: 8px;
-  color: var(--color-text-primary);
+.month-nav-btn:hover,
+.calendar-round-btn:hover,
+ion-fab-button:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 28px 2px rgba(168, 85, 247, 0.23), 0 8px 24px 0 #0002;
+  filter: brightness(1.13);
 }
-ion-datetime::part(next-button) {
-  position: absolute;
-  right: 8px;
-  color: var(--color-text-primary);
+// Asegura que cualquier botón de calendar con .month-nav-btn sea perfectamente redondo (nunca ovalado)
+.month-navigation .month-nav-btn {
+  min-width: 52px;
+  min-height: 52px;
+  border-radius: 50% !important;
+}
+// Si hay un botón flotante personalizado
+.calendar-floating-btn,
+ion-fab-button {
+  right: 18px;
+  bottom: 28px;
+  position: fixed;
+  z-index: 9;
 }
 
-/* Weekdays and days */
-ion-datetime::part(weekdays) {
-  color: var(--color-text-secondary);
+.month-label {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  text-align: center;
 }
-ion-datetime::part(calendar-day) {
-  color: var(--color-text-primary);
+
+// Calendar Grid
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
-ion-datetime::part(calendar-day-inner) {
-  border-radius: 12px;
+
+.weekday-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0;
 }
-ion-datetime::part(calendar-day-outside) {
-  color: var(--color-text-secondary);
-  opacity: 0.4;
+
+.weekday {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.75rem 0 0.125rem 0;
+  line-height: 1;
 }
-ion-datetime::part(calendar-day-active) {
-  background: var(--color-accent);
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+.calendar-day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 44px;
+  max-height: 44px;
+  cursor: pointer;
+  border-radius: 50% !important;
+  transition: all 0.27s cubic-bezier(0.23, 1, 0.32, 1);
+  margin: 4px auto;
+  background: none;
+  z-index: 1;
+}
+.calendar-day:hover,
+.calendar-day:focus {
+  background: #b48cf9 !important;
+  border-radius: 50% !important;
+  transform: scale(1.12);
+  box-shadow: 0 6px 24px rgba(168, 85, 247, 0.12);
+  outline: none;
+}
+.calendar-day.current-month {
+  color: var(--text-primary);
+}
+
+.calendar-day:not(.current-month) {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.calendar-day.selected {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-dark)
+  );
   color: #fff;
+  border-radius: 50% !important;
+  box-shadow: 0 6px 32px var(--hover-glow), 0 0 0 4px rgba(168, 85, 247, 0.12);
+  transform: scale(1.15);
+  z-index: 2;
 }
-ion-datetime::part(calendar-day-today) {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+.calendar-day.today {
+  border: 2.5px solid var(--accent-purple);
+  border-radius: 50% !important;
+  box-shadow: 0 0 18px 4px rgba(139, 92, 246, 0.18);
+  background: #b48cf9 !important;
 }
 
-/* Moon badge injected inside shadow day cell */
-.moon-badge {
+.calendar-day.has-dreams .dream-indicator {
   position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  color: var(--color-text-secondary);
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  background: transparent !important;
+  border-radius: 50%;
+  box-shadow: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.calendar-day.has-dreams .dream-indicator::before {
+  content: "";
+  display: block;
+  width: 70%;
+  height: 70%;
+  margin: auto;
+  border-radius: 50%;
+  background: #b48cf9;
+  box-shadow: 0 0 6px 1px #b48cf955;
+  position: relative;
+  z-index: 1;
+}
+
+.calendar-day.selected .dream-indicator {
+  background: #b48cf9 !important;
+  box-shadow: 0 0 8px 2px #b48cf9cc;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.day-number {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.monthly-stats {
+  margin: 1rem;
+  padding: 1.2rem 1.4rem;
+  background: var(--background-dark);
+  border-radius: 16px;
+  border: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+/* Cabecera */
+.stats-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stats-title {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stats-numbers {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.dream-count {
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.percentage-change {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cba6f7;
+  opacity: 0.8;
+}
+
+/* === Gráfico limpio === */
+.chart-container.chart-modern-bar {
+  position: relative;
+  background: transparent;
+  padding: 0.5rem 0 0.2rem;
+  border-radius: 10px;
+}
+
+.chart-bars-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 120px;
+  gap: 0.6rem;
+}
+
+/* Barras lilas sólidas */
+.chart-bar-modern {
+  width: 28px;
+  min-width: 22px;
+  max-width: 36px;
+  border-radius: 8px;
+  background-color: #cba6f7;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.chart-bar-modern:hover {
+  background-color: #a855f7;
+  transform: translateY(-3px);
+}
+
+/* Barra más alta */
+.chart-bar-modern.highest {
+  background-color: #a855f7;
+}
+
+/* Quitar números sobre las barras */
+.bar-count {
+  display: none;
+}
+
+/* Etiquetas inferiores */
+.chart-labels-modern {
+  display: flex;
+
+  justify-content: space-between;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  opacity: 0.7;
 }
