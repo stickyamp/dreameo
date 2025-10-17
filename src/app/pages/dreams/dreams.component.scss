@@ -1,3 +1,7 @@
+.ion-page,
+ion-content {
+  --background: var(--color-surface);
+}
 .dreams-container {
   max-width: 600px;
   margin: 0 auto;
@@ -9,18 +13,18 @@
   text-align: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .dreams-header h2 {
-  color: white;
+  color: var(--color-text-primary);
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 8px 0;
 }
 
 .dreams-subtitle {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-secondary);
   font-size: 16px;
   margin: 0;
 }
@@ -43,7 +47,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-secondary);
   background: transparent;
   justify-self: start;
 }
@@ -61,7 +65,7 @@
 .current-text {
   font-size: 18px;
   font-weight: 800;
-  color: #fff;
+  color: var(--color-text-primary);
   text-align: center;
   justify-self: center;
   min-width: 120px;
@@ -87,7 +91,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-primary);
   //background: #151515;
   border-radius: 10px;
   //border: 1px solid rgba(255, 255, 255, 0.08);
@@ -102,8 +106,8 @@
 
 .dream-date .month {
   font-size: 15px;
-  opacity: .8;
-  letter-spacing: .6px;
+  opacity: 0.8;
+  letter-spacing: 0.6px;
 }
 
 .dream-body {
@@ -120,7 +124,7 @@
 }
 
 .title {
-  color: #fff;
+  color: var(--color-text-primary);
   font-weight: 600;
   font-size: 17px;
   overflow: hidden;
@@ -136,7 +140,7 @@
 }
 
 .content {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-text-secondary);
   font-size: 13px;
   line-height: 1.35;
 }
@@ -212,12 +216,12 @@
 }
 
 .chevron-icon {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-text-secondary);
   font-size: 14px;
 }
 
 .dream-description {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-text-secondary);
   margin: 0 0 12px 0;
   font-size: 14px;
   line-height: 1.4;
@@ -233,7 +237,7 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-secondary);
 }
 
 .time-icon {
@@ -265,16 +269,19 @@
 }
 
 .fab-dream {
-  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
   width: 56px;
   height: 56px;
 }
 
-
 .dream-toolbar {
-  --ion-toolbar-background: var(--ion-background-color);
-  --background: var(--ion-background-color);
+  --ion-toolbar-background: var(--color-surface);
+  --background: var(--color-surface);
 }
 
 .dream-searchbar {
@@ -370,7 +377,7 @@ ion-searchbar {
   /* restored margin */
   transition: background 0.2s;
   cursor: pointer;
-  background: rgba(31, 33, 54, 0.88);
+  background: var(--color-bg);
   margin-left: 0;
   display: flex;
   flex-direction: column;
@@ -390,7 +397,7 @@ ion-searchbar {
 .date-day {
   font-size: 24px;
   font-weight: 800;
-  color: #fff;
+  color: var(--color-text-primary);
   margin-top: 0;
 }
 
@@ -404,12 +411,12 @@ ion-searchbar {
 .dream-title {
   font-size: 17px;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-text-primary);
   word-break: break-word;
 }
 
 .dream-desc {
-  color: #b3b7cc;
+  color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 400;
   line-height: 1.4;
@@ -445,7 +452,7 @@ ion-searchbar {
 }
 
 .dream-tag.Flying {
-  background: linear-gradient(90deg, #6EE7B7 0%, #3B82F6 100%) !important;
+  background: linear-gradient(90deg, #6ee7b7 0%, #3b82f6 100%) !important;
 }
 
 .dream-tag.Lucid {
@@ -575,7 +582,7 @@ ion-searchbar {
 // Apply transitions to ion-searchbar, ion-title, and buttons
 .dream-toolbar-row ion-searchbar,
 .dream-toolbar-row ion-title,
-.dream-toolbar-row ion-buttons[slot='end'] {
+.dream-toolbar-row ion-buttons[slot="end"] {
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -589,7 +596,7 @@ ion-searchbar.dream-searchbar {
   background: transparent;
 }
 
-ion-buttons[slot='end'] {
+ion-buttons[slot="end"] {
   margin-left: 8px;
   z-index: 3;
 }
@@ -627,7 +634,7 @@ ion-button {
 
 .dream-toolbar-row ion-title,
 .dream-toolbar-row ion-searchbar,
-.dream-toolbar-row ion-buttons[slot='end'] {
+.dream-toolbar-row ion-buttons[slot="end"] {
   flex: 1 1 0%;
   min-width: 0;
   margin: 0 !important;
@@ -643,7 +650,7 @@ ion-button {
   box-shadow: none;
 }
 
-.dream-toolbar-row ion-buttons[slot='end'] {
+.dream-toolbar-row ion-buttons[slot="end"] {
   flex: none;
   margin: 0 !important;
   z-index: 2;
@@ -750,7 +757,7 @@ ion-searchbar.dream-searchbar {
 .topbar.ion-toolbar,
 .dream-toolbar.ion-toolbar,
 .dream-toolbar-row,
-.dream-toolbar-row>*,
+.dream-toolbar-row > *,
 ion-searchbar.dream-searchbar,
 ion-searchbar.dream-searchbar::part(container),
 ion-searchbar.dream-searchbar::part(input),
@@ -775,7 +782,7 @@ input.searchbar-input.sc-ion-searchbar-md {
   text-align: left;
 }
 
-.dream-toolbar-row ion-buttons[slot='end'] {
+.dream-toolbar-row ion-buttons[slot="end"] {
   margin-left: auto !important;
   margin-right: 16px !important;
 }

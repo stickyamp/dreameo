@@ -1,6 +1,11 @@
+.ion-page,
+ion-content {
+  --background: var(--color-surface);
+}
+
 .dreams-header {
   text-align: center;
-  color: white;
+  color: var(--color-text-primary);
 
   h2 {
     margin: 0 0 8px 0;
@@ -20,9 +25,9 @@
 }
 
 .dream-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--color-border);
   margin-bottom: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -32,7 +37,8 @@
     box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
   }
 
-  ion-card-content {}
+  ion-card-content {
+  }
 }
 
 .dream-header {
@@ -46,7 +52,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: white;
+  color: var(--color-text-primary);
   flex: 1;
 }
 
@@ -87,12 +93,12 @@
 }
 
 .chevron-icon {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-text-secondary);
   font-size: 16px;
 }
 
 .dream-description {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-text-secondary);
   margin: 0 0 12px 0;
   font-size: 14px;
   line-height: 1.4;
@@ -106,7 +112,7 @@
 
 .dream-time {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-secondary);
 }
 
 .add-dream-section {

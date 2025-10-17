@@ -1,12 +1,12 @@
 .header-subtitle {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-surface);
   padding: 12px 20px;
   text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .date-subtitle {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-text-secondary);
   font-size: 16px;
   font-weight: 500;
 }
@@ -22,14 +22,14 @@
 }
 
 .section-title {
-  color: white;
+  color: var(--color-text-primary);
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 8px 0;
 }
 
 .section-description {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-secondary);
   font-size: 14px;
   margin: 0 0 16px 0;
   line-height: 1.4;
@@ -37,10 +37,10 @@
 
 .voice-section,
 .type-section {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border);
 }
 
 .type-buttons {
@@ -78,28 +78,28 @@
 .form-actions {
   margin-top: 32px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--color-border);
 }
 
 .dream-input {
-  --background: rgba(255, 255, 255, 0.05);
+  --background: var(--color-surface);
   --border-radius: 12px;
-  --color: white;
-  --placeholder-color: rgba(255, 255, 255, 0.5);
+  --color: var(--color-text-primary);
+  --placeholder-color: var(--color-text-secondary);
   margin-bottom: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
 
   position: relative;
 
   ion-label {
-    color: white !important;
+    color: var(--color-text-primary) !important;
   }
 
   ion-input,
   ion-textarea {
-    --color: white !important;
-    --placeholder-color: rgba(255, 255, 255, 0.5) !important;
+    --color: var(--color-text-primary) !important;
+    --placeholder-color: var(--color-text-secondary) !important;
   }
 }
 
