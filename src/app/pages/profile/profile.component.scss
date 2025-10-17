@@ -1,5 +1,6 @@
 ion-content {
-    --background: #1a1d2e;
+    --background: var(--color-bg);
+    --ion-color-primary: red;
 }
 
 .content-wrapper {
@@ -9,20 +10,20 @@ ion-content {
 .user-profile {
     display: flex;
     align-items: center;
-    padding: 32px 20px;
-    margin: 12px;
+    padding: var(--spacing-lg) var(--spacing-sm);
+    margin: var(--spacing-xs);
     background: linear-gradient(135deg, #1a1d2e 0%, #252940 100%);
-    gap: 16px;
+    gap: var(--spacing-sm);
     --background: #252940;
     --border-radius: 12px;
-    --padding-start: 16px;
-    --padding-end: 16px;
+    --padding-start: var(--spacing-sm);
+    --padding-end: var(--spacing-sm);
     --inner-padding-end: 0;
     border-radius: 12px;
 
     .user-avatar {
-        width: 64px;
-        height: 64px;
+        width: var(--spacing-xl);
+        height: var(--spacing-xl);
         border: 3px solid rgba(255, 255, 255, 0.1);
         display: flex;
         justify-content: center;
@@ -33,15 +34,15 @@ ion-content {
         flex: 1;
 
         .user-name {
-            margin: 0 0 4px 0;
-            font-size: 20px;
-            font-weight: 600;
+            margin: 0 0 var(--spacing-xxxs) 0;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
             color: #ffffff;
         }
 
         .user-email {
             margin: 0;
-            font-size: 14px;
+            font-size: var(--font-size-sm);
             color: rgba(255, 255, 255, 0.6);
         }
     }
@@ -49,122 +50,64 @@ ion-content {
 
 .settings-list {
     background: transparent;
-    margin: 24px 0;
-    padding: 0 12px;
+    margin: var(--spacing-md) 0;
+    padding: 0 var(--spacing-xs);
 
     ion-item {
         --background: #252940;
         --border-radius: 12px;
-        --padding-start: 16px;
-        --padding-end: 16px;
+        --padding-start: var(--spacing-sm);
+        --padding-end: var(--spacing-sm);
         --inner-padding-end: 0;
-        margin-bottom: 8px;
+        margin-bottom: var(--spacing-xxs);
         border-radius: 12px;
 
         ion-icon {
             font-size: 22px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-right: 12px;
+            color: var(--config-icon-color);
+            margin-right: var(--spacing-xs);
         }
 
         ion-label {
-            color: #ffffff;
-            font-weight: 500;
+            color: var(--config-label-color);
+            font-weight: var(--font-weight-medium);
         }
 
         ion-note {
-            font-size: 14px;
-            margin-right: 8px;
-        }
-
-        ion-toggle {
-            --handle-background: #ffffff;
-            --handle-background-checked: #ffffff;
-            --background: rgba(255, 255, 255, 0.2);
-            --background-checked: #4caf50;
+            font-size: var(--font-size-sm);
+            margin-right: var(--spacing-xxs);
         }
     }
 }
 
 .danger-zone {
     background: transparent;
-    margin: 32px 0;
-    padding: 0 12px;
+    margin: var(--spacing-lg) 0;
+    padding: 0 var(--spacing-xs);
 
     ion-item {
         --background: transparent;
         --border-radius: 12px;
-        --padding-start: 16px;
-        --padding-end: 16px;
-        margin-bottom: 8px;
+        --padding-start: var(--spacing-sm);
+        --padding-end: var(--spacing-sm);
+        margin-bottom: var(--spacing-xxs);
         border-radius: 12px;
 
         ion-icon {
             font-size: 22px;
-            margin-right: 12px;
+            margin-right: var(--spacing-xs);
         }
 
         ion-label {
-            font-weight: 500;
+            font-weight: var(--font-weight-medium);
         }
 
         &:hover {
-            --background: rgba(244, 67, 54, 0.1);
+            --background: var(--config-danger-button-hover-bg);
         }
-    }
-}
-
-ion-toolbar {
-    --background: #1a1d2e;
-    --color: #ffffff;
-
-    ion-title {
-        font-weight: 600;
-    }
-
-    ion-back-button {
-        --color: #ffffff;
-    }
-}
-
-// Light mode styles
-body:not(.dark) {
-    ion-content {
-        --background: #f5f5f5;
-    }
-
-    .user-profile {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .settings-list {
-        ion-item {
-            --background: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-            ion-icon {
-                color: #667eea;
-            }
-
-            ion-label {
-                color: #1a1d2e;
-            }
-        }
-    }
-
-    .danger-zone {
-        ion-item {
-            &:hover {
-                --background: rgba(244, 67, 54, 0.05);
-            }
-        }
-    }
-
-    ion-toolbar {
-        --background: #667eea;
     }
 }
 
 .user-icon {
-    font-size: 20px;
+    font-size: var(--font-size-lg);
 }

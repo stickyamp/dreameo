@@ -25,6 +25,40 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+//GLOBAL VARIABLES
+:root {
+  /* Padding */
+  --spacing-xxxs: 4px;
+  --spacing-xxs: 8px;
+  --spacing-xs: 12px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+
+  /* ------------------------------
+     FONT SIZES
+     (based on a readable scale)
+  ------------------------------ */
+  --font-size-xxs: 10px;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+  --font-size-display: 48px;
+
+  /* ------------------------------
+     FONT WEIGHTS
+  ------------------------------ */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+}
 
 // Enable dark mode by default
 html.ion-palette-dark {
@@ -42,6 +76,11 @@ html.ion-palette-dark {
   --color-active: #c4b5fd;
   --color-border: #2b3040;
   --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+  //CONFIG PAGE
+  --config-danger-button-hover-bg: rgba(241, 24, 8, 0.1);
+  --config-icon-color: rgba(255, 255, 255, 0.7);
+  --config-label-color: #ffffff;
 }
 
 
@@ -59,6 +98,9 @@ html.ion-palette-light {
   --color-active: #a78bfa;
   --color-border: #e1e4eb;
   --shadow-elevation: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  //CONFIG PAGE
+  --danger-button-config-hover-bg: rgba(241, 24, 8, 0.1);
 }
 
 :root {

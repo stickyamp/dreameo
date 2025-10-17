@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonicModule } from '@ionic/angular';
+import { ConfigService } from 'src/app/shared/services/config.service';
 
 interface User {
   name: string;
@@ -28,7 +29,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private configService: ConfigService
   ) { }
 
   ngOnInit() {
@@ -46,7 +48,14 @@ export class ProfileComponent implements OnInit {
   toggleDarkMode(event: any): void {
     this.darkMode = event.detail.checked;
     this.saveDarkModePreference(this.darkMode);
-    document.body.classList.toggle('dark', this.darkMode);
+
+    if (this.darkMode) {
+      this.configService.enableDarkMode();
+    }
+    else {
+      this.configService.enableLightMode();
+
+    }
   }
 
   async closeSession(): Promise<void> {

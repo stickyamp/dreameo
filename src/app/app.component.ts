@@ -5,6 +5,7 @@ import { IonicModule, Platform } from '@ionic/angular';
 // import { StatusBar, Style } from '@capacitor/status-bar';
 // import { SplashScreen } from '@capacitor/splash-screen';
 import { DreamService } from './shared/services/dream.service';
+import { ConfigService } from './shared/services/config.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ import { DreamService } from './shared/services/dream.service';
 export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
-    private dreamService: DreamService
+    private dreamService: DreamService,
+    private configService: ConfigService
   ) { }
 
   async ngOnInit() {
@@ -37,17 +39,6 @@ export class AppComponent implements OnInit {
   }
 
   private async initializeApp() {
-    this.enableLightMode();
-  }
-
-  private enableDarkMode() {
-    document.documentElement.classList.add('ion-palette-dark');
-    document.documentElement.classList.remove('ion-palette-light');
-  }
-
-  private enableLightMode() {
-    document.documentElement.classList.remove('ion-palette-light');
-    document.documentElement.classList.add('ion-palette-light');
-
+    this.configService.enableLightMode();
   }
 }
