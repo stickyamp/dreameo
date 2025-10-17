@@ -1,3 +1,5 @@
+// Fondo para modo claro usando la variable de la paleta global
+
 .ion-page,
 ion-content {
   --background: var(--color-surface);
@@ -25,7 +27,6 @@ ion-content {
 }
 
 .dream-card {
-  background: var(--color-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--color-border);
   margin-bottom: 12px;
