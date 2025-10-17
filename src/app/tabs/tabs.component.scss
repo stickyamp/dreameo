@@ -40,8 +40,7 @@
     }
 }
 
-.add-button {
-    padding: 5px;
-    background-color: rgb(89, 52, 131);
-    border-radius: 10px;
+.menu-add {
+    --background: var(--menu-add-button);
+    --color: var(--color-text-primary);
 }
