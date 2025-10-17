@@ -52,21 +52,16 @@
     <!-- Chart -->
     <div class="chart-container chart-modern-bar">
       <div class="chart-bars chart-bars-modern">
-        <div
-          class="chart-bar chart-bar-modern"
-          *ngFor="let week of weeklyData; let i = index"
-          [style.height.%]="week.height"
-          [class.highest]="week.isHighest"
-        >
-          <div class="bar-count" *ngIf="week.count > 0">{{ week.count }}</div>
+        <div class="chart-col" *ngFor="let week of weeklyData; let i = index">
+          <div
+            class="chart-bar chart-bar-modern"
+            [style.height.%]="week.height"
+            [class.highest]="week.isHighest"
+          >
+            <div class="bar-count" *ngIf="week.count > 0">{{ week.count }}</div>
+          </div>
+          <div class="chart-col-label">{{ week.week }}</div>
         </div>
-      </div>
-      <div class="chart-labels chart-labels-modern">
-        <span
-          class="chart-label chart-label-modern"
-          *ngFor="let week of weeklyData"
-          >{{ week.week }}</span
-        >
       </div>
     </div>
   </div>

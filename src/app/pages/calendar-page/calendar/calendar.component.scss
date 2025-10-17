@@ -1,28 +1,9 @@
-// Vibrant dark mode color palette with purple/lilac theme
-:root {
-  --primary-color: #a855f7; // Vibrant purple
-  --primary-dark: #9333ea; // Deep purple
-  --primary-light: #c084fc; // Bright lilac
-  --primary-glow: #d8b4fe; // Glowing lilac
-  --background-dark: #0f0f23; // Deep dark navy
-  --background-darker: #0a0a1a; // Darker navy
-  --surface-dark: #1e1b4b; // Purple-tinted surface
-  --surface-glow: #312e81; // Glowing surface
-  --text-primary: #f8fafc; // Bright white
-  --text-secondary: #cbd5e1; // Light gray
-  --text-muted: #94a3b8; // Muted gray
-  --accent-purple: #8b5cf6; // Bright accent purple
-  --accent-lilac: #a78bfa; // Bright accent lilac
-  --accent-glow: #c4b5fd; // Glowing accent
-  --green-positive: #10b981; // Bright green
-  --border-color: #4c1d95; // Purple border
-  --hover-glow: rgba(168, 85, 247, 0.3); // Purple glow effect
-}
+// Use global variables from global.scss (:root and html.ion-palette-*)
 
 .calendar-container {
-  --background: var(--background-dark);
-  background-color: var(--background-dark);
-  color: var(--text-primary);
+  --background: var(--color-bg);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   font-family: "Manrope", sans-serif;
   min-height: 100vh;
   padding: 0;
@@ -30,20 +11,20 @@
 
 // Header Section
 .calendar-header {
-  background: var(--background-dark);
-  padding: 1rem;
-  padding-bottom: 0.5rem;
+  background: var(--color-surface);
+  padding: var(--spacing-sm);
+  padding-bottom: var(--spacing-xxs);
 }
 
 .header-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .nav-button {
-  --color: var(--text-primary);
+  --color: var(--color-text-primary);
   --background: transparent;
   width: 48px;
   height: 48px;
@@ -51,7 +32,7 @@
 }
 
 .month-title {
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 1.125rem;
   font-weight: 700;
   margin: 0;
@@ -61,18 +42,18 @@
 
 // Calendar Section
 .calendar-section {
-  padding: 1rem;
+  padding: var(--spacing-sm);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-xxs);
 }
 
 .month-navigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 0.25rem;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xxxs);
 }
 
 .month-nav-btn,
@@ -81,20 +62,37 @@ ion-fab-button,
 .calendar-floating-btn {
   --background: linear-gradient(
     135deg,
-    var(--primary-color) 60%,
-    var(--accent-lilac) 100%
+    var(--color-accent) 60%,
+    var(--color-active) 100%
   );
   --color: #fff;
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
   width: 52px;
   height: 52px;
   border-radius: 50% !important;
-  box-shadow: 0 4px 24px 4px rgba(168, 85, 247, 0.14), 0 1.5px 8px 0 #0003;
+  box-shadow: var(--shadow-elevation);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   transition: transform 0.22s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.24s;
   border: none;
+}
+.month-nav-btn::part(native),
+.calendar-round-btn::part(native) {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+  max-width: 52px;
+  max-height: 52px;
+  border-radius: 50% !important;
+  background: var(--background);
+  color: var(--color);
 }
 .month-nav-btn ion-icon,
 .calendar-round-btn ion-icon {
@@ -107,7 +105,7 @@ ion-fab-button,
 .calendar-round-btn:hover,
 ion-fab-button:hover {
   transform: scale(1.12);
-  box-shadow: 0 6px 28px 2px rgba(168, 85, 247, 0.23), 0 8px 24px 0 #0002;
+  box-shadow: var(--shadow-elevation);
   filter: brightness(1.13);
 }
 // Asegura que cualquier botón de calendar con .month-nav-btn sea perfectamente redondo (nunca ovalado)
@@ -126,7 +124,7 @@ ion-fab-button {
 }
 
 .month-label {
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 1rem;
   font-weight: 700;
   margin: 0;
@@ -148,11 +146,11 @@ ion-fab-button {
 }
 
 .weekday {
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   font-size: 0.8125rem;
   font-weight: 700;
   text-align: center;
-  padding: 0.75rem 0 0.125rem 0;
+  padding: var(--spacing-xs) 0 var(--spacing-xxxs) 0;
   line-height: 1;
 }
 
@@ -181,38 +179,34 @@ ion-fab-button {
 }
 .calendar-day:hover,
 .calendar-day:focus {
-  background: #b48cf9 !important;
+  background: var(--color-accent-hover) !important;
   border-radius: 50% !important;
   transform: scale(1.12);
-  box-shadow: 0 6px 24px rgba(168, 85, 247, 0.12);
+  box-shadow: var(--shadow-elevation);
   outline: none;
 }
 .calendar-day.current-month {
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .calendar-day:not(.current-month) {
-  color: var(--text-muted);
+  color: var(--color-text-secondary);
   opacity: 0.6;
 }
 
 .calendar-day.selected {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-dark)
-  );
+  background: linear-gradient(135deg, var(--color-accent), var(--color-active));
   color: #fff;
   border-radius: 50% !important;
-  box-shadow: 0 6px 32px var(--hover-glow), 0 0 0 4px rgba(168, 85, 247, 0.12);
+  box-shadow: var(--shadow-elevation);
   transform: scale(1.15);
   z-index: 2;
 }
 .calendar-day.today {
-  border: 2.5px solid var(--accent-purple);
+  border: 2.5px solid var(--color-accent);
   border-radius: 50% !important;
-  box-shadow: 0 0 18px 4px rgba(139, 92, 246, 0.18);
-  background: #b48cf9 !important;
+  box-shadow: var(--shadow-elevation);
+  background: var(--color-accent-hover) !important;
 }
 
 .calendar-day.has-dreams .dream-indicator {
@@ -236,15 +230,15 @@ ion-fab-button {
   height: 70%;
   margin: auto;
   border-radius: 50%;
-  background: #b48cf9;
-  box-shadow: 0 0 6px 1px #b48cf955;
+  background: var(--color-accent);
+  box-shadow: var(--shadow-elevation);
   position: relative;
   z-index: 1;
 }
 
 .calendar-day.selected .dream-indicator {
-  background: #b48cf9 !important;
-  box-shadow: 0 0 8px 2px #b48cf9cc;
+  background: var(--color-accent) !important;
+  box-shadow: var(--shadow-elevation);
 }
 
 @keyframes pulse {
@@ -266,11 +260,11 @@ ion-fab-button {
 }
 
 .monthly-stats {
-  margin: 1rem;
-  padding: 1.2rem 1.4rem;
-  background: var(--background-dark);
+  margin: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface);
   border-radius: 16px;
-  border: 1px solid rgba(168, 85, 247, 0.15);
+  border: 1px solid var(--color-border);
 }
 
 /* Cabecera */
@@ -282,7 +276,7 @@ ion-fab-button {
 }
 
 .stats-title {
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -294,7 +288,7 @@ ion-fab-button {
 }
 
 .dream-count {
-  color: #fff;
+  color: var(--color-text-primary);
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1;
@@ -303,7 +297,7 @@ ion-fab-button {
 .percentage-change {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #cba6f7;
+  color: var(--color-accent-hover);
   opacity: 0.8;
 }
 
@@ -311,16 +305,27 @@ ion-fab-button {
 .chart-container.chart-modern-bar {
   position: relative;
   background: transparent;
-  padding: 0.5rem 0 0.2rem;
+  padding: var(--spacing-xxs) 0 var(--spacing-xxxs);
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .chart-bars-modern {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  height: 120px;
-  gap: 0.6rem;
+  height: 140px;
+  gap: var(--spacing-sm);
+}
+
+.chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-xxs);
+  flex: 1 1 0;
+  height: 100%;
 }
 
 /* Barras lilas sólidas */
@@ -329,18 +334,19 @@ ion-fab-button {
   min-width: 22px;
   max-width: 36px;
   border-radius: 8px;
-  background-color: #cba6f7;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  background-color: var(--color-accent-hover);
+  transition: background-color 0.2s ease, transform 0.2s ease, height 0.25s ease;
+  max-height: 100%;
 }
 
 .chart-bar-modern:hover {
-  background-color: #a855f7;
+  background-color: var(--color-accent);
   transform: translateY(-3px);
 }
 
 /* Barra más alta */
 .chart-bar-modern.highest {
-  background-color: #a855f7;
+  background-color: var(--color-accent);
 }
 
 /* Quitar números sobre las barras */
@@ -348,14 +354,13 @@ ion-fab-button {
   display: none;
 }
 
-/* Etiquetas inferiores */
+/* Etiquetas inferiores agrupadas bajo cada barra */
 .chart-labels-modern {
-  display: flex;
+  display: none;
+}
 
-  justify-content: space-between;
-  margin-top: 0.6rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  opacity: 0.7;
+.chart-col-label {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1;
 }

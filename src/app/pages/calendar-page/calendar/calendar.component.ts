@@ -325,48 +325,38 @@ export class CalendarComponent implements OnInit {
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0);
 
-    this.weeklyData = [];
-    let weekNumber = 1;
-    let currentWeekStart = new Date(startDate);
+    // Genera exactamente 6 barras por mes, agregando por semanas del calendario (domingo a sábado)
+    const daysInMonth = endDate.getDate();
+    const firstDayWeekIndex = startDate.getDay(); // 0=Domingo ... 6=Sábado
+    const weekBuckets: number[] = new Array(6).fill(0);
 
-    while (currentWeekStart <= endDate) {
-      const weekEnd = new Date(currentWeekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-
-      let weekDreamCount = 0;
-      for (
-        let d = new Date(currentWeekStart);
-        d <= weekEnd && d <= endDate;
-        d.setDate(d.getDate() + 1)
-      ) {
-        const dateStr = this.formatDate(d);
-        weekDreamCount += this.getDreamCount(dateStr);
-      }
-
-      this.weeklyData.push({
-        week: weekNumber.toString(),
-        count: weekDreamCount,
-        height: Math.max(20, (weekDreamCount / 6) * 100), // Igual escalado mínimo
-        isHighest: false,
-      });
-
-      currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-      weekNumber++;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const weekIndex = Math.min(
+        5,
+        Math.floor((day - 1 + firstDayWeekIndex) / 7)
+      );
+      const date = new Date(year, month, day);
+      const dateStr = this.formatDate(date);
+      weekBuckets[weekIndex] += this.getDreamCount(dateStr);
     }
 
-    // Asegura 7 barras siempre
-    while (this.weeklyData.length < 7) {
-      this.weeklyData.push({
-        week: this.weeklyData.length + 1 + "",
-        count: 0,
-        height: 20,
-        isHighest: false,
-      });
-    }
+    this.weeklyData = weekBuckets.map((count, idx) => ({
+      week: (idx + 1).toString(),
+      count,
+      height: 0, // normalizado más abajo
+      isHighest: false,
+    }));
 
-    // Encuentra la barra mayor
+    // Normaliza alturas (0–100%) según el máximo del mes y aplica altura mínima
     const maxCount = Math.max(...this.weeklyData.map((w) => w.count));
+    const minPercent = 10; // altura mínima visible para semanas con conteo > 0
     this.weeklyData.forEach((week) => {
+      const pct = maxCount > 0 ? Math.round((week.count / maxCount) * 100) : 0;
+      const clamped = Math.min(
+        100,
+        Math.max(week.count > 0 ? minPercent : 0, pct)
+      );
+      week.height = clamped;
       week.isHighest = week.count === maxCount && week.count > 0;
     });
   }
