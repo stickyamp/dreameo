@@ -1,90 +1,46 @@
 <ion-header>
   <ion-toolbar class="dream-toolbar">
-    <ion-title i18n="@@add.dream.title.edit" *ngIf="isEditing">Editar Sueño</ion-title>
-    <ion-title i18n="@@add.dream.title.new" *ngIf="!isEditing">Nuevo Sueño</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>New Dream</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveDream()" [disabled]="!canSave()" class="save-btn-header">
+        <span style="color: #ffd600; font-weight: 600;">Save</span>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <div class="header-subtitle">
-    <span class="date-subtitle">{{ getFormattedDate() }}</span>
-  </div>
 </ion-header>
-
-<ion-content class="dream-container">
+<ion-content class="add-dream-content">
   <div class="dream-form">
-    <!-- Title Input -->
-    <div class="form-section">
-      <ion-item class="dream-input">
-        <ion-label position="stacked" i18n="@@add.dream.title.label">Título</ion-label>
-        <ion-input [(ngModel)]="dreamData.title" i18n-placeholder="@@add.dream.title.placeholder"
-          placeholder="Dale un nombre a tu sueño" maxlength="100">
-        </ion-input>
-      </ion-item>
+    <ion-input [(ngModel)]="dreamData.title" placeholder="Dream Title" class="title-input" maxlength="100"></ion-input>
+    <ion-textarea autoGrow="true" [(ngModel)]="dreamData.description" placeholder="Describe your dream..." rows="4"
+      maxlength="2000" class="desc-input"></ion-textarea>
+    <div class="dream-date-row">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <span>{{ selectedDate ? (selectedDate | date: 'MMMM d, y - h:mm a') : '' }}</span>
     </div>
-
-    <!-- Description Input -->
-    <div class="form-section">
-      <ion-item class="dream-input">
-        <ion-label position="stacked" i18n="@@add.dream.description.label">Descripción</ion-label>
-        <ion-textarea autoGrow="true" [(ngModel)]="dreamData.description"
-          i18n-placeholder="@@add.dream.description.placeholder" placeholder="Describe tu sueño..." rows="8"
-          maxlength="2000">
-        </ion-textarea>
-
-        <div class="recording-controls">
-          @if(!isRecording && !audioPath) {
-          <ion-fab (click)="startRecording()">
-            <ion-fab-button color="success">
-              <ion-icon name="mic"></ion-icon>
-            </ion-fab-button>
-          </ion-fab>
-          }
-          @else{
-          <ion-fab (click)="stopRecording()">
-            <ion-fab-button color="danger">
-              <ion-icon name="mic"></ion-icon>
-            </ion-fab-button>
-          </ion-fab>
-          }
-        </div>
-      </ion-item>
-    </div>
-
-    <!-- Dream Type Selection -->
-    <div class="form-section">
-      <div class="type-section">
-        <h3 class="section-title" i18n="@@add.dream.type.title">Tipo de sueño</h3>
-        <p class="section-description" i18n="@@add.dream.type.description">
-          ¿Fue un sueño agradable o una pesadilla?
-        </p>
-
-        <div class="type-buttons">
-          <ion-button [fill]="dreamData.type === 'good' ? 'solid' : 'outline'"
-            [color]="dreamData.type === 'good' ? 'success' : 'medium'" (click)="dreamData.type = 'good'"
-            class="type-button">
-            <ion-icon name="heart" slot="start"></ion-icon>
-            <span i18n="@@add.dream.type.good">Sueño bueno</span>
-          </ion-button>
-
-          <ion-button [fill]="dreamData.type === 'bad' ? 'solid' : 'outline'"
-            [color]="dreamData.type === 'bad' ? 'danger' : 'medium'" (click)="dreamData.type = 'bad'"
-            class="type-button">
-            <ion-icon name="warning" slot="start"></ion-icon>
-            <span i18n="@@add.dream.type.bad">Pesadilla</span>
-          </ion-button>
-        </div>
+    <div class="tags-section">
+      <div class="tags-title">Tags</div>
+      <div class="tags-chips">
+        <ion-chip color="dark">Lucid Dream</ion-chip>
+        <ion-chip color="warning" outline="false">Nightmare</ion-chip>
+        <ion-chip>Recurring Dream</ion-chip>
+        <ion-chip class="add-tag" outline="true">
+          <ion-icon name="add" class="add-tag-icon"></ion-icon>
+          Add Tag
+        </ion-chip>
       </div>
     </div>
-    <!-- Action Buttons -->
-    <div class="form-actions">
-      <ion-button expand="block" class="dream-button" (click)="saveDream()" [disabled]="!canSave()">
-        <ion-icon name="save" slot="start"></ion-icon>
-        <span *ngIf="isEditing" i18n="@@add.dream.update">Actualizar</span>
-        <span *ngIf="!isEditing" i18n="@@add.dream.save">Guardar</span>
-      </ion-button>
-    </div>
   </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab-area">
+    <ion-fab-button color="success" (click)="startRecording()">
+      <ion-icon name="mic"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button color="warning" (click)="saveDream()">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
