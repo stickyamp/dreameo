@@ -1,22 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="topbar dream-toolbar">
     <div class="dream-toolbar-row">
-      <ion-title class="page-title" *ngIf="!showSearch"
+      <ion-title id="ion-title" class="page-title" *ngIf="!showSearch"
         [ngClass]="{'fade-in-left': !showSearch, 'fade-out-left': showSearch}">Mis Sueños</ion-title>
-      <ion-searchbar *ngIf="showSearch" class="dream-searchbar purple fade-in-right" placeholder="Buscar sueños..."
-        debounce="250" show-clear-button="focus" (ionInput)="onSearchChange($event)" [autofocus]="true">
-        <ion-buttons slot="end">
-          <ion-button (click)="hideSearch()">
-            <ion-icon name="chevron-forward-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-searchbar>
       <ion-buttons slot="end" *ngIf="!showSearch"
         [ngClass]="{'fade-in-left': !showSearch, 'fade-out-left': showSearch}">
         <ion-button (click)="showSearchbar()">
           <ion-icon name="search-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
+      <ion-searchbar *ngIf="showSearch" class="dream-searchbar purple fade-in-right" placeholder="Buscar sueños..."
+        debounce="250" show-clear-button="focus" (ionInput)="onSearchChange($event)" [autofocus]="true">
+        <ion-buttons slot="end">
+          <ion-button (click)="hideSearch()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-searchbar>
     </div>
   </ion-toolbar>
   <ion-toolbar class="month-toolbar dream-toolbar">
