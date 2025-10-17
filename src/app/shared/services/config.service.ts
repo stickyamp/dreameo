@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
   constructor() {
-    setTimeout(() => {
-      if (this.isDarkMode()) {
+    setTimeout(async () => {
+      if (await this.isDarkMode()) {
         console.log("manuXX aa")
         this.enableDarkMode();
       }
@@ -31,11 +32,15 @@ export class ConfigService {
 
   }
 
-  public saveDarkModePreference(enabled: boolean): void {
-    localStorage.setItem('darkMode', enabled.toString());
+  public async saveDarkModePreference(enabled: boolean): Promise<void> {
+    await Preferences.set({
+      key: 'darkMode',
+      value: enabled.toString()
+    });
   }
 
-  public isDarkMode(): boolean {
-    return Boolean(localStorage.getItem('darkMode')) ?? false;
+  public async isDarkMode(): Promise<boolean> {
+    const result = await Preferences.get({ key: 'darkMode' });
+    return result.value === 'true';
   }
 }

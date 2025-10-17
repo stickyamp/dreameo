@@ -2,6 +2,7 @@
 ion-content {
   --background: var(--color-surface);
 }
+
 .dreams-container {
   max-width: 600px;
   margin: 0 auto;
@@ -265,11 +266,9 @@ ion-content {
 }
 
 .fab-dream {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
   width: 56px;
   height: 56px;
@@ -509,6 +508,7 @@ ion-searchbar {
   width: 100%;
   position: relative;
   gap: 0;
+  color: var(--color-text-primary);
 }
 
 .dream-toolbar-row .fade-in-right {
@@ -753,7 +753,7 @@ ion-searchbar.dream-searchbar {
 .topbar.ion-toolbar,
 .dream-toolbar.ion-toolbar,
 .dream-toolbar-row,
-.dream-toolbar-row > *,
+.dream-toolbar-row>*,
 ion-searchbar.dream-searchbar,
 ion-searchbar.dream-searchbar::part(container),
 ion-searchbar.dream-searchbar::part(input),
@@ -784,21 +784,3 @@ input.searchbar-input.sc-ion-searchbar-md {
 }
 
 /* --- END HEADER AND SEARCHBAR HEIGHT FIX --- */
-
-// Colorea el título 'Mis Sueños' (topbar) en modo light
-html.ion-palette-light .topbar #ion-title {
-  color: var(--color-text-primary);
-}
-
-// Colorea el icono de buscar en la topbar en modo light
-html.ion-palette-light .topbar ion-icon[name="search-outline"] {
-  color: var(--color-text-primary);
-}
-
-html.ion-palette-light .topbar .page-title {
-  color: var(--color-text-primary);
-}
-
-html.ion-palette-light .topbar ion-icon[name="search-outline"] {
-  color: var(--color-text-primary);
-}

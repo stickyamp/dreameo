@@ -30,6 +30,7 @@ export class DreamService {
       const { value } = await Preferences.get({ key: this.DREAMS_KEY });
       if (value) {
         const dreams = JSON.parse(value) as DreamsByDate;
+        console.log("manuXX Dreams", dreams);
         this.dreamsSubject.next(dreams);
       }
     } catch (error) {

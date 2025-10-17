@@ -34,7 +34,6 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadDarkModePreference();
   }
 
   goBack(): void {
@@ -102,12 +101,6 @@ export class ProfileComponent implements OnInit {
     });
 
     await alert.present();
-  }
-
-  private loadDarkModePreference(): void {
-    const savedMode = localStorage.getItem('darkMode');
-    this.darkMode = savedMode === 'true';
-    document.body.classList.toggle('dark', this.darkMode);
   }
 
   private performCloseSession(): void {
