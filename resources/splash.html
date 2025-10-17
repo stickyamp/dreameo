@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dream Journal Splash Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-dark": "#0D0A1C",
+            "secondary": "#E6E6FA",
+            "accent": "#A855F7",
+            "background-dark": "#030014"
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"],
+            "serif": ["Playfair Display", "serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+          animation: {
+            'fade-in': 'fadeIn 1.5s ease-in-out forwards',
+            'star-twinkle': 'twinkle 4s infinite ease-in-out',
+            'float': 'float 6s infinite ease-in-out'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            twinkle: {
+                '0%, 100%': { opacity: 0.2 },
+                '50%': { opacity: 1 }
+            },
+            float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' }
+            }
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: star-twinkle 4s infinite ease-in-out;
+    }
+    .star:nth-child(1) { top: 10%; left: 20%; width: 2px; height: 2px; animation-delay: 0s; }
+    .star:nth-child(2) { top: 25%; left: 80%; width: 3px; height: 3px; animation-delay: 0.5s; }
+    .star:nth-child(3) { top: 50%; left: 15%; width: 1px; height: 1px; animation-delay: 1s; }
+    .star:nth-child(4) { top: 70%; left: 90%; width: 2px; height: 2px; animation-delay: 1.5s; }
+    .star:nth-child(5) { top: 85%; left: 30%; width: 1px; height: 1px; animation-delay: 2s; }
+    .star:nth-child(6) { top: 5%; left: 50%; width: 2px; height: 2px; animation-delay: 2.5s; }
+    .star:nth-child(7) { top: 40%; left: 60%; width: 1px; height: 1px; animation-delay: 3s; }
+    .star:nth-child(8) { top: 95%; left: 70%; width: 3px; height: 3px; animation-delay: 3.5s; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col items-center justify-center bg-primary-dark p-4 overflow-hidden">
+<div class="absolute inset-0">
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark to-transparent opacity-70"></div>
+<div class="z-10 flex flex-col items-center justify-center text-center w-full animate-fade-in">
+<div class="mb-12 animate-float">
+<svg class="h-28 w-28 text-white mx-auto mb-4 opacity-90" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21.64 13.5a1.5 1.5 0 00-1.04-1.04l-4.78-2.65-2.65-4.78a1.5 1.5 0 00-2.08 0L8.44 9.81 3.66 12.46a1.5 1.5 0 00-1.04 1.04l-2.65 4.78a1.5 1.5 0 002.08 2.08l4.78-2.65 2.65-4.78 4.78 2.65 2.65 4.78a1.5 1.5 0 002.08-2.08l-2.65-4.78z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M12 2v2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M12 20v2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M4.93 4.93l1.41 1.41" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M17.66 17.66l1.41 1.41" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M2 12h2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M20 12h2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M4.93 19.07l1.41-1.41" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M17.66 6.34l1.41-1.41" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<h1 class="text-5xl font-serif font-bold text-white tracking-wider">Dreameo</h1>
+</div>
+<div class="w-full max-w-xs mt-16">
+<div class="flex flex-col gap-3">
+<div class="h-1 rounded-full bg-white/10 overflow-hidden">
+<div class="h-full rounded-full bg-accent animate-pulse" style="width: 100%;"></div>
+</div>
+<p class="text-secondary/70 text-sm font-normal leading-normal mt-3">Entering the dream world...</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>
