@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit {
 
   toggleDarkMode(event: any): void {
     this.darkMode = event.detail.checked;
-    this.saveDarkModePreference(this.darkMode);
+    this.configService.saveDarkModePreference(this.darkMode);
 
     if (this.darkMode) {
       this.configService.enableDarkMode();
@@ -108,10 +108,6 @@ export class ProfileComponent implements OnInit {
     const savedMode = localStorage.getItem('darkMode');
     this.darkMode = savedMode === 'true';
     document.body.classList.toggle('dark', this.darkMode);
-  }
-
-  private saveDarkModePreference(enabled: boolean): void {
-    localStorage.setItem('darkMode', enabled.toString());
   }
 
   private performCloseSession(): void {
