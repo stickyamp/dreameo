@@ -1,114 +1,47 @@
-<ion-header [translucent]="true">
-    <ion-toolbar class="dream-toolbar">
-        <ion-title i18n="@@profile.title">Configuración</ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="dream-container">
-    <div class="profile-container">
-        <!-- First section -->
-        <div class="first-section">
-            <!-- User Profile Section -->
-            <div class="profile-header">
-                <div class="avatar-container">
-                    <div class="profile-avatar">
-                        👤
-                    </div>
-                </div>
-                <h1 class="profile-name">{{ currentUser?.username || userProfile.name }}</h1>
-                <p class="profile-email">{{ currentUser?.email || userProfile.email }}</p>
+<ion-content [fullscreen]="true">
+    <div class="content-wrapper">
+        <!-- User Profile Section -->
+        <div class="user-profile">
+            <ion-avatar class="user-avatar">
+                <ion-icon name="person-outline" class="user-icon"></ion-icon>
+            </ion-avatar>
+            <div class="user-info">
+                <h2 class="user-name">{{ user.name }}</h2>
+                <p class="user-email">{{ user.email }}</p>
             </div>
-            <!-- User Profile Section END -->
         </div>
-        <!-- Statistics Section END -->
 
         <!-- Settings List -->
-        <div class="settings-list">
-            <h2 class="settings-title">Configuración</h2>
-            <!-- Language Selection -->
-            <ion-item class="setting-item" (click)="openLanguageSelector()">
-                <div class="setting-content">
-                    <div class="setting-icon">
-                        <ion-icon name="language"></ion-icon>
-                    </div>
-                    <div class="setting-info">
-                        <h3 i18n="@@profile.language">Idioma</h3>
-                        <p>{{ getCurrentLanguageName() }}</p>
-                    </div>
-                </div>
-                <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        <ion-list class="settings-list">
+            <!-- Language Option -->
+            <ion-item button (click)="navigateToLanguage()" detail="true">
+                <ion-icon name="globe-outline" slot="start"></ion-icon>
+                <ion-label>Language</ion-label>
+                <ion-note slot="end" color="medium">{{ selectedLanguage }}</ion-note>
             </ion-item>
 
             <!-- Dark Mode Toggle -->
-            <ion-item class="setting-item">
-                <div class="setting-content">
-                    <div class="setting-icon">
-                        <ion-icon name="moon"></ion-icon>
-                    </div>
-                    <div class="setting-info">
-                        <h3 i18n="@@profile.dark.mode">Modo oscuro</h3>
-                        <p i18n="@@profile.dark.mode.description">Activar el modo oscuro</p>
-                    </div>
-                </div>
-                <ion-toggle slot="end" [(ngModel)]="userProfile.darkMode" (ionChange)="toggleDarkMode($event)">
+            <ion-item>
+                <ion-icon name="moon-outline" slot="start"></ion-icon>
+                <ion-label>Dark Mode</ion-label>
+                <ion-toggle slot="end" [checked]="darkMode" (ionChange)="toggleDarkMode($event)">
                 </ion-toggle>
             </ion-item>
+        </ion-list>
 
-            <!-- Export Dreams -->
-            <ion-item class="setting-item" (click)="exportDreams()">
-                <div class="setting-content">
-                    <div class="setting-icon">
-                        <ion-icon name="share"></ion-icon>
-                    </div>
-                    <div class="setting-info">
-                        <h3 i18n="@@profile.export">Exportar sueños</h3>
-                        <p i18n="@@profile.export.description">Exportar todos los datos de los sueños</p>
-                    </div>
-                </div>
-                <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        <!-- Danger Zone -->
+        <ion-list class="danger-zone">
+            <!-- Close Session -->
+            <ion-item button (click)="closeSession()" lines="none">
+                <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
+                <ion-label color="danger">Close Session</ion-label>
             </ion-item>
 
-            <!-- Logout -->
-            <ion-item class="setting-item danger" (click)="confirmLogout()">
-                <div class="setting-content">
-                    <div class="setting-icon danger">
-                        <ion-icon name="log-out"></ion-icon>
-                    </div>
-                    <div class="setting-info">
-                        <h3 i18n="@@profile.logout">Cerrar sesión</h3>
-                        <p i18n="@@profile.logout.description">Salir de tu cuenta</p>
-                    </div>
-                </div>
-                <ion-icon name="chevron-forward" slot="end"></ion-icon>
+            <!-- Clean Data -->
+            <ion-item button (click)="cleanData()" lines="none">
+                <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
+                <ion-label color="danger">Clean Data</ion-label>
             </ion-item>
-
-            <!-- Clear Data -->
-            <ion-item class="setting-item danger" (click)="confirmClearData()">
-                <div class="setting-content">
-                    <div class="setting-icon danger">
-                        <ion-icon name="trash"></ion-icon>
-                    </div>
-                    <div class="setting-info">
-                        <h3 i18n="@@profile.clear.data">Limpiar datos</h3>
-                        <p i18n="@@profile.clear.data.description">Eliminar todos los datos de los sueños</p>
-                    </div>
-                </div>
-                <ion-icon name="chevron-forward" slot="end"></ion-icon>
-            </ion-item>
-        </div>
-
-        <!-- App Info -->
-        <div class="app-info">
-            <div class="info-section">
-                <h3 i18n="@@profile.about">Sobre Dream Journal</h3>
-                <p>
-                    Una aplicación para organizar y registrar tus sueños de manera fácil y privada.
-                    Todos tus datos se almacenan localmente en tu dispositivo.
-                </p>
-            </div>
-            <div class="app-version">
-                <p i18n="@@profile.version">Versión 1.0.0</p>
-            </div>
-        </div>
+        </ion-list>
     </div>
 </ion-content>

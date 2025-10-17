@@ -1,219 +1,234 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { DreamService } from '../../shared/services/dream.service';
-import { Dream } from '../../models/dream.model';
+
+export enum DreamType {
+  LUCID,
+  NORMAL,
+  NIGHTMARE
+}
+
+interface Dream {
+  id: string;
+  date: Date;
+  isLucid: boolean;
+  type: DreamType;
+  keywords?: string[];
+}
 
 @Component({
-  selector: 'app-statistics',
+  selector: 'app-dream-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss'],
-  standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule]
+  imports: [IonicModule, CommonModule],
+  standalone: true
 })
-export class StatisticsComponent implements OnInit {
-  selectedPeriod: 'week' | 'month' | 'year' = 'week';
-  dreams: Dream[] = [];
+export class DreamStatisticsPage implements OnInit {
+  selectedPeriod: string = 'lastMonth';
 
-  // Statistics data
-  dailyAverage: number = 1.2;
-  lucidDreams: number = 7;
-  lucidDreamsChange: string = '+2 esta semana';
+  stats = {
+    totalDreams: 0,
+    lucidDreams: 0,
+    dreamFrequency: 0,
+  };
 
-  // Dream frequency data (for chart) - will be updated based on selected period
-  dreamFrequency: { day: string; count: number }[] = [];
-
-  // Dream sentiment data
-  dreamSentiment: { emoji: string; label: string; percentage: number; color: string }[] = [
-    { emoji: '😊', label: 'Feliz', percentage: 45, color: '#4CAF50' },
-    { emoji: '😐', label: 'Neutral', percentage: 20, color: '#FF9800' },
-    { emoji: '😟', label: 'Triste', percentage: 15, color: '#F44336' }
+  keywords: string[] = [];
+  dreamTypes = [
+    { type: 'Lucid', percentage: 0 },
+    { type: 'Normal', percentage: 0 },
+    { type: 'Nightmare', percentage: 0 }
   ];
 
-  constructor(private dreamService: DreamService) { }
+  chartData: number[] = [];
+  chartLabels: string[] = [];
+  chartPath: string = '';
+
+  // This should come from your dream service
+  private allDreams: Dream[] = [];
+
+  constructor() { }
 
   ngOnInit() {
+    // Replace this with your actual dream service call
     this.loadDreams();
-
-    // Subscribe to dreams changes
-    this.dreamService.dreams$.subscribe(() => {
-      this.loadDreams();
-      this.calculateStatistics();
-    });
-
-    // Initialize with sample data for testing
-    this.initializeSampleData();
+    this.selectPeriod('lastMonth');
   }
 
-  initializeSampleData() {
-    // Add some sample dreams for testing different periods
-    const sampleDreams: Dream[] = [
-      {
-        id: '1',
-        date: '2024-01-15', // January
-        title: 'Sample Dream 1',
-        description: 'Test dream',
-        type: 'good',
-        createdAt: '2024-01-15T10:00:00Z'
-      },
-      {
-        id: '2',
-        date: '2024-02-20', // February
-        title: 'Sample Dream 2',
-        description: 'Test dream',
-        type: 'good',
-        createdAt: '2024-02-20T10:00:00Z'
-      },
-      {
-        id: '3',
-        date: '2024-03-10', // March
-        title: 'Sample Dream 3',
-        description: 'Test dream',
-        type: 'good',
-        createdAt: '2024-03-10T10:00:00Z'
-      },
-      {
-        id: '4',
-        date: '2024-04-05', // April
-        title: 'Sample Dream 4',
-        description: 'Test dream',
-        type: 'good',
-        createdAt: '2024-04-05T10:00:00Z'
-      }
-    ];
-
-    // Add sample dreams to the service if they don't exist
-    const existingDreams = this.dreamService.getAllDreams();
-    if (existingDreams.length === 0) {
-      sampleDreams.forEach(dream => {
-        this.dreamService.addDream(dream);
-      });
-    }
+  selectPeriod(period: string) {
+    this.selectedPeriod = period;
+    this.updateStatistics(period);
+    this.generateChartPath();
   }
 
-  loadDreams() {
-    this.dreams = this.dreamService.getAllDreams();
-    this.calculateStatistics();
+  private loadDreams() {
+    // MOCK DATA - Replace this with your actual service call
+    // Example: this.dreamService.getAllDreams().subscribe(dreams => { this.allDreams = dreams; });
+
+    this.allDreams = this.generateMockDreams();
   }
 
-  calculateStatistics() {
-    // Calculate daily average based on selected period
+  private updateStatistics(period: string) {
     const now = new Date();
     let startDate: Date;
+    let filteredDreams: Dream[];
 
-    switch (this.selectedPeriod) {
-      case 'week':
+    // Determine date range
+    switch (period) {
+      case 'lastWeek':
         startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        filteredDreams = this.allDreams.filter(d => d.date >= startDate);
+        this.prepareWeeklyData(filteredDreams, startDate);
         break;
-      case 'month':
+      case 'lastMonth':
         startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        filteredDreams = this.allDreams.filter(d => d.date >= startDate);
+        this.prepareMonthlyData(filteredDreams, startDate);
         break;
-      case 'year':
-        startDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+      case 'allTime':
+        filteredDreams = this.allDreams;
+        this.prepareYearlyData(filteredDreams);
         break;
+      default:
+        filteredDreams = this.allDreams;
     }
 
-    const periodDreams = this.dreams.filter(dream =>
-      new Date(dream.date) >= startDate
-    );
+    // Update stats
+    this.stats.totalDreams = filteredDreams.length;
+    this.stats.lucidDreams = filteredDreams.filter(d => d.isLucid).length;
+    this.stats.dreamFrequency = filteredDreams.length;
 
-    const daysDiff = Math.ceil((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-    this.dailyAverage = periodDreams.length / daysDiff;
+    // Update dream types percentages
+    const lucidCount = filteredDreams.filter(d => d.type === DreamType.LUCID).length;
+    const normalCount = filteredDreams.filter(d => d.type === DreamType.NORMAL).length;
+    const nightmareCount = filteredDreams.filter(d => d.type === DreamType.NIGHTMARE).length;
+    const total = filteredDreams.length || 1;
 
-    // Count lucid dreams (for now, we'll simulate this data)
-    // In a real app, you'd add a 'lucid' property to the Dream model
-    this.lucidDreams = Math.floor(periodDreams.length * 0.3); // Simulate 30% lucid dreams
+    this.dreamTypes = [
+      { type: 'Lucid', percentage: Math.round((lucidCount / total) * 100) },
+      { type: 'Normal', percentage: Math.round((normalCount / total) * 100) },
+      { type: 'Nightmare', percentage: Math.round((nightmareCount / total) * 100) }
+    ];
 
-    // Update frequency data based on period
-    this.updateFrequencyData(periodDreams);
+    // Update keywords
+    this.updateKeywords(filteredDreams);
   }
 
-  updateFrequencyData(dreams: Dream[]) {
-    if (this.selectedPeriod === 'week') {
-      // Group by day of week
-      const dayCounts = [0, 0, 0, 0, 0, 0, 0]; // Sunday to Saturday
-      const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  private prepareWeeklyData(dreams: Dream[], startDate: Date) {
+    this.chartLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    this.chartData = new Array(7).fill(0);
 
-      dreams.forEach(dream => {
-        const day = new Date(dream.date).getDay();
-        dayCounts[day]++;
-      });
+    dreams.forEach(dream => {
+      const dayIndex = dream.date.getDay();
+      const adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1; // Convert Sunday from 0 to 6
+      this.chartData[adjustedIndex]++;
+    });
+  }
 
-      this.dreamFrequency = dayNames.map((day, index) => ({
-        day,
-        count: dayCounts[index]
-      }));
-    } else if (this.selectedPeriod === 'month') {
-      // Group by week of month
-      const weekCounts = [0, 0, 0, 0]; // 4 weeks
-      const weekNames = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'];
+  private prepareMonthlyData(dreams: Dream[], startDate: Date) {
+    this.chartLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    this.chartData = new Array(4).fill(0);
 
-      dreams.forEach(dream => {
-        const date = new Date(dream.date);
-        const weekOfMonth = Math.floor((date.getDate() - 1) / 7);
-        if (weekOfMonth < 4) {
-          weekCounts[weekOfMonth]++;
+    dreams.forEach(dream => {
+      const daysDiff = Math.floor((dream.date.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
+      const weekIndex = Math.min(Math.floor(daysDiff / 7), 3);
+      this.chartData[weekIndex]++;
+    });
+  }
+
+  private prepareYearlyData(dreams: Dream[]) {
+    this.chartLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    this.chartData = new Array(12).fill(0);
+
+    const now = new Date();
+    const oneYearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+
+    dreams.forEach(dream => {
+      if (dream.date >= oneYearAgo) {
+        const monthIndex = dream.date.getMonth();
+        this.chartData[monthIndex]++;
+      }
+    });
+  }
+
+  private generateChartPath() {
+    if (this.chartData.length === 0) {
+      this.chartPath = '';
+      return;
+    }
+
+    const width = 240;
+    const height = 100;
+    const padding = 5;
+    const maxValue = Math.max(...this.chartData, 1);
+    const stepX = width / (this.chartData.length - 1 || 1);
+
+    let path = '';
+
+    this.chartData.forEach((value, index) => {
+      const x = index * stepX;
+      const y = height - padding - ((value / maxValue) * (height - padding * 2));
+
+      if (index === 0) {
+        path += `M ${x},${y}`;
+      } else {
+        path += ` L ${x},${y}`;
+      }
+    });
+
+    this.chartPath = path;
+  }
+
+  private updateKeywords(dreams: Dream[]) {
+    const keywordCount = new Map<string, number>();
+
+    dreams.forEach(dream => {
+      if (dream.keywords) {
+        dream.keywords.forEach(keyword => {
+          keywordCount.set(keyword, (keywordCount.get(keyword) || 0) + 1);
+        });
+      }
+    });
+
+    this.keywords = Array.from(keywordCount.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(entry => entry[0]);
+  }
+
+  // MOCK DATA GENERATOR - Remove this and use your actual service
+  private generateMockDreams(): Dream[] {
+    const dreams: Dream[] = [];
+    const now = new Date();
+    const types: (DreamType.LUCID | DreamType.NORMAL | DreamType.NIGHTMARE)[] = [DreamType.LUCID, DreamType.NORMAL, DreamType.NIGHTMARE];
+    const allKeywords = ['Flying', 'Water', 'School', 'Friend', 'Falling', 'Family', 'Animal', 'Car', 'House', 'Work'];
+
+    // Generate dreams for the last 90 days
+    for (let i = 0; i < 90; i++) {
+      const dreamDate = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+
+      // Random chance of having a dream each day (70% chance)
+      if (Math.random() > 0.3) {
+        const type = types[Math.floor(Math.random() * types.length)];
+        const numKeywords = Math.floor(Math.random() * 4) + 1;
+        const dreamKeywords: string[] = [];
+
+        for (let j = 0; j < numKeywords; j++) {
+          const keyword = allKeywords[Math.floor(Math.random() * allKeywords.length)];
+          if (!dreamKeywords.includes(keyword)) {
+            dreamKeywords.push(keyword);
+          }
         }
-      });
 
-      this.dreamFrequency = weekNames.map((week, index) => ({
-        day: week,
-        count: weekCounts[index]
-      }));
-    } else if (this.selectedPeriod === 'year') {
-      // Group by month of year
-      const monthCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // 12 months
-      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-
-      dreams.forEach(dream => {
-        const month = new Date(dream.date).getMonth();
-        monthCounts[month]++;
-      });
-
-      this.dreamFrequency = monthNames.map((month, index) => ({
-        day: month,
-        count: monthCounts[index]
-      }));
+        dreams.push({
+          id: `dream-${i}`,
+          date: dreamDate,
+          isLucid: type === DreamType.LUCID,
+          type: type,
+          keywords: dreamKeywords
+        });
+      }
     }
-  }
 
-  onPeriodChange(event: any) {
-    const period = event.detail.value as 'week' | 'month' | 'year';
-    if (period) {
-      this.selectedPeriod = period;
-      this.calculateStatistics();
-    }
-  }
-
-  getMaxFrequency(): number {
-    return Math.max(...this.dreamFrequency.map(f => f.count), 1);
-  }
-
-  getBarHeight(count: number): number {
-    const max = this.getMaxFrequency();
-    return (count / max) * 100;
-  }
-
-  getYAxisTicks(): number[] {
-    const max = this.getMaxFrequency();
-    const steps = 4; // 5 tick labels including 0
-    const ticks: number[] = [];
-    for (let i = steps; i >= 0; i--) {
-      ticks.push(Math.round((max * i) / steps));
-    }
-    return ticks;
-  }
-
-  trackByTick(index: number, value: number): number {
-    return value;
-  }
-
-  trackByDay(index: number, item: { day: string; count: number }): string {
-    return item.day;
-  }
-
-  trackBySentiment(index: number, item: { emoji: string; label: string; percentage: number; color: string }): string {
-    return item.label;
+    return dreams;
   }
 }

@@ -37,25 +37,17 @@ export class AppComponent implements OnInit {
   }
 
   private async initializeApp() {
-    try {
-      // Enable dark mode by default
-      document.documentElement.classList.add('ion-palette-dark');
+    this.enableLightMode();
+  }
 
-      // Load user preferences (with error handling)
-      try {
-        this.dreamService.userProfile$.subscribe(profile => {
-          if (profile.darkMode) {
-            document.documentElement.classList.add('ion-palette-dark');
-          } else {
-            document.documentElement.classList.remove('ion-palette-dark');
-          }
-        });
-      } catch (serviceError) {
-        console.error('Error subscribing to user profile:', serviceError);
-      }
+  private enableDarkMode() {
+    document.documentElement.classList.add('ion-palette-dark');
+    document.documentElement.classList.remove('ion-palette-light');
+  }
 
-    } catch (error) {
-      console.error('Error initializing app:', error);
-    }
+  private enableLightMode() {
+    document.documentElement.classList.remove('ion-palette-light');
+    document.documentElement.classList.add('ion-palette-light');
+
   }
 }

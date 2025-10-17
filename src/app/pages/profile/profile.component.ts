@@ -1,97 +1,69 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule, AlertController, ActionSheetController } from '@ionic/angular';
-import { DreamService } from '../../shared/services/dream.service';
-import { AuthService } from '../../shared/services/auth.service';
-import { LanguageService } from '../../shared/services/language.service';
-import { DreamStatistics, UserProfile } from '../../models/dream.model';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController, IonicModule } from '@ionic/angular';
+
+interface User {
+  name: string;
+  email: string;
+  avatar: string;
+}
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-configuration',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule]
+  imports: [IonicModule, CommonModule],
+  standalone: true
 })
 export class ProfileComponent implements OnInit {
-  userProfile: UserProfile = {
-    name: 'Lucía',
-    email: 'lucia.sanchez@email.com',
-    darkMode: true
+  user: User = {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    avatar: 'assets/avatar.jpg'
   };
-  currentUser: any = null;
+
+  darkMode: boolean = false;
+  selectedLanguage: string = 'English';
 
   constructor(
-    private dreamService: DreamService,
-    private authService: AuthService,
-    private languageService: LanguageService,
-    private alertController: AlertController,
-    private actionSheetController: ActionSheetController
+    private router: Router,
+    private alertController: AlertController
   ) { }
 
-  async ngOnInit() {
-    // Load user profile
-    this.dreamService.userProfile$.subscribe(profile => {
-      this.userProfile = profile;
-    });
-
-    // Load current user from auth service
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
+  ngOnInit() {
+    this.loadDarkModePreference();
   }
 
-
-  async toggleDarkMode(event: any) {
-    this.userProfile.darkMode = event.detail.checked;
-
-    if (this.userProfile.darkMode) {
-      document.documentElement.classList.add('ion-palette-dark');
-    } else {
-      document.documentElement.classList.remove('ion-palette-dark');
-    }
-
-    await this.dreamService.updateUserProfile(this.userProfile);
+  goBack(): void {
+    this.router.navigate(['/home']);
   }
 
-  async exportDreams() {
-    try {
-      const dreamData = await this.dreamService.exportDreams();
-
-      // Create a downloadable file
-      const blob = new Blob([dreamData], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `dream-journal-export-${new Date().toISOString().split('T')[0]}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      await this.showAlert('Éxito', 'Los datos de tus sueños han sido exportados exitosamente.');
-    } catch (error) {
-      console.error('Error exporting dreams:', error);
-      await this.showAlert('Error', 'No se pudieron exportar los datos.');
-    }
+  navigateToLanguage(): void {
+    this.router.navigate(['/language-selection']);
   }
 
-  async confirmClearData() {
+  toggleDarkMode(event: any): void {
+    this.darkMode = event.detail.checked;
+    this.saveDarkModePreference(this.darkMode);
+    document.body.classList.toggle('dark', this.darkMode);
+  }
+
+  async closeSession(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Confirmar eliminación',
-      message: '¿Estás seguro de que quieres eliminar todos los datos de los sueños? Esta acción no se puede deshacer.',
+      header: 'Close Session',
+      message: 'Are you sure you want to close your session?',
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel'
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
         },
         {
-          text: 'Eliminar todo',
-          role: 'destructive',
+          text: 'Close',
+          cssClass: 'danger',
           handler: () => {
-            this.clearAllData();
+            this.performCloseSession();
           }
         }
       ]
@@ -100,30 +72,21 @@ export class ProfileComponent implements OnInit {
     await alert.present();
   }
 
-  async clearAllData() {
-    try {
-      await this.dreamService.clearAllData();
-      await this.showAlert('Datos eliminados', 'Todos los datos de los sueños han sido eliminados.');
-    } catch (error) {
-      console.error('Error clearing data:', error);
-      await this.showAlert('Error', 'No se pudieron eliminar los datos.');
-    }
-  }
-
-  async confirmLogout() {
+  async cleanData(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Cerrar sesión',
-      message: '¿Estás seguro de que quieres cerrar sesión?',
+      header: 'Clean Data',
+      message: 'This will remove all local data. Are you sure?',
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel'
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
         },
         {
-          text: 'Cerrar sesión',
-          role: 'destructive',
+          text: 'Clean',
+          cssClass: 'danger',
           handler: () => {
-            this.logout();
+            this.performCleanData();
           }
         }
       ]
@@ -132,46 +95,23 @@ export class ProfileComponent implements OnInit {
     await alert.present();
   }
 
-  async logout() {
-    try {
-      await this.authService.logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-      await this.showAlert('Error', 'No se pudo cerrar sesión correctamente.');
-    }
+  private loadDarkModePreference(): void {
+    const savedMode = localStorage.getItem('darkMode');
+    this.darkMode = savedMode === 'true';
+    document.body.classList.toggle('dark', this.darkMode);
   }
 
-  goBack() {
-    window.history.back();
+  private saveDarkModePreference(enabled: boolean): void {
+    localStorage.setItem('darkMode', enabled.toString());
   }
 
-  getCurrentLanguageName(): string {
-    const currentLang = this.languageService.getCurrentLanguage();
-    const language = this.languageService.getLanguageByCode(currentLang);
-    return language ? `${language.flag} ${language.name}` : 'English';
+  private performCloseSession(): void {
+    localStorage.removeItem('userToken');
+    this.router.navigate(['/login']);
   }
 
-  async openLanguageSelector() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Select Language',
-      buttons: this.languageService.languages.map(lang => ({
-        text: `${lang.flag} ${lang.name}`,
-        handler: () => {
-          this.languageService.setLanguage(lang.code);
-          // Reload the page to apply the new language
-          window.location.reload();
-        }
-      }))
-    });
-    await actionSheet.present();
-  }
-
-  private async showAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ['OK']
-    });
-    await alert.present();
+  private performCleanData(): void {
+    localStorage.clear();
+    console.log('Data cleaned successfully');
   }
 }

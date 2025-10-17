@@ -1,320 +1,268 @@
-.statistics-content {
-  --background: #f8f9fa;
+ion-content {
+  --background: #f5f5f9;
 }
 
-.statistics-container {
+ion-toolbar {
+  --background: #ffffff;
+}
+
+ion-title {
+  font-weight: 600;
+  font-size: 18px;
+  color: #1a1a1a;
+}
+
+.content-wrapper {
   padding: 16px;
-  background: #f8f9fa;
-  min-height: 100vh;
-  margin-bottom: 5vh;
+  padding-bottom: 32px;
 }
 
-// Header Section
-.header-section {
-  margin-bottom: 24px;
-}
-
-.section-title,
-.section-subtitle {
-  --background: transparent;
-  --inner-padding-end: 0;
-  --inner-padding-start: 0;
-  padding-left: 0;
-  padding-right: 0;
-
-  ion-label {
-    font-weight: 700;
-    color: #1f2937; // slate-800
-  }
-}
-
-.section-title {
-  margin: 8px 0 12px 0;
-
-  ion-label {
-    font-size: 18px;
-  }
-}
-
-.section-subtitle {
-  margin: 12px 0 8px 0;
-
-  ion-label {
-    font-size: 14px;
-    color: #4b5563; // slate-600
-    font-weight: 600;
-  }
-}
-
-.header {
+// Period Selection Buttons
+.period-buttons {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 20px;
 
-  .title {
-    font-size: 28px;
-    font-weight: 700;
-    margin: 0;
-  }
+  .period-btn {
+    --border-radius: 20px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    font-size: 13px;
+    text-transform: none;
+    font-weight: 500;
 
-  .menu-button {
-    --color: #666;
-    --padding-start: 8px;
-    --padding-end: 8px;
-  }
-}
+    &[fill="outline"] {
+      --background: #e8e9f3;
+      --color: #6b6b8d;
+      --border-color: transparent;
+    }
 
-// Period Selector
-.period-selector {
-
-  ion-segment {
-    --background: transparent;
-    border-radius: 12px;
-    padding: 4px;
-    background: rgba(255, 255, 255, 0.8);
-
-    ion-segment-button {
-      --color: #666;
-      --color-checked: #fff;
-      --background-checked: #6C63FF;
-      --indicator-color: transparent;
-      border-radius: 8px;
-      margin: 0 2px;
-      min-height: 40px;
-
-      ion-label {
-        font-weight: 500;
-        font-size: 14px;
-      }
+    &[fill="solid"] {
+      --background: #5B5FC7;
+      --color: #ffffff;
     }
   }
 }
 
-// Metrics Cards
-.metrics-cards {
-  display: flex;
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+}
 
-  .metric-card {
-    flex: 1;
-    margin: 0;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.stat-card {
+  margin: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
 
-    ion-card-content {
-      padding: 20px 16px;
+  ion-card-content {
+    padding: 20px 16px;
+  }
 
-      .metric-content {
-        text-align: center;
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
 
-        .metric-title {
-          font-size: 12px;
-          color: #666;
-          margin-bottom: 8px;
-          font-weight: 500;
-        }
+  .stat-label {
+    font-size: 13px;
+    color: #6b6b8d;
+    font-weight: 500;
+  }
 
-        .metric-value {
-          font-size: 32px;
-          font-weight: 700;
-          margin-bottom: 4px;
-        }
+  .info-icon {
+    font-size: 16px;
+    color: #d0d0d8;
+  }
 
-        .metric-unit {
-          font-size: 12px;
-          color: #666;
-          font-weight: 500;
-        }
+  .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
 
-        .metric-change {
-          font-size: 12px;
-          font-weight: 500;
-
-          &.positive {
-            color: #4CAF50;
-          }
-
-          &.negative {
-            color: #F44336;
-          }
-        }
-      }
+    &.lucid {
+      color: #5B5FC7;
     }
   }
 }
 
 // Chart Card
 .chart-card {
-  margin: 0 0 24px 0;
+  margin: 0 0 20px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  ion-card-header {
-    padding: 20px 20px 0 20px;
+  ion-card-content {
+    padding: 20px 16px;
+  }
 
-    ion-card-title {
-      font-size: 18px;
-      font-weight: 600;
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .chart-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+  }
+
+  .chart-subtitle {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+
+    .frequency-number {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .frequency-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #9999aa;
     }
   }
 
-  ion-card-content {
-    padding: 20px;
-
-    .chart-container {
-      height: 200px;
-
-      .chart-area {
-        height: 100%;
-        display: grid;
-        grid-template-columns: 44px 1fr; // Y-axis + bars
-        align-items: end;
-
-        .chart-bars {
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          width: 100%;
-          height: 100%;
-          gap: 8px;
-
-          .chart-bar-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-            flex: 1;
-
-            .chart-bar-wrapper {
-              flex: 1;
-              display: flex;
-              align-items: flex-end;
-              width: 100%;
-              justify-content: center;
-            }
-
-            .chart-bar {
-              width: 100%;
-              min-height: 4px;
-              border-radius: 4px 4px 0 0;
-              transition: all 0.3s ease;
-              max-width: 24px;
-            }
-
-            .chart-label {
-              font-size: 12px;
-              color: #999;
-              font-weight: 500;
-              margin-top: 8px;
-              text-align: center;
-            }
-          }
-        }
-
-        .chart-y-axis {
-          height: 100%;
-          display: grid;
-          grid-template-rows: repeat(5, 1fr); // 5 ticks including 0
-          align-items: center;
-          margin-right: 8px;
-
-          .chart-y-tick {
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-
-            .chart-y-label {
-              font-size: 12px;
-              color: #9ca3af; // slate-400
-              width: 36px;
-              text-align: right;
-              padding-right: 8px;
-            }
-
-            .chart-y-grid {
-              flex: 1;
-              height: 1px;
-              background: rgba(156, 163, 175, 0.3);
-            }
-          }
-        }
-      }
-    }
+  .info-icon {
+    font-size: 18px;
+    color: #d0d0d8;
   }
 }
 
-// Sentiment Card
-.sentiment-card {
+.chart-container {
+  position: relative;
+}
+
+.frequency-chart {
+  width: 100%;
+  height: 120px;
+  margin-bottom: 12px;
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+
+  span {
+    font-size: 11px;
+    color: #9999aa;
+    font-weight: 500;
+  }
+}
+
+// Keywords Card
+.keywords-card {
+  margin: 0 0 20px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+
+  ion-card-content {
+    padding: 20px 16px;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .info-icon {
+    font-size: 18px;
+    color: #d0d0d8;
+  }
+}
+
+.keywords-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.keyword-chip {
+  --background: #e8e9f3;
+  --color: #5B5FC7;
+  height: 32px;
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 13px;
   margin: 0;
+}
+
+// Dream Types Card
+.types-card {
+  margin: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-  ion-card-header {
-    padding: 20px 20px 0 20px;
-
-    ion-card-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-  }
 
   ion-card-content {
-    padding: 20px;
-
-    .sentiment-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-
-      .sentiment-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        .sentiment-emoji {
-          font-size: 24px;
-          width: 32px;
-          text-align: center;
-        }
-
-        .sentiment-progress-container {
-          flex: 1;
-
-          .sentiment-progress-bar {
-            height: 8px;
-            background: #E0E0E0;
-            border-radius: 4px;
-            overflow: hidden;
-
-            .sentiment-progress-fill {
-              height: 100%;
-              border-radius: 4px;
-              transition: width 0.3s ease;
-            }
-          }
-        }
-
-        .sentiment-percentage {
-          font-size: 14px;
-          font-weight: 600;
-          min-width: 40px;
-          text-align: right;
-        }
-      }
-    }
+    padding: 20px 16px;
   }
 }
 
-// Responsive adjustments
-@media (max-width: 480px) {
-  .statistics-container {
-    padding: 12px;
+.types-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.type-item {
+  display: grid;
+  grid-template-columns: 70px 1fr 40px;
+  align-items: center;
+  gap: 12px;
+}
+
+.type-label {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+.type-bar-container {
+  height: 8px;
+  background: #e8e9f3;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.type-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+
+  &.lucid {
+    background: #5B5FC7;
   }
 
-  .chart-container {
-    height: 200px !important;
+  &.normal {
+    background: #5B5FC7;
   }
+
+  &.nightmare {
+    background: #5B5FC7;
+  }
+}
+
+.type-percentage {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 600;
+  text-align: right;
 }

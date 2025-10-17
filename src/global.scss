@@ -25,29 +25,6 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-// dark mode by stitch
-html {
-  --color-bg: #080414;
-  --color-surface: #1a1f2c;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a5a9b5;
-  --color-accent: #a78bfa;
-  /* morado principal */
-  --color-accent-hover: #b9a6ff;
-  --color-active: #c4b5fd;
-  --color-border: #2b3040;
-  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  --primary-color: rgb(20, 13, 27);
-  --secondary-color: rgba(46, 65, 94, 0.3);
-  --background-light: #f7f6f8;
-  --background-light-med: #8216ee;
-  --background-dark: #191022;
-  --111: rgb(148 163 184 / var(1, 1));
-}
 
 // Enable dark mode by default
 html.ion-palette-dark {
