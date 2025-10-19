@@ -266,9 +266,11 @@ ion-content {
 }
 
 .fab-dream {
-  --background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
   width: 56px;
   height: 56px;
@@ -753,7 +755,7 @@ ion-searchbar.dream-searchbar {
 .topbar.ion-toolbar,
 .dream-toolbar.ion-toolbar,
 .dream-toolbar-row,
-.dream-toolbar-row>*,
+.dream-toolbar-row > *,
 ion-searchbar.dream-searchbar,
 ion-searchbar.dream-searchbar::part(container),
 ion-searchbar.dream-searchbar::part(input),
@@ -784,3 +786,74 @@ input.searchbar-input.sc-ion-searchbar-md {
 }
 
 /* --- END HEADER AND SEARCHBAR HEIGHT FIX --- */
+
+// Modo claro: Estilo de barra superior del buscador y X para destacar con fondo oscuro
+html.ion-palette-light ion-searchbar.dream-searchbar {
+  --background: #2b3040 !important;
+}
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
+  background: #2b3040 !important;
+}
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+html.ion-palette-light ion-icon[name="close"] {
+  color: #fff !important;
+}
+
+// SEARCHBAR EN MODO CLARO
+html.ion-palette-light ion-searchbar.dream-searchbar {
+  --background: #2b3040 !important;
+  --placeholder-color: #d1d5db !important;
+  --icon-color: var(--color-text-primary) !important;
+}
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
+  background: #2b3040 !important;
+}
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+// Ion Searchbar letras y lupa negras cuando está abierto en modo claro
+html.ion-palette-light ion-searchbar.dream-searchbar {
+  --background: #2b3040 !important;
+  --color: #1a1a1f !important;
+  --placeholder-color: #1a1a1f !important;
+  --icon-color: #1a1a1f !important;
+}
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
+  background: transparent !important;
+  color: #1a1a1f !important;
+}
+
+// BOTÓN X FONDO NEGRO EN MODO CLARO
+html.ion-palette-light ion-buttons[slot="end"] ion-button {
+  background: #000 !important;
+  border-radius: 50% !important;
+  padding: 8px !important;
+}
+html.ion-palette-light ion-buttons[slot="end"] ion-icon[name="close"] {
+  color: #fff !important;
+}
+// Icono de buscar (search-outline) negro en modo claro
+html.ion-palette-light .dream-toolbar-row ion-icon[name="search-outline"] {
+  color: var(--color-text-primary) !important;
+}
