@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { DreamService } from '../../shared/services/dream.service';
 import { AudioService } from '../../shared/services/audio.service';
-import { Dream } from '../../models/dream.model';
+import { Dream, OfficialTags, TagElement } from '../../models/dream.model';
 
 @Component({
   selector: 'app-add-dream',
@@ -22,6 +22,11 @@ export class AddDreamComponent implements OnInit {
   isPlayingAudio = false;
   audioPath?: string;
 
+  tags = [
+    { name: 'Lucid Dream', checked: false, canBeRemoved: false, type: OfficialTags.LUCID },
+    { name: 'Nightmare', checked: false, canBeRemoved: false, type: OfficialTags.NIGHTMARE },
+  ] as TagElement[];
+
   dreamData = {
     title: '',
     description: '',
@@ -35,14 +40,19 @@ export class AddDreamComponent implements OnInit {
     private audioService: AudioService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+
     if (this.dream) {
       this.isEditing = true;
       this.dreamData.title = this.dream.title;
       this.dreamData.description = this.dream.description || '';
-      this.dreamData.type = this.dream.type || 'good';
-      this.audioPath = this.dream.audioPath;
+      //this.dreamData.type = this.dream.type || 'good';
+      //this.audioPath = this.dream.audioPath;
       this.selectedDate = this.dream.date;
+    }
+    else {
+      const dreams = await this.dreamService.getAllDreams();
+      this.dreamData.title = 'Dream ' + (dreams.length + 1); //TODO TRANSLATE THIS DREAM
     }
   }
 
@@ -56,7 +66,7 @@ export class AddDreamComponent implements OnInit {
   }
 
   canSave(): boolean {
-    return this.dreamData.title.trim().length > 0;
+    return this.dreamData.title.trim().length > 0 && (this.dreamData.description.trim().length > 0);
   }
 
   async startRecording() {
@@ -128,8 +138,8 @@ export class AddDreamComponent implements OnInit {
         await this.dreamService.updateDream(this.dream.id, {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          type: this.dreamData.type,
-          audioPath: this.audioPath
+          //type: this.dreamData.type,
+          //audioPath: this.audioPath
         });
       } else {
         // Create new dream
@@ -137,8 +147,8 @@ export class AddDreamComponent implements OnInit {
           date: this.selectedDate,
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          type: this.dreamData.type,
-          audioPath: this.audioPath
+          //type: this.dreamData.type,
+          //audioPath: this.audioPath
         });
       }
 
@@ -163,5 +173,9 @@ export class AddDreamComponent implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  toggleTag(tag: any) {
+    tag.checked = !tag.checked;
   }
 }

@@ -3,13 +3,13 @@
 
     <!-- Period Selection -->
     <div class="period-buttons">
-      <ion-button [fill]="selectedPeriod === 'lastWeek' ? 'solid' : 'outline'" (click)="selectPeriod('lastWeek')"
+      <ion-button [fill]="selectedPeriod === 'thisWeek' ? 'solid' : 'outline'" (click)="selectPeriod('thisWeek')"
         size="small" class="period-btn">
-        Last Week
+        This Week
       </ion-button>
-      <ion-button [fill]="selectedPeriod === 'lastMonth' ? 'solid' : 'outline'" (click)="selectPeriod('lastMonth')"
+      <ion-button [fill]="selectedPeriod === 'thisMonth' ? 'solid' : 'outline'" (click)="selectPeriod('thisMonth')"
         size="small" class="period-btn">
-        Last Month
+        This Month
       </ion-button>
       <ion-button [fill]="selectedPeriod === 'allTime' ? 'solid' : 'outline'" (click)="selectPeriod('allTime')"
         size="small" class="period-btn">
@@ -49,9 +49,9 @@
             <div class="chart-subtitle">
               <span class="frequency-number">{{ stats.dreamFrequency }}</span>
               <span class="frequency-label">
-                {{ selectedPeriod === 'lastWeek' ? 'Last 7 Days' :
-                selectedPeriod === 'lastMonth' ? 'Last 30 Days' :
-                'Last 12 Months' }}
+                {{ selectedPeriod === 'thisWeek' ? 'This Week' :
+                selectedPeriod === 'thisMonth' ? 'This Month' :
+                'All Time' }}
               </span>
             </div>
           </div>
@@ -98,9 +98,10 @@
           <div *ngFor="let type of dreamTypes" class="type-item">
             <span class="type-label">{{ type.type }}</span>
             <div class="type-bar-container">
-              <div class="type-bar" [style.width.%]="type.percentage" [class]="type.type.toLowerCase()"></div>
+              <div class="type-bar" [style.width.%]="stats.totalDreams ? (type.count / stats.totalDreams * 100) : 0"
+                [class]="type.type.toLowerCase()"></div>
             </div>
-            <span class="type-percentage">{{ type.percentage }}%</span>
+            <span class="type-percentage">{{ type.count }}</span>
           </div>
         </div>
       </ion-card-content>

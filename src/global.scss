@@ -26,7 +26,9 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 //GLOBAL VARIABLES
-:root {
+:root,
+.ion-palette-dark,
+.ion-palette-light {
   /* Padding */
   --spacing-xxxs: 4px;
   --spacing-xxs: 8px;
@@ -209,11 +211,9 @@ textarea {
 }
 
 .dream-container .calendar-day.has-dreams {
-  background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   color: white;
 }
 
@@ -288,11 +288,9 @@ textarea {
 
 // Button styles
 .dream-button {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   --border-radius: 25px;
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
   --color: white;
@@ -302,11 +300,9 @@ textarea {
 }
 
 .fab-dream {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
 }
 

@@ -23,21 +23,13 @@
   </div>
 
   <div class="dreams-list" *ngIf="dreams.length > 0">
-    <ion-card 
-      *ngFor="let dream of dreams; trackBy: trackByDream"
-      class="dream-card"
-      (click)="viewDream(dream)">
+    <ion-card *ngFor="let dream of dreams; trackBy: trackByDream" class="dream-card" (click)="viewDream(dream)">
       <ion-card-content>
         <div class="dream-header">
           <h3 class="dream-title">{{ dream.title }}</h3>
           <div class="dream-icons">
-            <span class="dream-type-badge" [class.good]="getDreamType(dream) === 'good'" [class.bad]="getDreamType(dream) === 'bad'">
-              <ion-icon [name]="getDreamTypeIcon(dream)"></ion-icon>
-            </span>
-            <ion-icon 
-              *ngIf="dream.audioPath" 
-              name="volume-high" 
-              class="audio-icon">
+            <span class="dream-type-badge"></span>
+            <ion-icon name="volume-high" class="audio-icon">
             </ion-icon>
             <ion-icon name="chevron-forward" class="chevron-icon"></ion-icon>
           </div>
@@ -56,10 +48,7 @@
 
   <!-- Add Dream Button -->
   <div class="add-dream-section" *ngIf="dreams.length === 0">
-    <ion-button 
-      expand="block" 
-      class="dream-button"
-      (click)="addDream()">
+    <ion-button expand="block" class="dream-button" (click)="addDream()">
       <ion-icon name="add-circle" slot="start"></ion-icon>
       <span i18n="@@add.dream.button">Añadir Sueño</span>
     </ion-button>

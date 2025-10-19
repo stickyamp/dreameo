@@ -3,13 +3,20 @@ export interface Dream {
   date: string;       // YYYY-MM-DD
   title: string;
   description?: string;
-  audioPath?: string;
-  type: 'good' | 'bad'; // Tipo de sueño: bueno o malo
-  favorite?: boolean;
   tags?: string[];
   createdAt: string;
   updatedAt?: string;
 }
+
+export interface DreamForStatistics {
+  id: string;
+  date: Date;
+  isLucid: boolean;
+  isNightmare: boolean;
+  tags?: string[];
+  createdAt: string;
+}
+
 
 export interface DreamStatistics {
   streakDays: number;
@@ -22,8 +29,28 @@ export interface DreamsByDate {
   [date: string]: Dream[];
 }
 
+export enum DreamType {
+  LUCID,
+  NORMAL,
+  NIGHTMARE
+}
+
 export interface UserProfile {
   name: string;
   email: string;
   darkMode: boolean;
 }
+
+export enum OfficialTags {
+  REGULAR = 'Regular',
+  LUCID = 'Lucid',
+  NIGHTMARE = 'Nightmare'
+}
+
+export interface TagElement {
+  name: string,
+  checked: boolean,
+  canBeRemoved: boolean
+  type: OfficialTags
+}
+

@@ -1,6 +1,10 @@
 ion-content {
     --background: var(--color-bg);
-    --ion-color-primary: red;
+    --ion-color-primary: var(--color-accent);
+}
+
+ion-toggle {
+    --track-background-checked: var(--color-accent-hover);
 }
 
 .content-wrapper {

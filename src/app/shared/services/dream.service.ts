@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { Dream, DreamsByDate, UserProfile, DreamStatistics } from '../../models/dream.model';
+import { Dream, DreamsByDate, UserProfile, DreamStatistics, OfficialTags } from '../../models/dream.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -184,8 +184,8 @@ export class DreamService {
 
   getDreamStatistics(): DreamStatistics {
     const allDreams = this.getAllDreams();
-    const goodDreams = allDreams.filter(dream => dream.type === 'good').length;
-    const badDreams = allDreams.filter(dream => dream.type === 'bad').length;
+    const goodDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag === OfficialTags.REGULAR)).length;
+    const badDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag === OfficialTags.NIGHTMARE)).length;
     const streakDays = this.calculateStreakDays();
 
     return {

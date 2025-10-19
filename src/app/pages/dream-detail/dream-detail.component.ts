@@ -58,17 +58,17 @@ export class DreamDetailComponent implements OnInit {
     });
   }
 
-  getDreamType(): 'good' | 'bad' {
-    return this.dream.type || 'good'; // Default to 'good' for existing dreams without type
-  }
+  // getDreamType(): 'good' | 'bad' {
+  //   return this.dream.type || 'good'; // Default to 'good' for existing dreams without type
+  // }
 
-  getDreamTypeLabel(): string {
-    return this.getDreamType() === 'good' ? 'Sueño bueno' : 'Pesadilla';
-  }
+  // getDreamTypeLabel(): string {
+  //   return this.getDreamType() === 'good' ? 'Sueño bueno' : 'Pesadilla';
+  // }
 
-  getDreamTypeIcon(): string {
-    return this.getDreamType() === 'good' ? 'heart' : 'warning';
-  }
+  // getDreamTypeIcon(): string {
+  //   return this.getDreamType() === 'good' ? 'heart' : 'warning';
+  // }
 
   // async playAudio() {
   //   if (!this.dream.audioPath) return;

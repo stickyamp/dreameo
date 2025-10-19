@@ -2,6 +2,7 @@ import { Directive, HostListener, Input, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AddDreamComponent } from 'src/app/pages/add-dream/add-dream.component';
 import { DreamListComponent } from 'src/app/pages/dream-list/dream-list.component';
+import { ConfigService } from '../services/config.service';
 
 @Directive({
   selector: '[appShowDreamsList]',
@@ -11,7 +12,7 @@ import { DreamListComponent } from 'src/app/pages/dream-list/dream-list.componen
 export class ShowDreamsListDirective {
   private modalController = inject(ModalController);
 
-  constructor() { }
+  constructor(private configService: ConfigService) { }
 
   public async goToDayDreamList(date: string) {
     if (!date) {
@@ -33,6 +34,7 @@ export class ShowDreamsListDirective {
   public async addDream(selectedDate: string) {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         selectedDate: selectedDate
       }

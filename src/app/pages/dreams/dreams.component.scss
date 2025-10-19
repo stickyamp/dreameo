@@ -33,7 +33,6 @@ ion-content {
 .dreams-list {
   display: flex;
   flex-direction: column;
-  gap: 22px;
 }
 
 .month-nav {
@@ -446,51 +445,6 @@ ion-searchbar {
   --background: #444a6d !important;
   --color: #fff !important;
   background: #444a6d !important;
-}
-
-.dream-tag.Flying {
-  background: linear-gradient(90deg, #6ee7b7 0%, #3b82f6 100%) !important;
-}
-
-.dream-tag.Lucid {
-  background: linear-gradient(90deg, #a78bfa 0%, #6366f1 100%) !important;
-}
-
-.dream-tag.Work {
-  background: linear-gradient(90deg, #fde68a 0%, #f59e42 100%) !important;
-  color: #552a00 !important;
-}
-
-.dream-tag.Anxiety {
-  background: linear-gradient(90deg, #fa709a 0%, #fee140 100%) !important;
-  color: #3b0611 !important;
-}
-
-.dream-tag.Beach {
-  background: linear-gradient(90deg, #38bdf8 0%, #06d6a0 100%) !important;
-}
-
-.dream-tag.Relaxing {
-  background: linear-gradient(90deg, #34d399 0%, #22d3ee 100%) !important;
-}
-
-.dream-tag.Nightmare {
-  background: linear-gradient(90deg, #7f53ac 0%, #647dee 100%) !important;
-}
-
-.dream-tag.Animals {
-  background: linear-gradient(90deg, #fbbf24 0%, #22c55e 100%) !important;
-  color: #213200 !important;
-}
-
-.dream-tag.Romantic {
-  background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%) !important;
-  color: #3b0825 !important;
-}
-
-.dream-tag.Scary {
-  background: linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 100%) !important;
-  color: #113c7f !important;
 }
 
 // Fallback
