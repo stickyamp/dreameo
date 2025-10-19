@@ -2,18 +2,17 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { DreamService } from 'src/app/shared/services/dream.service';
-import { TooltipComponent } from 'src/app/shared/ui-elements/tooltip/tooltip/tooltip.component';
 import { Dream, DreamForStatistics, DreamType } from '../../models/dream.model';
 
 @Component({
   selector: 'app-dream-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss'],
-  imports: [IonicModule, CommonModule, TooltipComponent],
+  imports: [IonicModule, CommonModule],
   standalone: true
 })
 export class DreamStatisticsPage implements OnInit {
-  selectedPeriod: string = 'lastMonth';
+  selectedPeriod: string = 'thisMonth';
 
   stats = {
     totalDreams: 0,
@@ -23,9 +22,9 @@ export class DreamStatisticsPage implements OnInit {
 
   keywords: string[] = [];
   dreamTypes = [
-    { type: 'Lucid', percentage: 0 },
-    { type: 'Normal', percentage: 0 },
-    { type: 'Nightmare', percentage: 0 }
+    { type: 'Lucid', count: 0 },
+    { type: 'Normal', count: 0 },
+    { type: 'Nightmare', count: 0 }
   ];
 
   chartData: number[] = [];
@@ -40,7 +39,7 @@ export class DreamStatisticsPage implements OnInit {
   ngOnInit() {
     // Replace this with your actual dream service call
     this.loadDreams();
-    this.selectPeriod('lastMonth');
+    this.selectPeriod('thisMonth');
   }
 
   selectPeriod(period: string) {
@@ -50,18 +49,14 @@ export class DreamStatisticsPage implements OnInit {
   }
 
   private loadDreams() {
-    // MOCK DATA - Replace this with your actual service call
-    // Example: this.dreamService.getAllDreams().subscribe(dreams => { this.allDreams = dreams; });
-
-    //this.allDreams = this.generateMockDreams();
     this.allDreams = this.dreamService.getAllDreams().map(d => {
       return {
         id: d.id,
-        date: d.createdAt,
-        isLucid: d.tags?.some(d => d === DreamType.LUCID.toString()),
-        isNightmare: d.tags?.some(d => d === DreamType.NIGHTMARE.toString()),
+        date: new Date(d.date), // This is now ALWAYS a Date object
+        isLucid: d.tags?.some(t => t === DreamType.LUCID.toString()),
+        isNightmare: d.tags?.some(t => t === DreamType.NIGHTMARE.toString()),
         tags: d.tags,
-      } as unknown as DreamForStatistics
+      } as unknown as DreamForStatistics;
     });
   }
 
@@ -72,15 +67,25 @@ export class DreamStatisticsPage implements OnInit {
 
     // Determine date range
     switch (period) {
-      case 'lastWeek':
-        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        filteredDreams = this.allDreams.filter(d => d.date >= startDate);
-        this.prepareWeeklyData(filteredDreams, startDate);
+      case 'thisWeek':
+        {
+          // Get Monday of this week
+          startDate = new Date(now);
+          const day = startDate.getDay();
+          const diff = startDate.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
+          startDate.setDate(diff);
+          startDate.setHours(0, 0, 0, 0);
+          filteredDreams = this.allDreams.filter(d => d.date >= startDate);
+          this.prepareWeeklyData(filteredDreams, startDate);
+        }
         break;
-      case 'lastMonth':
-        startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-        filteredDreams = this.allDreams.filter(d => d.date >= startDate);
-        this.prepareMonthlyData(filteredDreams, startDate);
+      case 'thisMonth':
+        {
+          startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+          startDate.setHours(0, 0, 0, 0);
+          filteredDreams = this.allDreams.filter(d => d.date >= startDate);
+          this.prepareMonthlyData(filteredDreams, startDate);
+        }
         break;
       case 'allTime':
         filteredDreams = this.allDreams;
@@ -97,14 +102,14 @@ export class DreamStatisticsPage implements OnInit {
 
     // Update dream types percentages
     const lucidCount = filteredDreams.filter(d => d.tags?.some(d => d === DreamType.LUCID.toString())).length;
-    const normalCount = filteredDreams.filter(d => !d.tags?.includes(DreamType.NIGHTMARE.toString())).length;
+    const normalCount = filteredDreams.filter(d => !d.tags?.includes(DreamType.NIGHTMARE.toString()) && !d.tags?.some(t => t === DreamType.LUCID.toString())).length;
     const nightmareCount = filteredDreams.filter(d => d.tags?.includes(DreamType.NIGHTMARE.toString())).length;
     const total = filteredDreams.length || 1;
 
     this.dreamTypes = [
-      { type: 'Lucid', percentage: Math.round((lucidCount / total) * 100) },
-      { type: 'Normal', percentage: Math.round((normalCount / total) * 100) },
-      { type: 'Nightmare', percentage: Math.round((nightmareCount / total) * 100) }
+      { type: 'Lucid', count: lucidCount },
+      { type: 'Normal', count: normalCount },
+      { type: 'Nightmare', count: nightmareCount }
     ];
 
     // Update keywords
@@ -123,13 +128,22 @@ export class DreamStatisticsPage implements OnInit {
   }
 
   private prepareMonthlyData(dreams: DreamForStatistics[], startDate: Date) {
-    this.chartLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-    this.chartData = new Array(4).fill(0);
+    // Calculate the number of weeks in the current month
+    const now = new Date();
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const daysInMonth = lastDayOfMonth.getDate();
+    const numberOfWeeks = Math.ceil(daysInMonth / 7);
+
+    // Generate date range labels for each week
+    this.chartLabels = this.generateWeeklyDateLabels(startDate, numberOfWeeks);
+    this.chartData = new Array(numberOfWeeks).fill(0);
 
     dreams.forEach(dream => {
       const daysDiff = Math.floor((dream.date.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
-      const weekIndex = Math.min(Math.floor(daysDiff / 7), 3);
-      this.chartData[weekIndex]++;
+      const weekIndex = Math.min(Math.floor(daysDiff / 7), numberOfWeeks - 1);
+      if (weekIndex >= 0 && weekIndex < numberOfWeeks) {
+        this.chartData[weekIndex]++;
+      }
     });
   }
 
@@ -176,6 +190,32 @@ export class DreamStatisticsPage implements OnInit {
     this.chartPath = path;
   }
 
+  private generateWeeklyDateLabels(startDate: Date, numberOfWeeks: number): string[] {
+    const labels: string[] = [];
+
+    for (let week = 0; week < numberOfWeeks; week++) {
+      const weekStart = new Date(startDate);
+      weekStart.setDate(startDate.getDate() + (week * 7));
+
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+
+      // Handle end of month case
+      const now = new Date();
+      const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      if (weekEnd > lastDayOfMonth) {
+        weekEnd.setDate(lastDayOfMonth.getDate());
+      }
+
+      const startDay = weekStart.getDate().toString().padStart(2, '0');
+      const endDay = weekEnd.getDate().toString().padStart(2, '0');
+
+      labels.push(`${startDay}-${endDay}`);
+    }
+
+    return labels;
+  }
+
   private updateKeywords(dreams: DreamForStatistics[]) {
     const keywordCount = new Map<string, number>();
 
@@ -189,7 +229,7 @@ export class DreamStatisticsPage implements OnInit {
 
     this.keywords = Array.from(keywordCount.entries())
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
+      .slice(0, 3)
       .map(entry => entry[0]);
   }
 
