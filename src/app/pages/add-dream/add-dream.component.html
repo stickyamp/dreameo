@@ -27,12 +27,12 @@
       <div class="tags-section">
         <div class="tags-title">Tags</div>
         <div class="tags-chips">
-          <ion-chip *ngFor="let tag of tags" [color]="tag.color" (click)="toggleTag(tag)">
+          <ion-chip *ngFor="let tag of tags" (click)="toggleTag(tag)">
             <ion-icon [name]="tag.checked ? 'checkmark-circle-outline' : 'ellipse-outline'" class="tag-check-icon"
               aria-hidden="true"></ion-icon>
             {{ tag.name }}
           </ion-chip>
-          <ion-chip class="add-tag" outline="true">
+          <ion-chip class="add-tag" outline="true" id="open-modal">
             <ion-icon name="add" class="add-tag-icon"></ion-icon>
             Add Tag
           </ion-chip>

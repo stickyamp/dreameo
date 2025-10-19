@@ -47,3 +47,10 @@ export enum OfficialTags {
   NIGHTMARE = 'Nightmare'
 }
 
+export interface TagElement {
+  name: string,
+  checked: boolean,
+  canBeRemoved: boolean
+  type: OfficialTags
+}
+

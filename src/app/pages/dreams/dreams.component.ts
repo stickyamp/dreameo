@@ -57,7 +57,6 @@ export class DreamsComponent implements OnInit {
 
   ngOnInit() {
     this.loadRecentDreams();
-    this.initializeMockTags();
 
     // Subscribe to dreams changes
     this.dreamService.dreams$.subscribe(() => {
@@ -282,44 +281,6 @@ export class DreamsComponent implements OnInit {
   //   await this.dreamService.updateDream(dream.id, { favorite: !dream.favorite });
   //   this.loadRecentDreams();
   // }
-
-  private initializeMockTags() {
-    const allDreams = this.dreamService.getAllDreams();
-    const tagOptions = [
-      'Lucid dream', 'Nightmare', 'Chasing', 'Flying', 'Water', 'Animals',
-      'Family', 'Work', 'Adventure', 'Romantic', 'Scary', 'Funny', 'Vivid'
-    ];
-
-    // Add mock tags to dreams that don't have them
-    allDreams.forEach(dream => {
-      if (!dream.tags || dream.tags.length === 0) {
-        const numTags = Math.floor(Math.random() * 3) + 1; // 1-3 tags
-        const selectedTags = [];
-        const availableTags = [...tagOptions];
-
-        for (let i = 0; i < numTags; i++) {
-          const randomIndex = Math.floor(Math.random() * availableTags.length);
-          selectedTags.push(availableTags.splice(randomIndex, 1)[0]);
-        }
-
-        this.dreamService.updateDream(dream.id, { tags: selectedTags });
-      }
-    });
-  }
-
-  getTagClass(tag: string): string {
-    // Normalize tag to one-word (remove spaces, capitalize first letter for SCSS match)
-    const normalized = tag.replace(/\s+/g, '');
-    // List your SCSS-defined tag classes:
-    const tagClassList = [
-      'Flying', 'Lucid', 'Work', 'Anxiety', 'Beach', 'Relaxing',
-      'Nightmare', 'Animals', 'Romantic', 'Scary'
-    ];
-    let match = tagClassList.find(sc => normalized.toLowerCase().includes(sc.toLowerCase()));
-    if (match) return match;
-    // fallback
-    return '';
-  }
 }
 
 interface DreamGroup {

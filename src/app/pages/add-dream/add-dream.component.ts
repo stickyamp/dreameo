@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { DreamService } from '../../shared/services/dream.service';
 import { AudioService } from '../../shared/services/audio.service';
-import { Dream } from '../../models/dream.model';
+import { Dream, OfficialTags, TagElement } from '../../models/dream.model';
 
 @Component({
   selector: 'app-add-dream',
@@ -23,10 +23,9 @@ export class AddDreamComponent implements OnInit {
   audioPath?: string;
 
   tags = [
-    { name: 'Lucid Dream', color: 'dark', checked: false },
-    { name: 'Nightmare', color: 'warning', checked: false },
-    { name: 'Recurring Dream', color: 'dark', checked: false },
-  ];
+    { name: 'Lucid Dream', checked: false, canBeRemoved: false, type: OfficialTags.LUCID },
+    { name: 'Nightmare', checked: false, canBeRemoved: false, type: OfficialTags.NIGHTMARE },
+  ] as TagElement[];
 
   dreamData = {
     title: '',
@@ -67,7 +66,7 @@ export class AddDreamComponent implements OnInit {
   }
 
   canSave(): boolean {
-    return this.dreamData.title.trim().length > 0;
+    return this.dreamData.title.trim().length > 0 && (this.dreamData.description.trim().length > 0);
   }
 
   async startRecording() {

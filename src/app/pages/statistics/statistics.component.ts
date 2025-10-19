@@ -37,7 +37,6 @@ export class DreamStatisticsPage implements OnInit {
   constructor(private dreamService: DreamService) { }
 
   ngOnInit() {
-    // Replace this with your actual dream service call
     this.loadDreams();
     this.selectPeriod('thisMonth');
   }
@@ -232,41 +231,4 @@ export class DreamStatisticsPage implements OnInit {
       .slice(0, 3)
       .map(entry => entry[0]);
   }
-
-  // MOCK DATA GENERATOR - Remove this and use your actual service
-  // private generateMockDreams(): DreamForStatistics[] {
-  //   const dreams: DreamForStatistics[] = [];
-  //   const now = new Date();
-  //   const types: (DreamType.LUCID | DreamType.NORMAL | DreamType.NIGHTMARE)[] = [DreamType.LUCID, DreamType.NORMAL, DreamType.NIGHTMARE];
-  //   const allKeywords = ['Flying', 'Water', 'School', 'Friend', 'Falling', 'Family', 'Animal', 'Car', 'House', 'Work'];
-
-  //   // Generate dreams for the last 90 days
-  //   for (let i = 0; i < 90; i++) {
-  //     const dreamDate = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-
-  //     // Random chance of having a dream each day (70% chance)
-  //     if (Math.random() > 0.3) {
-  //       const type = types[Math.floor(Math.random() * types.length)];
-  //       const numKeywords = Math.floor(Math.random() * 4) + 1;
-  //       const dreamKeywords: string[] = [];
-
-  //       for (let j = 0; j < numKeywords; j++) {
-  //         const keyword = allKeywords[Math.floor(Math.random() * allKeywords.length)];
-  //         if (!dreamKeywords.includes(keyword)) {
-  //           dreamKeywords.push(keyword);
-  //         }
-  //       }
-
-  //       dreams.push({
-  //         id: `dream-${i}`,
-  //         date: dreamDate,
-  //         isLucid: type === DreamType.LUCID,
-  //         type: type,
-  //         keywords: dreamKeywords
-  //       });
-  //     }
-  //   }
-
-  //   return dreams;
-  // }
 }

@@ -47,7 +47,7 @@
             <div class="dream-title">{{ dream.title }}</div>
             <div class="dream-desc">{{ getTruncatedDescription(dream.description || '') }}</div>
             <div class="dream-tags" *ngIf="dream.tags?.length">
-              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag" [ngClass]="getTagClass(tag)">{{ tag
+              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag">{{ tag
                 }}</ion-chip>
             </div>
           </div>
