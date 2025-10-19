@@ -54,13 +54,13 @@ export class DreamListComponent implements OnInit {
     return description;
   }
 
-  getDreamType(dream: Dream): 'good' | 'bad' {
-    return dream.type || 'good'; // Default to 'good' for existing dreams without type
-  }
+  // getDreamType(dream: Dream): 'good' | 'bad' {
+  //   return dream.type || 'good'; // Default to 'good' for existing dreams without type
+  // }
 
-  getDreamTypeIcon(dream: Dream): string {
-    return this.getDreamType(dream) === 'good' ? 'heart' : 'warning';
-  }
+  // getDreamTypeIcon(dream: Dream): string {
+  //   return this.getDreamType(dream) === 'good' ? 'heart' : 'warning';
+  // }
 
   async addDream() {
     const modal = await this.modalController.create({

@@ -33,7 +33,8 @@ export class ProfileComponent implements OnInit {
     private configService: ConfigService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.darkMode = await this.configService.isDarkMode();
   }
 
   goBack(): void {

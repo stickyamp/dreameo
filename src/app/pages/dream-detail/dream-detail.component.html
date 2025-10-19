@@ -25,9 +25,9 @@
       <div class="dream-meta">
         <span class="dream-date">{{ getFormattedDate() }}</span>
         <span class="dream-time">{{ getFormattedTime() }}</span>
-        <span class="dream-type" [class.good]="getDreamType() === 'good'" [class.bad]="getDreamType() === 'bad'">
-          <ion-icon [name]="getDreamTypeIcon()"></ion-icon>
-          {{ getDreamTypeLabel() }}
+        <span class="dream-type">
+          <ion-icon [name]="11"></ion-icon>
+          {{ 111 }}
         </span>
       </div>
     </div>
@@ -46,7 +46,7 @@
       </div>
 
       <!-- Audio Section -->
-      <div *ngIf="dream.audioPath" class="audio-section">
+      <div class="audio-section">
         <h3 class="section-title">
           <ion-icon name="volume-high" class="section-icon"></ion-icon>
           <span i18n="@@add.dream.voice.title">Grabación de Voz</span>
@@ -62,7 +62,7 @@
       </div>
 
       <!-- No Content Message -->
-      <div *ngIf="!dream.description && !dream.audioPath" class="no-content">
+      <div class="no-content">
         <ion-icon name="moon" class="empty-icon"></ion-icon>
         <p i18n="@@dream.detail.no.description">Este sueño no tiene descripción ni grabación de voz</p>
         <ion-button (click)="editDream()" fill="outline" class="add-content-button">

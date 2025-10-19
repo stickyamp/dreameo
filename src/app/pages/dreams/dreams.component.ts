@@ -179,13 +179,13 @@ export class DreamsComponent implements OnInit {
     return description;
   }
 
-  getDreamType(dream: Dream): 'good' | 'bad' {
-    return dream.type || 'good'; // Default to 'good' for existing dreams without type
-  }
+  // getDreamType(dream: Dream): 'good' | 'bad' {
+  //   return dream.type || 'good'; // Default to 'good' for existing dreams without type
+  // }
 
-  getDreamTypeIcon(dream: Dream): string {
-    return this.getDreamType(dream) === 'good' ? 'heart' : 'warning';
-  }
+  // getDreamTypeIcon(dream: Dream): string {
+  //   return this.getDreamType(dream) === 'good' ? 'heart' : 'warning';
+  // }
 
   getDisplayedDreams(dreams: Dream[]): Dream[] {
     return dreams.slice(0, 5); // Show maximum 5 dreams
@@ -274,14 +274,14 @@ export class DreamsComponent implements OnInit {
     return label.charAt(0).toUpperCase() + label.slice(1);
   }
 
-  async toggleFavorite(dream: Dream, event?: Event) {
-    if (event) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-    await this.dreamService.updateDream(dream.id, { favorite: !dream.favorite });
-    this.loadRecentDreams();
-  }
+  // async toggleFavorite(dream: Dream, event?: Event) {
+  //   if (event) {
+  //     event.stopPropagation();
+  //     event.preventDefault();
+  //   }
+  //   await this.dreamService.updateDream(dream.id, { favorite: !dream.favorite });
+  //   this.loadRecentDreams();
+  // }
 
   private initializeMockTags() {
     const allDreams = this.dreamService.getAllDreams();

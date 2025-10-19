@@ -5,33 +5,38 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>New Dream</ion-title>
+    <ion-title>{{ selectedDate | date:'MMM d, yyyy' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="saveDream()" [disabled]="!canSave()" class="save-btn-header">
         <span style="color: #ffd600; font-weight: 600;">Save</span>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+    <div class="form-title-wrapper">
+      <ion-input [(ngModel)]="dreamData.title" placeholder="Dream Title" class="title-input"
+        maxlength="100"></ion-input>
+    </div>
+  </ion-toolbar>
 </ion-header>
 <ion-content class="add-dream-content">
   <div class="dream-form">
-    <ion-input [(ngModel)]="dreamData.title" placeholder="Dream Title" class="title-input" maxlength="100"></ion-input>
-    <ion-textarea autoGrow="true" [(ngModel)]="dreamData.description" placeholder="Describe your dream..." rows="4"
-      maxlength="2000" class="desc-input"></ion-textarea>
-    <div class="dream-date-row">
-      <ion-icon name="calendar-outline"></ion-icon>
-      <span>{{ selectedDate ? (selectedDate | date: 'MMMM d, y - h:mm a') : '' }}</span>
-    </div>
-    <div class="tags-section">
-      <div class="tags-title">Tags</div>
-      <div class="tags-chips">
-        <ion-chip color="dark">Lucid Dream</ion-chip>
-        <ion-chip color="warning" outline="false">Nightmare</ion-chip>
-        <ion-chip>Recurring Dream</ion-chip>
-        <ion-chip class="add-tag" outline="true">
-          <ion-icon name="add" class="add-tag-icon"></ion-icon>
-          Add Tag
-        </ion-chip>
+    <div class="form-body-wrapper">
+      <ion-textarea autoGrow="true" [(ngModel)]="dreamData.description" placeholder="Describe your dream..." rows="16"
+        maxlength="2000" class="desc-input"></ion-textarea>
+      <div class="tags-section">
+        <div class="tags-title">Tags</div>
+        <div class="tags-chips">
+          <ion-chip *ngFor="let tag of tags" [color]="tag.color" (click)="toggleTag(tag)">
+            <ion-icon [name]="tag.checked ? 'checkmark-circle-outline' : 'ellipse-outline'" class="tag-check-icon"
+              aria-hidden="true"></ion-icon>
+            {{ tag.name }}
+          </ion-chip>
+          <ion-chip class="add-tag" outline="true">
+            <ion-icon name="add" class="add-tag-icon"></ion-icon>
+            Add Tag
+          </ion-chip>
+        </div>
       </div>
     </div>
   </div>
