@@ -1,7 +1,6 @@
 import { Directive, HostListener, Input, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AddDreamComponent } from 'src/app/pages/add-dream/add-dream.component';
-import { DreamListComponent } from 'src/app/pages/dream-list/dream-list.component';
 import { ConfigService } from '../services/config.service';
 
 @Directive({
@@ -20,6 +19,10 @@ export class ShowDreamsListDirective {
       return;
     }
     console.log(date, 'aaa');
+
+    // Dynamically import DreamListComponent to avoid circular dependency
+    const { DreamListComponent } = await import('src/app/pages/dream-list/dream-list.component');
+
     const modal = await this.modalController.create({
       component: DreamListComponent,
       componentProps: {

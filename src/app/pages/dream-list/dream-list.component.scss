@@ -1,122 +1,147 @@
-// Fondo para modo claro usando la variable de la paleta global
-
 .ion-page,
 ion-content {
   --background: var(--color-surface);
 }
 
+.dreams-container {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 150px;
+  margin-top: 20px;
+}
+
 .dreams-header {
   text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dreams-header h2 {
   color: var(--color-text-primary);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
 
-  h2 {
-    margin: 0 0 8px 0;
-    font-size: 24px;
-    font-weight: 600;
-  }
-
-  .no-dreams-text {
-    opacity: 0.7;
-    font-size: 16px;
-    margin: 0;
-  }
+.dreams-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  margin: 0;
 }
 
 .dreams-list {
-  padding: 0 16px 16px;
-}
-
-.dream-card {
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--color-border);
-  margin-bottom: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
-  }
-
-  ion-card-content {
-  }
-}
-
-.dream-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
+  flex-direction: column;
+}
+
+.no-dreams-text {
+  opacity: 0.7;
+  font-size: 16px;
+  margin: 0;
+}
+
+// DREAM CARD MODERN LAYOUT
+.dream-row {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  gap: 10px;
+}
+
+.dream-date-col {
+  min-width: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0px;
+  /* Pull left visually, away from card */
+  padding-top: 0;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.dream-card.modern-card {
+  max-width: 95vw;
+  width: 100%;
+  min-width: 0;
+  height: auto !important;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px 0 rgba(20, 15, 39, 0.18);
+  margin-bottom: 22px;
+  margin-right: 10px;
+  /* restored margin */
+  transition: background 0.2s;
+  cursor: pointer;
+  background: var(--color-bg-content);
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: visible;
+}
+
+.date-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: var(--color-text-secondary);
+  opacity: 0.67;
+  text-transform: uppercase;
+}
+
+.date-day {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-top: 0;
+}
+
+.dream-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .dream-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   color: var(--color-text-primary);
-  flex: 1;
+  word-break: break-word;
 }
 
-.dream-icons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 12px;
-}
-
-.dream-type-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  font-size: 12px;
-
-  &.good {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-  }
-
-  &.bad {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-    color: white;
-  }
-
-  ion-icon {
-    font-size: 12px;
-  }
-}
-
-.audio-icon {
-  color: var(--ion-color-primary);
-  font-size: 18px;
-}
-
-.chevron-icon {
+.dream-desc {
   color: var(--color-text-secondary);
-  font-size: 16px;
-}
-
-.dream-description {
-  color: var(--color-text-secondary);
-  margin: 0 0 12px 0;
   font-size: 14px;
   line-height: 1.4;
 }
 
-.dream-meta {
+.dream-tags {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
 }
 
-.dream-time {
-  font-size: 12px;
-  color: var(--color-text-secondary);
+.dream-tags ion-chip.dream-tag {
+  --background: #ffd60a !important;
+  --color: #ffd60a !important;
+  --border-width: 1px;
+  --border-style: solid;
+  font-size: 11px;
+  height: 24px;
+  font-weight: 500;
+  background: #ffe87744 !important;
 }
 
 .add-dream-section {
   padding: 20px;
   text-align: center;
+}
+
+.menu-add {
+  --background: var(--menu-add-button);
+  --color: var(--color-text-primary);
 }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="dream-toolbar">
-    <ion-title i18n="@@dream.list.title">Sueños</ion-title>
+    <ion-title i18n="@@dream.list.title">{{getFormattedDate()}} </ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
         <ion-icon name="arrow-back"></ion-icon>
@@ -14,43 +14,49 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="dream-container">
-  <div class="dreams-header">
-    <h2>{{ getFormattedDate() }}</h2>
-    <p *ngIf="dreams.length === 0" class="no-dreams-text" i18n="@@dream.list.no.dreams">
-      No hay sueños registrados para este día
-    </p>
-  </div>
-
-  <div class="dreams-list" *ngIf="dreams.length > 0">
-    <ion-card *ngFor="let dream of dreams; trackBy: trackByDream" class="dream-card" (click)="viewDream(dream)">
-      <ion-card-content>
-        <div class="dream-header">
-          <h3 class="dream-title">{{ dream.title }}</h3>
-          <div class="dream-icons">
-            <span class="dream-type-badge"></span>
-            <ion-icon name="volume-high" class="audio-icon">
-            </ion-icon>
-            <ion-icon name="chevron-forward" class="chevron-icon"></ion-icon>
+<ion-content [fullscreen]="true" class="dream-container">
+  <div class="dreams-container">
+    <div class="dreams-list" *ngIf="dreams.length > 0">
+      <div class="dream-row" *ngFor="let dream of dreams; trackBy: trackByDream">
+        <div class="dream-date-col">
+          <div class="date-label">{{ (dream.date | date:'MMM') | uppercase }}</div>
+          <div class="date-day">{{ (dream.date | date:'dd') }}</div>
+        </div>
+        <div class="dream-card modern-card" (click)="viewDream(dream)">
+          <div class="dream-main">
+            <div class="dream-title">{{ dream.title }}</div>
+            <div class="dream-desc">{{ getTruncatedDescription(dream.description || '') }}</div>
+            <div class="dream-tags" *ngIf="dream.tags?.length">
+              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag">{{ tag }}</ion-chip>
+            </div>
           </div>
         </div>
-        <p class="dream-description" *ngIf="dream.description">
-          {{ getTruncatedDescription(dream.description) }}
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="dreams.length === 0">
+      <div class="dreams-header">
+        <h2>{{ getFormattedDate() }}</h2>
+        <p class="no-dreams-text" i18n="@@dream.list.no.dreams">
+          No hay sueños registrados para este día
         </p>
-        <div class="dream-meta">
-          <span class="dream-time">
-            {{ getFormattedTime(dream.createdAt) }}
-          </span>
-        </div>
-      </ion-card-content>
-    </ion-card>
+      </div>
+      <div class="add-dream-section">
+        <ion-button expand="block" class="dream-button" (click)="addDream()">
+          <ion-icon name="add-circle" slot="start"></ion-icon>
+          <span i18n="@@add.dream.button">Añadir Sueño</span>
+        </ion-button>
+      </div>
+    </div>
   </div>
 
-  <!-- Add Dream Button -->
-  <div class="add-dream-section" *ngIf="dreams.length === 0">
-    <ion-button expand="block" class="dream-button" (click)="addDream()">
-      <ion-icon name="add-circle" slot="start"></ion-icon>
-      <span i18n="@@add.dream.button">Añadir Sueño</span>
-    </ion-button>
-  </div>
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="center" class="fab-center">
+  <ion-fab-button class="menu-add" (click)="openAddDream()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<div id="add-dream-modal" #modalOpener="appShowDreamsList" appShowDreamsList></div>

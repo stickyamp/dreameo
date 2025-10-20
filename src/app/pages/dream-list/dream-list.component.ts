@@ -1,21 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { DreamService } from '../../shared/services/dream.service';
 import { Dream } from '../../models/dream.model';
 import { AddDreamComponent } from '../add-dream/add-dream.component';
 import { DreamDetailComponent } from '../dream-detail/dream-detail.component';
+import { ShowDreamsListDirective } from 'src/app/shared/directives/add-dream-open-modal.directive';
 
 @Component({
   selector: 'app-dream-list',
   templateUrl: './dream-list.component.html',
   styleUrls: ['./dream-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule, ShowDreamsListDirective]
 })
 export class DreamListComponent implements OnInit {
   @Input() selectedDate!: string;
   dreams: Dream[] = [];
+
+  @ViewChild('modalOpener') modalOpener!: ShowDreamsListDirective;
+
 
   constructor(
     private dreamService: DreamService,
@@ -102,5 +106,9 @@ export class DreamListComponent implements OnInit {
 
   trackByDream(index: number, dream: Dream): string {
     return dream.id;
+  }
+
+  openAddDream() {
+    this.modalOpener.addDream(this.selectedDate);
   }
 }
