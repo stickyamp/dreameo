@@ -44,6 +44,10 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
+      },
+      {
+        path: 'test',
+        loadComponent: () => import('../app/shared/ui-elements/no-dreams-splash.component').then(m => m.NoDreamsComponent)
       }
     ]
   }

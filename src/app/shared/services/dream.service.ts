@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { Dream, DreamsByDate, UserProfile, DreamStatistics, OfficialTags } from '../../models/dream.model';
+import { Dream, DreamsByDate, UserProfile, DreamStatistics, OfficialTags, TagElement, TagModel } from '../../models/dream.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ToastLevelEnum, ToastNotifierService } from './toast-notifier';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DreamService {
   private readonly DREAMS_KEY = 'dreams';
+  private readonly TAGS_KEY = 'tags';
   private readonly USER_PROFILE_KEY = 'user_profile';
+  private readonly MAX_ALLOWED_TAGS = 10;
 
   private dreamsSubject = new BehaviorSubject<DreamsByDate>({});
   public dreams$ = this.dreamsSubject.asObservable();
+
+  private tagsSubject = new BehaviorSubject<TagModel[]>([]);
+  public tags$ = this.tagsSubject.asObservable();
 
   private userProfileSubject = new BehaviorSubject<UserProfile>({
     name: 'Lucía',
@@ -20,8 +26,9 @@ export class DreamService {
   });
   public userProfile$ = this.userProfileSubject.asObservable();
 
-  constructor() {
+  constructor(private toastNotifierService: ToastNotifierService) {
     this.loadDreams().catch(err => console.error('Error loading dreams:', err));
+    this.loadTags().catch(err => console.error('Error loading tags:', err));
     this.loadUserProfile().catch(err => console.error('Error loading profile:', err));
   }
 
@@ -251,5 +258,73 @@ export class DreamService {
 
   private generateId(): string {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  }
+
+
+  public async addTag(tagName: string) {
+    const newTag: TagModel = {
+      id: this.generateId(),
+      name: tagName
+    };
+
+    const currentTags = this.tagsSubject.value;
+
+    if (currentTags.length > this.MAX_ALLOWED_TAGS) {
+      this.toastNotifierService.presentToast("Max number of tags reached.", ToastLevelEnum.ERROR, "bottom");
+      return;
+    }
+
+    if (currentTags.some(t => t.name == newTag.name)) {
+      this.toastNotifierService.presentToast("Tag already exist", ToastLevelEnum.ERROR, "bottom");
+      return;
+    }
+
+    currentTags.push(newTag);
+    await this.saveTags(currentTags);
+
+    return newTag;
+  }
+
+  private async saveTags(tags: TagModel[]): Promise<void> {
+    try {
+      await Preferences.set({
+        key: this.TAGS_KEY,
+        value: JSON.stringify(tags)
+      });
+      this.tagsSubject.next(tags);
+    } catch (error) {
+      console.error('Error saving tags:', error);
+    }
+  }
+
+  private async loadTags(): Promise<void> {
+    try {
+      const { value } = await Preferences.get({ key: this.TAGS_KEY });
+      if (value) {
+        const tags = JSON.parse(value) as TagModel[];
+        console.log("manuXX tags", tags);
+        this.tagsSubject.next(tags);
+      }
+    } catch (error) {
+      console.error('Error loading tags:', error);
+    }
+  }
+
+  getAllTags(): TagModel[] {
+    const tags = this.tagsSubject.value;
+    return tags;
+  }
+
+  async deleteTag(tagName: string): Promise<boolean> {
+    const currentTags = this.tagsSubject.value;
+
+    if (!currentTags.find(ct => ct.name == tagName)) {
+      return false;
+    }
+
+    const filteredTags = currentTags.filter(ct => ct.name != tagName);
+
+    await this.saveTags(filteredTags);
+    return true;
   }
 }

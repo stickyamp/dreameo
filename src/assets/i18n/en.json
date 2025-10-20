@@ -1,0 +1,13 @@
+{
+    "DREAMEO": {
+        "PAGE": {
+            "DREAM_LIST": {}
+        },
+        "SHARED": {
+            "NO_DREAM_MESSAGE": {
+                "TITLE": "No Dreams Yet",
+                "BODY": "EEEE"
+            }
+        }
+    }
+}

@@ -54,3 +54,8 @@ export interface TagElement {
   type: OfficialTags
 }
 
+export interface TagModel {
+  name: string,
+  id: string
+}
+

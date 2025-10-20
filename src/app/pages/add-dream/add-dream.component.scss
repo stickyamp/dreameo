@@ -8,6 +8,10 @@ ion-textarea {
   --highlight-color: none !important
 }
 
+ion-toolbar {
+  --background: red;
+}
+
 .dream-toolbar {
   --background: var(--color-surface);
   color: var(--color-text-primary);
@@ -112,7 +116,7 @@ ion-chip[color="warning"] {
 }
 
 .tag-check-icon {
-  font-size: 1.5em;
+  font-size: 2em;
   margin-right: var(--spacing-xxxs);
   margin-left: 0;
   color: inherit;
@@ -121,4 +125,22 @@ ion-chip[color="warning"] {
 
 .tags-chips ion-chip {
   cursor: pointer;
+}
+
+.add-tag-options {
+  margin-left: var(--spacing-xxs);
+  display: flex;
+  flex-direction: row;
+}
+
+.tag-check-icon-first {
+  margin-right: var(--spacing-xs);
+}
+
+.add-tag-input {
+  min-height: unset;
+}
+
+.tag-chip {
+  padding: 16px;
 }

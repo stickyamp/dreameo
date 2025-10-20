@@ -5,13 +5,14 @@ import { DreamService } from '../../shared/services/dream.service';
 import { Dream } from '../../models/dream.model';
 import { DreamDetailComponent } from '../dream-detail/dream-detail.component';
 import { AddDreamComponent } from '../add-dream/add-dream.component';
+import { NoDreamsComponent } from 'src/app/shared/ui-elements/no-dreams-splash.component';
 
 @Component({
   selector: 'app-dreams',
   templateUrl: './dreams.component.html',
   styleUrls: ['./dreams.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule, NoDreamsComponent]
 })
 export class DreamsComponent implements OnInit {
   recentDreams: Dream[] = [];

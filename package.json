@@ -39,6 +39,8 @@
     "@ionic/angular": "^8.7.6",
     "@ionic/core": "^8.7.6",
     "@ionic/pwa-elements": "^3.3.0",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
     "capacitor-voice-recorder": "^7.0.6",
     "firebase": "^10.14.1",
     "ionicons": "^7.4.0",

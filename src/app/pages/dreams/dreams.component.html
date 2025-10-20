@@ -57,13 +57,14 @@
 
     <!-- Empty State -->
     <div class="empty-state" *ngIf="recentDreams.length === 0">
-      <div class="empty-icon">🌙</div>
+      <!-- <div class="empty-icon">🌙</div>
       <h3 i18n="@@dreams.no.dreams">No hay sueños registrados</h3>
       <p i18n="@@dreams.no.dreams.description">Comienza registrando tu primer sueño</p>
       <ion-button class="dream-button" (click)="addDream()">
         <ion-icon name="add-circle" slot="start"></ion-icon>
         Añadir Sueño
-      </ion-button>
+      </ion-button> -->
+      <app-no-dreams></app-no-dreams>
     </div>
   </div>
 </ion-content>

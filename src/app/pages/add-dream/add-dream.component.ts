@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { DreamService } from '../../shared/services/dream.service';
 import { AudioService } from '../../shared/services/audio.service';
-import { Dream, OfficialTags, TagElement } from '../../models/dream.model';
+import { Dream, OfficialTags, TagElement, TagModel } from '../../models/dream.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ToastNotifierService } from '../../shared/services/toast-notifier';
 
 @Component({
   selector: 'app-add-dream',
@@ -21,12 +23,16 @@ export class AddDreamComponent implements OnInit {
   isRecording = false;
   isPlayingAudio = false;
   audioPath?: string;
+  isAddingTag = false;
+  newTagText = "";
+  isSaveDisabled = false;
 
-  tags = [
+  baseTags = [
     { name: 'Lucid Dream', checked: false, canBeRemoved: false, type: OfficialTags.LUCID },
     { name: 'Nightmare', checked: false, canBeRemoved: false, type: OfficialTags.NIGHTMARE },
   ] as TagElement[];
 
+  tags: TagElement[] = [];
   dreamData = {
     title: '',
     description: '',
@@ -37,7 +43,9 @@ export class AddDreamComponent implements OnInit {
     private modalController: ModalController,
     private alertController: AlertController,
     private dreamService: DreamService,
-    private audioService: AudioService
+    private audioService: AudioService,
+    private destroyRef: DestroyRef,
+    private toastNotifierService: ToastNotifierService
   ) { }
 
   async ngOnInit() {
@@ -54,6 +62,23 @@ export class AddDreamComponent implements OnInit {
       const dreams = await this.dreamService.getAllDreams();
       this.dreamData.title = 'Dream ' + (dreams.length + 1); //TODO TRANSLATE THIS DREAM
     }
+
+    this.tags = this.baseTags;
+    this.dreamService.tags$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((tagsFromSource) => {
+      this.tags = [...this.baseTags, ...this.getAllTags(tagsFromSource)];
+
+    });
+  }
+
+  private getAllTags(tagsFromSource: TagModel[]): TagElement[] {
+    return tagsFromSource.map(e => {
+      return {
+        name: e.name,
+        checked: false,
+        canBeRemoved: true,
+        type: OfficialTags.REGULAR
+      } as TagElement
+    })
   }
 
   getFormattedDate(): string {
@@ -127,6 +152,8 @@ export class AddDreamComponent implements OnInit {
   }
 
   async saveDream() {
+    if (this.isSaveDisabled) return;
+    this.isSaveDisabled = true;
     if (!this.canSave()) {
       await this.showAlert('Error', 'El título es obligatorio');
       return;
@@ -138,6 +165,7 @@ export class AddDreamComponent implements OnInit {
         await this.dreamService.updateDream(this.dream.id, {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
+          tags: this.tags.filter(t => t.checked).map(t => t.name)
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });
@@ -147,6 +175,7 @@ export class AddDreamComponent implements OnInit {
           date: this.selectedDate,
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
+          tags: this.tags.filter(t => t.checked).map(t => t.name)
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });
@@ -158,6 +187,7 @@ export class AddDreamComponent implements OnInit {
       });
     } catch (error) {
       console.error('Error saving dream:', error);
+      this.isSaveDisabled = false;
       await this.showAlert('Error', 'No se pudo guardar el sueño. Inténtalo de nuevo.');
     }
   }
@@ -177,5 +207,30 @@ export class AddDreamComponent implements OnInit {
 
   toggleTag(tag: any) {
     tag.checked = !tag.checked;
+  }
+
+  toogleIsAddingTag() {
+    this.isAddingTag = !this.isAddingTag;
+  }
+
+  saveTag() {
+    console.log("manuXX aa", this.newTagText);
+    if (this.newTagText.length <= 0) return;
+
+    this.dreamService.addTag(this.newTagText);
+    this.cancelTag();
+  }
+
+  cancelTag() {
+    this.newTagText = "";
+    this.isAddingTag = false;
+  }
+
+  async deleteTag(tagName: string) {
+    const confirmation = await this.toastNotifierService.presentAlert('Confirm the delete for tag:', tagName);
+    console.log("confirmation", confirmation);
+
+    this.dreamService.deleteTag(tagName);
+
   }
 }

@@ -1,0 +1,113 @@
+    ion-icon {
+      pointer-events: none;
+    }
+
+    @keyframes pulse-soft {
+
+      0%,
+      100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+    }
+
+    .animate-pulse-soft {
+      animation: pulse-soft 3s ease-in-out infinite;
+    }
+
+    .star-1 {
+      animation: twinkle 2s ease-in-out infinite;
+    }
+
+    .star-2 {
+      animation: twinkle 2s ease-in-out infinite;
+      animation-delay: 0.5s;
+    }
+
+    .star-3 {
+      animation: twinkle 2s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    .star-4 {
+      animation: twinkle 2s ease-in-out infinite;
+      animation-delay: 1.5s;
+    }
+
+    .icon-container {
+      position: relative;
+      width: 192px;
+      height: 192px;
+      margin-bottom: 2rem;
+    }
+
+    .purple-circle {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+      border-radius: 9999px;
+    }
+
+    .main-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 96px;
+      width: 96px;
+      height: 96px;
+      color: white;
+      opacity: 0.9;
+    }
+
+    .star {
+      position: absolute;
+      color: #fcd34d;
+    }
+
+    .star-top-right {
+      top: 1rem;
+      right: 1rem;
+      width: 24px;
+      height: 24px;
+    }
+
+    .star-top-left {
+      top: 4rem;
+      left: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+
+    .star-bottom-right {
+      bottom: 3rem;
+      right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+
+    .star-bottom-left {
+      bottom: 2rem;
+      left: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
