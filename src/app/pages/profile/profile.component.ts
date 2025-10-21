@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { ConfigService } from 'src/app/shared/services/config.service';
+import { DreamService } from 'src/app/shared/services/dream.service';
+import { Preferences } from '@capacitor/preferences';
 
 interface User {
   name: string;
@@ -30,7 +32,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private dreamService: DreamService
   ) { }
 
   async ngOnInit() {
@@ -84,7 +87,7 @@ export class ProfileComponent implements OnInit {
   async cleanData(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Clean Data',
-      message: 'This will remove all local data. Are you sure?',
+      message: 'This will remove all local data including dreams, settings, and preferences. Are you sure?',
       buttons: [
         {
           text: 'Cancel',
@@ -94,8 +97,8 @@ export class ProfileComponent implements OnInit {
         {
           text: 'Clean',
           cssClass: 'danger',
-          handler: () => {
-            this.performCleanData();
+          handler: async () => {
+            await this.performCleanData();
           }
         }
       ]
@@ -109,8 +112,62 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  private performCleanData(): void {
-    localStorage.clear();
-    console.log('Data cleaned successfully');
+  private async performCleanData(): Promise<void> {
+    try {
+      console.log('Starting comprehensive data cleanup...');
+
+      // Clear all Capacitor Preferences data
+      await this.clearAllPreferences();
+
+      // Clear dreams data using DreamService
+      await this.dreamService.clearAllData();
+
+      // Clear localStorage (for any remaining web data)
+      localStorage.clear();
+
+      // Reset dark mode to default
+      await this.configService.saveDarkModePreference(false);
+      this.configService.enableLightMode();
+      this.darkMode = false;
+
+      console.log('All data cleaned successfully');
+
+      // Show success message
+      const successAlert = await this.alertController.create({
+        header: 'Success',
+        message: 'All local data has been cleared successfully.',
+        buttons: ['OK']
+      });
+      await successAlert.present();
+
+    } catch (error) {
+      console.error('Error clearing data:', error);
+
+      // Show error message
+      const errorAlert = await this.alertController.create({
+        header: 'Error',
+        message: 'There was an error clearing some data. Please try again.',
+        buttons: ['OK']
+      });
+      await errorAlert.present();
+    }
+  }
+
+  private async clearAllPreferences(): Promise<void> {
+    try {
+      // Get all keys from Preferences
+      const keys = await Preferences.keys();
+
+      // Remove each key individually
+      for (const key of keys.keys) {
+        await Preferences.remove({ key });
+        console.log(`Removed preference key: ${key}`);
+      }
+
+      console.log('All Capacitor Preferences cleared');
+    } catch (error) {
+      console.error('Error clearing Preferences:', error);
+      throw error;
+    }
   }
 }
