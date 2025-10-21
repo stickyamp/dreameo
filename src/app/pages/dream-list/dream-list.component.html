@@ -6,11 +6,6 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="addDream()">
-        <ion-icon name="add"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -36,18 +31,7 @@
 
     <!-- Empty State -->
     <div class="empty-state" *ngIf="dreams.length === 0">
-      <div class="dreams-header">
-        <h2>{{ getFormattedDate() }}</h2>
-        <p class="no-dreams-text" i18n="@@dream.list.no.dreams">
-          No hay sueños registrados para este día
-        </p>
-      </div>
-      <div class="add-dream-section">
-        <ion-button expand="block" class="dream-button" (click)="addDream()">
-          <ion-icon name="add-circle" slot="start"></ion-icon>
-          <span i18n="@@add.dream.button">Añadir Sueño</span>
-        </ion-button>
-      </div>
+      <app-no-dreams></app-no-dreams>
     </div>
   </div>
 

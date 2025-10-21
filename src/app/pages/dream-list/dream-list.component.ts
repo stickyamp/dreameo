@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { DreamService } from '../../shared/services/dream.service';
@@ -6,13 +6,15 @@ import { Dream } from '../../models/dream.model';
 import { AddDreamComponent } from '../add-dream/add-dream.component';
 import { DreamDetailComponent } from '../dream-detail/dream-detail.component';
 import { ShowDreamsListDirective } from 'src/app/shared/directives/add-dream-open-modal.directive';
+import { NoDreamsComponent } from 'src/app/shared/ui-elements/no-dreams-splash.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dream-list',
   templateUrl: './dream-list.component.html',
   styleUrls: ['./dream-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ShowDreamsListDirective]
+  imports: [CommonModule, IonicModule, ShowDreamsListDirective, NoDreamsComponent]
 })
 export class DreamListComponent implements OnInit {
   @Input() selectedDate!: string;
@@ -23,10 +25,19 @@ export class DreamListComponent implements OnInit {
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private destroyRef: DestroyRef
   ) { }
 
   ngOnInit() {
+    // Subscribe to dreams changes to reactively update the component
+    this.dreamService.dreams$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((dreamsByDate) => {
+      this.dreams = this.dreamService.getDreamsByDate(this.selectedDate);
+    });
+
+    // Load initial dreams
     this.loadDreams();
   }
 
@@ -74,12 +85,7 @@ export class DreamListComponent implements OnInit {
       }
     });
 
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.dreamAdded) {
-        this.loadDreams();
-      }
-    });
-
+    // No need to manually reload dreams - the subscription will handle it
     await modal.present();
   }
 
@@ -91,12 +97,7 @@ export class DreamListComponent implements OnInit {
       }
     });
 
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.dreamUpdated || result.data?.dreamDeleted) {
-        this.loadDreams();
-      }
-    });
-
+    // No need to manually reload dreams - the subscription will handle it
     await modal.present();
   }
 

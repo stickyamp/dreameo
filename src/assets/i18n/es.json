@@ -113,5 +113,13 @@
   },
   "APP": {
     "NAME": "Dream"
+  },
+  "DREAMEO": {
+    "SHARED": {
+      "NO_DREAM_MESSAGE": {
+        "TITLE": "No hay sueños registrados",
+        "DESCRIPTION": "Comienza registrando tu primer sueño para este día. Toca el botón '+' para añadir tu primer sueño."
+      }
+    }
   }
 }
