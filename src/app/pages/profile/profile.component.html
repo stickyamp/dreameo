@@ -1,47 +1,65 @@
 <ion-content [fullscreen]="true">
-    <div class="content-wrapper">
-        <!-- User Profile Section -->
-        <div class="user-profile">
-            <ion-avatar class="user-avatar">
-                <ion-icon name="person-outline" class="user-icon"></ion-icon>
-            </ion-avatar>
-            <div class="user-info">
-                <h2 class="user-name">{{ user.name }}</h2>
-                <p class="user-email">{{ user.email }}</p>
-            </div>
-        </div>
-
-        <!-- Settings List -->
-        <ion-list class="settings-list">
-            <!-- Language Option -->
-            <ion-item button (click)="navigateToLanguage()" detail="true">
-                <ion-icon name="globe-outline" slot="start"></ion-icon>
-                <ion-label>Language</ion-label>
-                <ion-note slot="end" color="medium">{{ selectedLanguage }}</ion-note>
-            </ion-item>
-
-            <!-- Dark Mode Toggle -->
-            <ion-item>
-                <ion-icon name="moon-outline" slot="start"></ion-icon>
-                <ion-label>Dark Mode</ion-label>
-                <ion-toggle slot="end" [checked]="darkMode" (ionChange)="toggleDarkMode($event)">
-                </ion-toggle>
-            </ion-item>
-        </ion-list>
-
-        <!-- Danger Zone -->
-        <ion-list class="danger-zone">
-            <!-- Close Session -->
-            <ion-item button (click)="closeSession()" lines="none">
-                <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
-                <ion-label color="danger">Close Session</ion-label>
-            </ion-item>
-
-            <!-- Clean Data -->
-            <ion-item button (click)="cleanData()" lines="none">
-                <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
-                <ion-label color="danger">Clean Data</ion-label>
-            </ion-item>
-        </ion-list>
+  <div class="content-wrapper">
+    <!-- User Profile Section -->
+    <div class="user-profile">
+      <ion-avatar class="user-avatar">
+        <ion-icon name="person-outline" class="user-icon"></ion-icon>
+      </ion-avatar>
+      <div class="user-info">
+        <h2 class="user-name">{{ user.name }}</h2>
+        <p class="user-email">{{ user.email }}</p>
+      </div>
     </div>
+
+    <!-- Settings List -->
+    <ion-list class="settings-list">
+      <!-- Language Option -->
+      <ion-item detail="true">
+        <ion-icon name="globe-outline" slot="start"></ion-icon>
+        <ion-label>{{ "PROFILE.LANGUAGE" | translate }}</ion-label>
+        <ion-select
+          slot="end"
+          interface="popover"
+          [(ngModel)]="selectedLanguage"
+          (ionChange)="changeLang($event)"
+        >
+          <ion-select-option value="en">{{
+            "PROFILE.ENGLISH" | translate
+          }}</ion-select-option>
+          <ion-select-option value="es">{{
+            "PROFILE.SPANISH" | translate
+          }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <!-- Dark Mode Toggle -->
+      <ion-item>
+        <ion-icon name="moon-outline" slot="start"></ion-icon>
+        <ion-label>{{ "PROFILE.DARK_MODE" | translate }}</ion-label>
+        <ion-toggle
+          slot="end"
+          [checked]="darkMode"
+          (ionChange)="toggleDarkMode($event)"
+        >
+        </ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <!-- Danger Zone -->
+    <ion-list class="danger-zone">
+      <!-- Close Session -->
+      <ion-item button (click)="closeSession()" lines="none">
+        <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
+        <ion-label color="danger">{{
+          "PROFILE.CLOSE_SESSION" | translate
+        }}</ion-label>
+      </ion-item>
+      <!-- Clean Data -->
+      <ion-item button (click)="cleanData()" lines="none">
+        <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
+        <ion-label color="danger">{{
+          "PROFILE.CLEAN_DATA" | translate
+        }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>

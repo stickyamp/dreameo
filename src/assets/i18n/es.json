@@ -1,0 +1,117 @@
+{
+  "LOGIN": {
+    "TITLE": "Iniciar Sesión",
+    "WELCOME": "Bienvenido de Nuevo",
+    "EMAIL": "Correo Electrónico",
+    "EMAIL_PLACEHOLDER": "Ingresa tu correo electrónico",
+    "EMAIL_ERROR": "Por favor ingresa un correo válido",
+    "PASSWORD": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "Ingresa tu contraseña",
+    "PASSWORD_ERROR": "La contraseña es requerida",
+    "FORGOT": "¿Olvidaste tu contraseña?",
+    "BUTTON": "Iniciar Sesión",
+    "SIGNUP_TEXT": "¿No tienes una cuenta? ",
+    "SIGNUP_LINK": "Registrarse"
+  },
+  "REGISTER": {
+    "TITLE": "Registrarse",
+    "MAIN_TITLE": "Crear Cuenta",
+    "USERNAME": "Nombre de Usuario",
+    "USERNAME_PLACEHOLDER": "Ingresa tu nombre de usuario",
+    "USERNAME_ERROR": "El nombre de usuario es requerido",
+    "EMAIL": "Correo Electrónico",
+    "EMAIL_PLACEHOLDER": "Ingresa tu correo electrónico",
+    "EMAIL_ERROR": "Por favor ingresa un correo válido",
+    "PASSWORD": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "Ingresa tu contraseña",
+    "PASSWORD_ERROR": "La contraseña debe tener al menos 6 caracteres",
+    "CONFIRM_PASSWORD": "Confirmar Contraseña",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Confirma tu contraseña",
+    "CONFIRM_PASSWORD_ERROR": "Las contraseñas no coinciden",
+    "BUTTON": "Registrarse",
+    "LOGIN_TEXT": "¿Ya tienes cuenta? ",
+    "LOGIN_LINK": "Inicia Sesión"
+  },
+  "SPLASH": {
+    "TITLE": "Dream Journal",
+    "DESCRIPTION": "Organiza tus sueños y regístralos en un calendario, ya sea escribiendo texto o grabando voz.",
+    "CONTINUE": "Continuar al Calendario"
+  },
+  "TABS": {
+    "CALENDAR": "Calendario",
+    "DREAMS": "Sueños",
+    "PROFILE": "Perfil"
+  },
+  "CALENDAR": {
+    "TITLE": "Calendario",
+    "STATISTICS": "Estadísticas",
+    "STREAK": "Racha de días",
+    "TOTAL_DREAMS": "Total de sueños",
+    "GOOD_DREAMS": "Sueños buenos",
+    "BAD_DREAMS": "Sueños malos"
+  },
+  "DREAMS": {
+    "TITLE": "Sueños",
+    "NO_DREAMS": "No hay sueños registrados",
+    "NO_DREAMS_DESCRIPTION": "Comienza registrando tu primer sueño"
+  },
+  "PROFILE": {
+    "TITLE": "Configuración",
+    "LANGUAGE": "Idioma",
+    "DARK_MODE": "Modo oscuro",
+    "CLOSE_SESSION": "Cerrar sesión",
+    "CLEAN_DATA": "Limpiar datos",
+    "ENGLISH": "Inglés",
+    "SPANISH": "Español"
+  },
+  "DREAM_DETAIL": {
+    "TITLE": "Sueño",
+    "NO_DESCRIPTION": "Este sueño no tiene descripción ni grabación de voz",
+    "DESCRIPTION": "Descripción",
+    "CREATED": "Creado:",
+    "UPDATED": "Actualizado:",
+    "EDIT": "Editar"
+  },
+  "ADD_DREAM": {
+    "TITLE_NEW": "Nuevo Sueño",
+    "TITLE_EDIT": "Editar Sueño",
+    "TITLE_LABEL": "Título",
+    "TITLE_PLACEHOLDER": "Dale un nombre a tu sueño",
+    "DESCRIPTION_LABEL": "Descripción",
+    "DESCRIPTION_PLACEHOLDER": "Describe tu sueño...",
+    "TYPE_TITLE": "Tipo de sueño",
+    "TYPE_DESCRIPTION": "Selecciona el tipo de sueño que tuviste",
+    "TYPE_GOOD": "Bueno",
+    "TYPE_BAD": "Malo",
+    "VOICE_TITLE": "Grabación de Voz",
+    "VOICE_DESCRIPTION": "Graba un audio describiendo tu sueño",
+    "VOICE_RECORD": "Grabar",
+    "VOICE_STOP": "Detener",
+    "VOICE_PLAY": "Reproducir audio",
+    "VOICE_PLAYING": "Reproduciendo...",
+    "SAVE": "Guardar",
+    "UPDATE": "Actualizar",
+    "DELETE": "Eliminar",
+    "BUTTON": "Añadir Sueño",
+    "CONTENT": "Añadir contenido"
+  },
+  "DREAM_LIST": {
+    "TITLE": "Sueños",
+    "NO_DREAMS": "No hay sueños registrados para este día"
+  },
+  "STATISTICS": {
+    "PERIOD": {
+      "THIS_WEEK": "Esta Semana",
+      "THIS_MONTH": "Este Mes",
+      "ALL_TIME": "Todo el tiempo"
+    },
+    "TOTAL_DREAMS": "Total de sueños",
+    "LUCID_DREAMS": "Sueños lúcidos",
+    "DREAM_FREQUENCY": "Frecuencia de sueños",
+    "MOST_REPEATED_KEYWORDS": "Palabras más repetidas",
+    "TYPES": "Tipos de sueños"
+  },
+  "APP": {
+    "NAME": "Dream"
+  }
+}
