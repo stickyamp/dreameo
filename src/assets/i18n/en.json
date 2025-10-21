@@ -1,13 +1,117 @@
 {
-    "DREAMEO": {
-        "PAGE": {
-            "DREAM_LIST": {}
-        },
-        "SHARED": {
-            "NO_DREAM_MESSAGE": {
-                "TITLE": "No Dreams Yet",
-                "BODY": "EEEE"
-            }
-        }
-    }
+  "LOGIN": {
+    "TITLE": "Login",
+    "WELCOME": "Welcome Back",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "EMAIL_ERROR": "Please enter a valid email",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_ERROR": "Password is required",
+    "FORGOT": "Forgot Password?",
+    "BUTTON": "Log In",
+    "SIGNUP_TEXT": "Don't have an account? ",
+    "SIGNUP_LINK": "Sign Up"
+  },
+  "REGISTER": {
+    "TITLE": "Register",
+    "MAIN_TITLE": "Create Account",
+    "USERNAME": "Username",
+    "USERNAME_PLACEHOLDER": "Enter your username",
+    "USERNAME_ERROR": "Username is required",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "EMAIL_ERROR": "Please enter a valid email",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_ERROR": "Password must be at least 6 characters",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm your password",
+    "CONFIRM_PASSWORD_ERROR": "Passwords do not match",
+    "BUTTON": "Register",
+    "LOGIN_TEXT": "Already have an account? ",
+    "LOGIN_LINK": "Log In"
+  },
+  "SPLASH": {
+    "TITLE": "Dream Journal",
+    "DESCRIPTION": "Organize your dreams and record them in a calendar, either by writing text or recording voice.",
+    "CONTINUE": "Continue to Calendar"
+  },
+  "TABS": {
+    "CALENDAR": "Calendar",
+    "DREAMS": "Dreams",
+    "PROFILE": "Profile"
+  },
+  "CALENDAR": {
+    "TITLE": "Calendar",
+    "STATISTICS": "Statistics",
+    "STREAK": "Day Streak",
+    "TOTAL_DREAMS": "Total Dreams",
+    "GOOD_DREAMS": "Good Dreams",
+    "BAD_DREAMS": "Bad Dreams"
+  },
+  "DREAMS": {
+    "TITLE": "Dreams",
+    "NO_DREAMS": "No dreams registered",
+    "NO_DREAMS_DESCRIPTION": "Start by registering your first dream"
+  },
+  "PROFILE": {
+    "TITLE": "Settings",
+    "LANGUAGE": "Language",
+    "DARK_MODE": "Dark Mode",
+    "CLOSE_SESSION": "Close Session",
+    "CLEAN_DATA": "Clean Data",
+    "ENGLISH": "English",
+    "SPANISH": "Spanish"
+  },
+  "DREAM_DETAIL": {
+    "TITLE": "Dream",
+    "NO_DESCRIPTION": "This dream has no description or voice recording",
+    "DESCRIPTION": "Description",
+    "CREATED": "Created:",
+    "UPDATED": "Updated:",
+    "EDIT": "Edit"
+  },
+  "ADD_DREAM": {
+    "TITLE_NEW": "New Dream",
+    "TITLE_EDIT": "Edit Dream",
+    "TITLE_LABEL": "Title",
+    "TITLE_PLACEHOLDER": "Give your dream a name",
+    "DESCRIPTION_LABEL": "Description",
+    "DESCRIPTION_PLACEHOLDER": "Describe your dream...",
+    "TYPE_TITLE": "Dream Type",
+    "TYPE_DESCRIPTION": "Select the type of dream you had",
+    "TYPE_GOOD": "Good",
+    "TYPE_BAD": "Bad",
+    "VOICE_TITLE": "Voice Recording",
+    "VOICE_DESCRIPTION": "Record an audio describing your dream",
+    "VOICE_RECORD": "Record",
+    "VOICE_STOP": "Stop",
+    "VOICE_PLAY": "Play audio",
+    "VOICE_PLAYING": "Playing...",
+    "SAVE": "Save",
+    "UPDATE": "Update",
+    "DELETE": "Delete",
+    "BUTTON": "Add Dream",
+    "CONTENT": "Add content"
+  },
+  "DREAM_LIST": {
+    "TITLE": "Dreams",
+    "NO_DREAMS": "No dreams registered for this day"
+  },
+  "STATISTICS": {
+    "PERIOD": {
+      "THIS_WEEK": "This Week",
+      "THIS_MONTH": "This Month",
+      "ALL_TIME": "All Time"
+    },
+    "TOTAL_DREAMS": "Total Dreams",
+    "LUCID_DREAMS": "Lucid Dreams",
+    "DREAM_FREQUENCY": "Dream Frequency",
+    "MOST_REPEATED_KEYWORDS": "Most Repeated Keywords",
+    "TYPES": "Dream Types"
+  },
+  "APP": {
+    "NAME": "Dream"
+  }
 }
