@@ -4,7 +4,6 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { DreamService } from '../../shared/services/dream.service';
 import { Dream } from '../../models/dream.model';
 import { AddDreamComponent } from '../add-dream/add-dream.component';
-import { DreamDetailComponent } from '../dream-detail/dream-detail.component';
 import { ShowDreamsListDirective } from 'src/app/shared/directives/add-dream-open-modal.directive';
 import { NoDreamsComponent } from 'src/app/shared/ui-elements/no-dreams-splash.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -91,9 +90,10 @@ export class DreamListComponent implements OnInit {
 
   async viewDream(dream: Dream) {
     const modal = await this.modalController.create({
-      component: DreamDetailComponent,
+      component: AddDreamComponent,
       componentProps: {
-        dream: dream
+        dream: dream,
+        selectedDate: dream.date
       }
     });
 

@@ -6,11 +6,6 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ selectedDate | date:'MMM d, yyyy' }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="saveDream()" [disabled]="!canSave()" class="save-btn-header">
-        <span style="color: #ffd600; font-weight: 600;">Save</span>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <div class="form-title-wrapper">
@@ -62,5 +57,10 @@
     <ion-fab-button color="warning" (click)="saveDream()" [disabled]="isSaveDisabled">
       <ion-icon name="save"></ion-icon>
     </ion-fab-button>
+    @if(isEditing){
+    <ion-fab-button color="danger" class="delete-btn-header" (click)="deleteDream()" [disabled]="isSaveDisabled">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+    }
   </ion-fab>
 </ion-content>

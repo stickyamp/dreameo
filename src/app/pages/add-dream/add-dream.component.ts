@@ -252,6 +252,41 @@ export class AddDreamComponent implements OnInit {
     console.log("confirmation", confirmation);
 
     this.dreamService.deleteTag(tagName);
+  }
 
+  async deleteDream() {
+    if (!this.isEditing || !this.dream) return;
+
+    const alert = await this.alertController.create({
+      header: 'Eliminar sueño',
+      message: '¿Estás seguro de que quieres eliminar este sueño? Esta acción no se puede deshacer.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: async () => {
+            try {
+              const deleted = await this.dreamService.deleteDream(this.dream!.id);
+              if (deleted) {
+                this.modalController.dismiss({
+                  dreamDeleted: true
+                });
+              } else {
+                await this.showAlert('Error', 'No se pudo eliminar el sueño.');
+              }
+            } catch (error) {
+              console.error('Error deleting dream:', error);
+              await this.showAlert('Error', 'Error al eliminar el sueño.');
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
