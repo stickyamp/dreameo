@@ -174,11 +174,8 @@ export class AddDreamComponent implements OnInit {
 
   async saveDream() {
     if (this.isSaveDisabled) return;
+
     this.isSaveDisabled = true;
-    if (!this.canSave()) {
-      await this.showAlert('Error', 'El título es obligatorio');
-      return;
-    }
 
     try {
       if (this.isEditing && this.dream) {
@@ -186,7 +183,9 @@ export class AddDreamComponent implements OnInit {
         await this.dreamService.updateDream(this.dream.id, {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter(t => t.checked).map(t => t.name)
+          tags: this.tags.filter(t => t.checked).map(t => t.name),
+          isLucid: !!this.tags.find(t => t.type == OfficialTags.LUCID && t.checked),
+          isNightmare: !!this.tags.find(t => t.type == OfficialTags.NIGHTMARE && t.checked),
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });
@@ -196,7 +195,9 @@ export class AddDreamComponent implements OnInit {
           date: this.selectedDate,
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter(t => t.checked).map(t => t.name)
+          tags: this.tags.filter(t => t.checked).map(t => t.name),
+          isLucid: !!this.tags.find(t => t.type == OfficialTags.LUCID && t.checked),
+          isNightmare: !!this.tags.find(t => t.type == OfficialTags.NIGHTMARE && t.checked),
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });

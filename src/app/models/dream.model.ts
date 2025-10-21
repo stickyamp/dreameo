@@ -6,6 +6,8 @@ export interface Dream {
   tags?: string[];
   createdAt: string;
   updatedAt?: string;
+  isLucid: boolean;
+  isNightmare: boolean;
 }
 
 export interface DreamForStatistics {

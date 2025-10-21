@@ -31,12 +31,12 @@
             }
           </ion-chip>
           @if(!isAddingTag){
-          <ion-chip class="add-tag tag-chip" outline="true" (click)="toogleIsAddingTag()">
+          <ion-chip class="add-tag tag-chip" [outline]="true" (click)="toogleIsAddingTag()">
             <ion-icon name="add" class="add-tag-icon"></ion-icon>
             Add Tag
           </ion-chip>
           }@else{
-          <ion-chip class="tag-chip">
+          <ion-chip class="tag-chip" [outline]="true">
             <ion-input [(ngModel)]="newTagText" placeholder="Tag name..." maxlength="25"
               class="add-tag-input"></ion-input>
             <div class="add-tag-options">
