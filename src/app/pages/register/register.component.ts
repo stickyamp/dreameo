@@ -41,8 +41,7 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private loadingController: LoadingController,
-    private alertController: AlertController,
-    private translate: TranslateService
+    private alertController: AlertController
   ) {
     this.registerForm = this.formBuilder.group(
       {
@@ -53,9 +52,6 @@ export class RegisterComponent implements OnInit {
       },
       { validators: this.passwordMatchValidator }
     );
-
-    const lang = localStorage.getItem("lang") || "en";
-    this.translate.use(lang);
   }
 
   ngOnInit() {

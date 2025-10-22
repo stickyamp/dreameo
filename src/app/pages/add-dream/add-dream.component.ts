@@ -62,10 +62,9 @@ export class AddDreamComponent implements OnInit {
     private audioService: AudioService,
     private destroyRef: DestroyRef,
     private toastNotifierService: ToastNotifierService,
-    private translate: TranslateService
+   
   ) {
-    const lang = localStorage.getItem("lang") || "es";
-    this.translate.use(lang);
+   
   }
 
   async ngOnInit() {

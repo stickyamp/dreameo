@@ -12,10 +12,7 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
   imports: [CommonModule, IonicModule, TranslateModule],
 })
 export class SplashComponent implements OnInit {
-  constructor(private router: Router, private translate: TranslateService) {
-    const lang = localStorage.getItem("lang") || "es";
-    this.translate.use(lang);
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     // Enable dark mode

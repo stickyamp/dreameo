@@ -41,13 +41,7 @@ export class DreamStatisticsPage implements OnInit {
 
   private allDreams: DreamForStatistics[] = [];
 
-  constructor(
-    private dreamService: DreamService,
-    private translate: TranslateService
-  ) {
-    const lang = localStorage.getItem("lang") || "es";
-    this.translate.use(lang);
-  }
+  constructor(private dreamService: DreamService) {}
 
   ngOnInit() {
     this.loadDreams();

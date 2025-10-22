@@ -40,6 +40,8 @@
   "TABS": {
     "CALENDAR": "Calendar",
     "DREAMS": "Dreams",
+    "STATISTICS": "Statistics",
+    "HISTORY": "History",
     "PROFILE": "Profile"
   },
   "CALENDAR": {
