@@ -5,49 +5,92 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ selectedDate | date:'MMM d, yyyy' }}</ion-title>
+    <ion-title>{{ selectedDate | date : "MMM d, yyyy" }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="saveDream()" [disabled]="!canSave()" class="save-btn-header">
-        <span style="color: #ffd600; font-weight: 600;">Save</span>
+      <ion-button
+        (click)="saveDream()"
+        [disabled]="!canSave()"
+        class="save-btn-header"
+      >
+        <span style="color: #ffd600; font-weight: 600">{{
+          "ADD_DREAM.SAVE" | translate
+        }}</span>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <div class="form-title-wrapper">
-      <ion-input [(ngModel)]="dreamData.title" placeholder="Dream Title" class="title-input"
-        maxlength="100"></ion-input>
+      <ion-input
+        [(ngModel)]="dreamData.title"
+        [placeholder]="'ADD_DREAM.TITLE_PLACEHOLDER' | translate"
+        class="title-input"
+        maxlength="100"
+      ></ion-input>
     </div>
   </ion-toolbar>
 </ion-header>
 <ion-content class="add-dream-content">
   <div class="dream-form">
     <div class="form-body-wrapper">
-      <ion-textarea autoGrow="true" [(ngModel)]="dreamData.description" placeholder="Describe your dream..." rows="16"
-        maxlength="2000" class="desc-input"></ion-textarea>
+      <ion-textarea
+        autoGrow="true"
+        [(ngModel)]="dreamData.description"
+        [placeholder]="'ADD_DREAM.DESCRIPTION_PLACEHOLDER' | translate"
+        rows="16"
+        maxlength="2000"
+        class="desc-input"
+      ></ion-textarea>
       <div class="tags-section">
-        <div class="tags-title">Tags</div>
+        <div class="tags-title">{{ "ADD_DREAM.TAGS" | translate }}</div>
         <div class="tags-chips">
-          <ion-chip *ngFor="let tag of tags" (click)="toggleTag(tag)" class="tag-chip">
-            <ion-icon [name]="tag.checked ? 'checkmark-circle-outline' : 'ellipse-outline'" class="tag-check-icon"
-              aria-hidden="true"></ion-icon>
+          <ion-chip
+            *ngFor="let tag of tags"
+            (click)="toggleTag(tag)"
+            class="tag-chip"
+          >
+            <ion-icon
+              [name]="
+                tag.checked ? 'checkmark-circle-outline' : 'ellipse-outline'
+              "
+              class="tag-check-icon"
+              aria-hidden="true"
+            ></ion-icon>
             {{ tag.name }}
             @if(tag.canBeRemoved){
-            <ion-icon name="close-outline" (click)="deleteTag(tag.name)"></ion-icon>
+            <ion-icon
+              name="close-outline"
+              (click)="deleteTag(tag.name)"
+            ></ion-icon>
             }
           </ion-chip>
           @if(!isAddingTag){
-          <ion-chip class="add-tag tag-chip" outline="true" (click)="toogleIsAddingTag()">
+          <ion-chip
+            class="add-tag tag-chip"
+            outline="true"
+            (click)="toogleIsAddingTag()"
+          >
             <ion-icon name="add" class="add-tag-icon"></ion-icon>
-            Add Tag
+            {{ "ADD_DREAM.ADD_TAG" | translate }}
           </ion-chip>
           }@else{
           <ion-chip class="tag-chip">
-            <ion-input [(ngModel)]="newTagText" placeholder="Tag name..." maxlength="25"
-              class="add-tag-input"></ion-input>
+            <ion-input
+              [(ngModel)]="newTagText"
+              [placeholder]="'ADD_DREAM.TAG_PLACEHOLDER' | translate"
+              maxlength="25"
+              class="add-tag-input"
+            ></ion-input>
             <div class="add-tag-options">
-              <ion-icon name="checkmark-circle-outline" class="tag-check-icon tag-check-icon-first"
-                (click)="saveTag()"></ion-icon>
-              <ion-icon name="close-circle-outline" class="tag-check-icon" (click)="cancelTag()"></ion-icon>
+              <ion-icon
+                name="checkmark-circle-outline"
+                class="tag-check-icon tag-check-icon-first"
+                (click)="saveTag()"
+              ></ion-icon>
+              <ion-icon
+                name="close-circle-outline"
+                class="tag-check-icon"
+                (click)="cancelTag()"
+              ></ion-icon>
             </div>
           </ion-chip>
           }
@@ -59,7 +102,11 @@
     <ion-fab-button color="success" (click)="startRecording()">
       <ion-icon name="mic"></ion-icon>
     </ion-fab-button>
-    <ion-fab-button color="warning" (click)="saveDream()" [disabled]="isSaveDisabled">
+    <ion-fab-button
+      color="warning"
+      (click)="saveDream()"
+      [disabled]="isSaveDisabled"
+    >
       <ion-icon name="save"></ion-icon>
     </ion-fab-button>
   </ion-fab>

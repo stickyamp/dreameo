@@ -1,19 +1,30 @@
 <ion-content [fullscreen]="true">
   <div class="content-wrapper">
-
     <!-- Period Selection -->
     <div class="period-buttons">
-      <ion-button [fill]="selectedPeriod === 'thisWeek' ? 'solid' : 'outline'" (click)="selectPeriod('thisWeek')"
-        size="small" class="period-btn">
-        This Week
+      <ion-button
+        [fill]="selectedPeriod === 'thisWeek' ? 'solid' : 'outline'"
+        (click)="selectPeriod('thisWeek')"
+        size="small"
+        class="period-btn"
+      >
+        {{ "STATISTICS.PERIOD.THIS_WEEK" | translate }}
       </ion-button>
-      <ion-button [fill]="selectedPeriod === 'thisMonth' ? 'solid' : 'outline'" (click)="selectPeriod('thisMonth')"
-        size="small" class="period-btn">
-        This Month
+      <ion-button
+        [fill]="selectedPeriod === 'thisMonth' ? 'solid' : 'outline'"
+        (click)="selectPeriod('thisMonth')"
+        size="small"
+        class="period-btn"
+      >
+        {{ "STATISTICS.PERIOD.THIS_MONTH" | translate }}
       </ion-button>
-      <ion-button [fill]="selectedPeriod === 'allTime' ? 'solid' : 'outline'" (click)="selectPeriod('allTime')"
-        size="small" class="period-btn">
-        All Time
+      <ion-button
+        [fill]="selectedPeriod === 'allTime' ? 'solid' : 'outline'"
+        (click)="selectPeriod('allTime')"
+        size="small"
+        class="period-btn"
+      >
+        {{ "STATISTICS.PERIOD.ALL_TIME" | translate }}
       </ion-button>
     </div>
 
@@ -22,8 +33,13 @@
       <ion-card class="stat-card">
         <ion-card-content>
           <div class="stat-header">
-            <span class="stat-label">Total Dreams</span>
-            <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+            <span class="stat-label">{{
+              "STATISTICS.TOTAL_DREAMS" | translate
+            }}</span>
+            <ion-icon
+              name="information-circle-outline"
+              class="info-icon"
+            ></ion-icon>
           </div>
           <div class="stat-value">{{ stats.totalDreams }}</div>
         </ion-card-content>
@@ -32,8 +48,13 @@
       <ion-card class="stat-card">
         <ion-card-content>
           <div class="stat-header">
-            <span class="stat-label">Lucid Dreams</span>
-            <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+            <span class="stat-label">{{
+              "STATISTICS.LUCID_DREAMS" | translate
+            }}</span>
+            <ion-icon
+              name="information-circle-outline"
+              class="info-icon"
+            ></ion-icon>
           </div>
           <div class="stat-value lucid">{{ stats.lucidDreams }}</div>
         </ion-card-content>
@@ -45,23 +66,42 @@
       <ion-card-content>
         <div class="chart-header">
           <div>
-            <div class="chart-title">Dream Frequency</div>
+            <div class="chart-title">
+              {{ "STATISTICS.DREAM_FREQUENCY" | translate }}
+            </div>
             <div class="chart-subtitle">
               <span class="frequency-number">{{ stats.dreamFrequency }}</span>
               <span class="frequency-label">
-                {{ selectedPeriod === 'thisWeek' ? 'This Week' :
-                selectedPeriod === 'thisMonth' ? 'This Month' :
-                'All Time' }}
+                {{
+                  selectedPeriod === "thisWeek"
+                    ? ("STATISTICS.PERIOD.THIS_WEEK" | translate)
+                    : selectedPeriod === "thisMonth"
+                    ? ("STATISTICS.PERIOD.THIS_MONTH" | translate)
+                    : ("STATISTICS.PERIOD.ALL_TIME" | translate)
+                }}
               </span>
             </div>
           </div>
-          <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+          <ion-icon
+            name="information-circle-outline"
+            class="info-icon"
+          ></ion-icon>
         </div>
 
         <div class="chart-container">
-          <svg class="frequency-chart" viewBox="0 0 240 100" preserveAspectRatio="none">
-            <path *ngIf="chartPath" [attr.d]="chartPath" fill="none" stroke="#5B5FC7" stroke-width="2.5"
-              vector-effect="non-scaling-stroke" />
+          <svg
+            class="frequency-chart"
+            viewBox="0 0 240 100"
+            preserveAspectRatio="none"
+          >
+            <path
+              *ngIf="chartPath"
+              [attr.d]="chartPath"
+              fill="none"
+              stroke="#5B5FC7"
+              stroke-width="2.5"
+              vector-effect="non-scaling-stroke"
+            />
           </svg>
           <div class="chart-labels">
             <span *ngFor="let label of chartLabels">{{ label }}</span>
@@ -74,8 +114,13 @@
     <ion-card class="keywords-card">
       <ion-card-content>
         <div class="section-header">
-          <span class="section-title">Most Repeated Keywords</span>
-          <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+          <span class="section-title">{{
+            "STATISTICS.MOST_REPEATED_KEYWORDS" | translate
+          }}</span>
+          <ion-icon
+            name="information-circle-outline"
+            class="info-icon"
+          ></ion-icon>
         </div>
 
         <div class="keywords-container">
@@ -90,22 +135,31 @@
     <ion-card class="types-card">
       <ion-card-content>
         <div class="section-header">
-          <span class="section-title">Dream Types</span>
-          <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+          <span class="section-title">{{
+            "STATISTICS.TYPES" | translate
+          }}</span>
+          <ion-icon
+            name="information-circle-outline"
+            class="info-icon"
+          ></ion-icon>
         </div>
 
         <div class="types-list">
           <div *ngFor="let type of dreamTypes" class="type-item">
             <span class="type-label">{{ type.type }}</span>
             <div class="type-bar-container">
-              <div class="type-bar" [style.width.%]="stats.totalDreams ? (type.count / stats.totalDreams * 100) : 0"
-                [class]="type.type.toLowerCase()"></div>
+              <div
+                class="type-bar"
+                [style.width.%]="
+                  stats.totalDreams ? (type.count / stats.totalDreams) * 100 : 0
+                "
+                [class]="type.type.toLowerCase()"
+              ></div>
             </div>
             <span class="type-percentage">{{ type.count }}</span>
           </div>
         </div>
       </ion-card-content>
     </ion-card>
-
   </div>
 </ion-content>

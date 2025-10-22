@@ -1,19 +1,25 @@
-import { Component, DestroyRef, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController, AlertController } from '@ionic/angular';
-import { DreamService } from '../../shared/services/dream.service';
-import { AudioService } from '../../shared/services/audio.service';
-import { Dream, OfficialTags, TagElement, TagModel } from '../../models/dream.model';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ToastNotifierService } from '../../shared/services/toast-notifier';
+import { Component, DestroyRef, Input, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { IonicModule, ModalController, AlertController } from "@ionic/angular";
+import { DreamService } from "../../shared/services/dream.service";
+import { AudioService } from "../../shared/services/audio.service";
+import {
+  Dream,
+  OfficialTags,
+  TagElement,
+  TagModel,
+} from "../../models/dream.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ToastNotifierService } from "../../shared/services/toast-notifier";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-add-dream',
-  templateUrl: './add-dream.component.html',
-  styleUrls: ['./add-dream.component.scss'],
+  selector: "app-add-dream",
+  templateUrl: "./add-dream.component.html",
+  styleUrls: ["./add-dream.component.scss"],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule]
+  imports: [CommonModule, FormsModule, IonicModule, TranslateModule],
 })
 export class AddDreamComponent implements OnInit {
   @Input() selectedDate!: string;
@@ -28,15 +34,25 @@ export class AddDreamComponent implements OnInit {
   isSaveDisabled = false;
 
   baseTags = [
-    { name: 'Lucid Dream', checked: false, canBeRemoved: false, type: OfficialTags.LUCID },
-    { name: 'Nightmare', checked: false, canBeRemoved: false, type: OfficialTags.NIGHTMARE },
+    {
+      name: "Lucid Dream",
+      checked: false,
+      canBeRemoved: false,
+      type: OfficialTags.LUCID,
+    },
+    {
+      name: "Nightmare",
+      checked: false,
+      canBeRemoved: false,
+      type: OfficialTags.NIGHTMARE,
+    },
   ] as TagElement[];
 
   tags: TagElement[] = [];
   dreamData = {
-    title: '',
-    description: '',
-    type: 'good' as 'good' | 'bad',
+    title: "",
+    description: "",
+    type: "good" as "good" | "bad",
   };
 
   constructor(
@@ -45,53 +61,71 @@ export class AddDreamComponent implements OnInit {
     private dreamService: DreamService,
     private audioService: AudioService,
     private destroyRef: DestroyRef,
-    private toastNotifierService: ToastNotifierService
-  ) { }
+    private toastNotifierService: ToastNotifierService,
+    private translate: TranslateService
+  ) {
+    const lang = localStorage.getItem("lang") || "es";
+    this.translate.use(lang);
+  }
 
   async ngOnInit() {
-
     if (this.dream) {
       this.isEditing = true;
       this.dreamData.title = this.dream.title;
-      this.dreamData.description = this.dream.description || '';
+      this.dreamData.description = this.dream.description || "";
       //this.dreamData.type = this.dream.type || 'good';
       //this.audioPath = this.dream.audioPath;
       this.selectedDate = this.dream.date;
-    }
-    else {
+    } else {
       const dreams = await this.dreamService.getAllDreams();
-      this.dreamData.title = 'Dream ' + (dreams.length + 1); //TODO TRANSLATE THIS DREAM
+      this.dreamData.title = "Dream " + (dreams.length + 1); //TODO TRANSLATE THIS DREAM
     }
 
     this.tags = this.baseTags;
-    this.dreamService.tags$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((tagsFromSource) => {
-      this.tags = [...this.baseTags, ...this.getAllTags(tagsFromSource)];
-
-    });
+    this.dreamService.tags$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((tagsFromSource) => {
+        this.tags = [...this.baseTags, ...this.getAllTags(tagsFromSource)];
+      });
   }
 
   private getAllTags(tagsFromSource: TagModel[]): TagElement[] {
-    return tagsFromSource.map(e => {
+    return tagsFromSource.map((e) => {
       return {
         name: e.name,
         checked: false,
         canBeRemoved: true,
-        type: OfficialTags.REGULAR
-      } as TagElement
-    })
+        type: OfficialTags.REGULAR,
+      } as TagElement;
+    });
   }
 
   getFormattedDate(): string {
     const date = new Date(this.selectedDate);
     const months = [
-      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
     ];
-    return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${
+      months[date.getMonth()]
+    } de ${date.getFullYear()}`;
   }
 
   canSave(): boolean {
-    return this.dreamData.title.trim().length > 0 && (this.dreamData.description.trim().length > 0);
+    return (
+      this.dreamData.title.trim().length > 0 &&
+      this.dreamData.description.trim().length > 0
+    );
   }
 
   async startRecording() {
@@ -99,8 +133,11 @@ export class AddDreamComponent implements OnInit {
       await this.audioService.startListening();
       this.isRecording = true;
     } catch (error) {
-      console.error('Error starting recording:', error);
-      await this.showAlert('Error', 'No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono.');
+      console.error("Error starting recording:", error);
+      await this.showAlert(
+        "Error",
+        "No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono."
+      );
     }
   }
 
@@ -109,8 +146,8 @@ export class AddDreamComponent implements OnInit {
       await this.audioService.stopListening();
       this.isRecording = false;
     } catch (error) {
-      console.error('Error stopping recording:', error);
-      await this.showAlert('Error', 'Error al detener la grabación.');
+      console.error("Error stopping recording:", error);
+      await this.showAlert("Error", "Error al detener la grabación.");
       this.isRecording = false;
     }
   }
@@ -131,21 +168,21 @@ export class AddDreamComponent implements OnInit {
 
   async deleteAudio() {
     const alert = await this.alertController.create({
-      header: 'Eliminar audio',
-      message: '¿Estás seguro de que quieres eliminar la grabación de voz?',
+      header: "Eliminar audio",
+      message: "¿Estás seguro de que quieres eliminar la grabación de voz?",
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel'
+          text: "Cancelar",
+          role: "cancel",
         },
         {
-          text: 'Eliminar',
-          role: 'destructive',
+          text: "Eliminar",
+          role: "destructive",
           handler: () => {
             this.audioPath = undefined;
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -155,7 +192,7 @@ export class AddDreamComponent implements OnInit {
     if (this.isSaveDisabled) return;
     this.isSaveDisabled = true;
     if (!this.canSave()) {
-      await this.showAlert('Error', 'El título es obligatorio');
+      await this.showAlert("Error", "El título es obligatorio");
       return;
     }
 
@@ -165,7 +202,7 @@ export class AddDreamComponent implements OnInit {
         await this.dreamService.updateDream(this.dream.id, {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter(t => t.checked).map(t => t.name)
+          tags: this.tags.filter((t) => t.checked).map((t) => t.name),
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });
@@ -175,7 +212,7 @@ export class AddDreamComponent implements OnInit {
           date: this.selectedDate,
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter(t => t.checked).map(t => t.name)
+          tags: this.tags.filter((t) => t.checked).map((t) => t.name),
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });
@@ -183,12 +220,15 @@ export class AddDreamComponent implements OnInit {
 
       this.modalController.dismiss({
         dreamAdded: !this.isEditing,
-        dreamUpdated: this.isEditing
+        dreamUpdated: this.isEditing,
       });
     } catch (error) {
-      console.error('Error saving dream:', error);
+      console.error("Error saving dream:", error);
       this.isSaveDisabled = false;
-      await this.showAlert('Error', 'No se pudo guardar el sueño. Inténtalo de nuevo.');
+      await this.showAlert(
+        "Error",
+        "No se pudo guardar el sueño. Inténtalo de nuevo."
+      );
     }
   }
 
@@ -200,7 +240,7 @@ export class AddDreamComponent implements OnInit {
     const alert = await this.alertController.create({
       header,
       message,
-      buttons: ['OK']
+      buttons: ["OK"],
     });
     await alert.present();
   }
@@ -227,10 +267,12 @@ export class AddDreamComponent implements OnInit {
   }
 
   async deleteTag(tagName: string) {
-    const confirmation = await this.toastNotifierService.presentAlert('Confirm the delete for tag:', tagName);
+    const confirmation = await this.toastNotifierService.presentAlert(
+      "Confirm the delete for tag:",
+      tagName
+    );
     console.log("confirmation", confirmation);
 
     this.dreamService.deleteTag(tagName);
-
   }
 }

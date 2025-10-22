@@ -1,17 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { IonicModule, ModalController, AlertController } from '@ionic/angular';
-import { DreamService } from '../../shared/services/dream.service';
-import { AudioService } from '../../shared/services/audio.service';
-import { Dream } from '../../models/dream.model';
-import { AddDreamComponent } from '../add-dream/add-dream.component';
+import { Component, Input, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { IonicModule, ModalController, AlertController } from "@ionic/angular";
+import { DreamService } from "../../shared/services/dream.service";
+import { AudioService } from "../../shared/services/audio.service";
+import { Dream } from "../../models/dream.model";
+import { AddDreamComponent } from "../add-dream/add-dream.component";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-dream-detail',
-  templateUrl: './dream-detail.component.html',
-  styleUrls: ['./dream-detail.component.scss'],
+  selector: "app-dream-detail",
+  templateUrl: "./dream-detail.component.html",
+  styleUrls: ["./dream-detail.component.scss"],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule, TranslateModule],
 })
 export class DreamDetailComponent implements OnInit {
   @Input() dream!: Dream;
@@ -21,8 +22,12 @@ export class DreamDetailComponent implements OnInit {
     private modalController: ModalController,
     private alertController: AlertController,
     private dreamService: DreamService,
-    private audioService: AudioService
-  ) { }
+    private audioService: AudioService,
+    private translate: TranslateService
+  ) {
+    const lang = localStorage.getItem("lang") || "es";
+    this.translate.use(lang);
+  }
 
   ngOnInit() {
     if (!this.dream) {
@@ -33,28 +38,40 @@ export class DreamDetailComponent implements OnInit {
   getFormattedDate(): string {
     const date = new Date(this.dream.date);
     const months = [
-      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
     ];
-    return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${
+      months[date.getMonth()]
+    } de ${date.getFullYear()}`;
   }
 
   getFormattedTime(): string {
     const date = new Date(this.dream.createdAt);
-    return date.toLocaleTimeString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleTimeString("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   }
 
   getFullFormattedDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleString("es-ES", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   }
 
@@ -89,8 +106,8 @@ export class DreamDetailComponent implements OnInit {
       component: AddDreamComponent,
       componentProps: {
         dream: this.dream,
-        selectedDate: this.dream.date
-      }
+        selectedDate: this.dream.date,
+      },
     });
 
     modal.onDidDismiss().then((result) => {
@@ -102,7 +119,7 @@ export class DreamDetailComponent implements OnInit {
         }
 
         this.modalController.dismiss({
-          dreamUpdated: true
+          dreamUpdated: true,
         });
       }
     });
@@ -112,33 +129,36 @@ export class DreamDetailComponent implements OnInit {
 
   async deleteDream() {
     const alert = await this.alertController.create({
-      header: 'Eliminar sueño',
-      message: '¿Estás seguro de que quieres eliminar este sueño? Esta acción no se puede deshacer.',
+      header: "Eliminar sueño",
+      message:
+        "¿Estás seguro de que quieres eliminar este sueño? Esta acción no se puede deshacer.",
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel'
+          text: "Cancelar",
+          role: "cancel",
         },
         {
-          text: 'Eliminar',
-          role: 'destructive',
+          text: "Eliminar",
+          role: "destructive",
           handler: async () => {
             try {
-              const deleted = await this.dreamService.deleteDream(this.dream.id);
+              const deleted = await this.dreamService.deleteDream(
+                this.dream.id
+              );
               if (deleted) {
                 this.modalController.dismiss({
-                  dreamDeleted: true
+                  dreamDeleted: true,
                 });
               } else {
-                await this.showAlert('Error', 'No se pudo eliminar el sueño.');
+                await this.showAlert("Error", "No se pudo eliminar el sueño.");
               }
             } catch (error) {
-              console.error('Error deleting dream:', error);
-              await this.showAlert('Error', 'Error al eliminar el sueño.');
+              console.error("Error deleting dream:", error);
+              await this.showAlert("Error", "Error al eliminar el sueño.");
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -152,7 +172,7 @@ export class DreamDetailComponent implements OnInit {
     const alert = await this.alertController.create({
       header,
       message,
-      buttons: ['OK']
+      buttons: ["OK"],
     });
     await alert.present();
   }

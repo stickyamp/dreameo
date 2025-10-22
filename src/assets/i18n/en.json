@@ -48,12 +48,15 @@
     "STREAK": "Day Streak",
     "TOTAL_DREAMS": "Total Dreams",
     "GOOD_DREAMS": "Good Dreams",
-    "BAD_DREAMS": "Bad Dreams"
+    "BAD_DREAMS": "Bad Dreams",
+    "MONTHLY_DREAM_COUNT": "Monthly Dream Count"
   },
   "DREAMS": {
     "TITLE": "Dreams",
     "NO_DREAMS": "No dreams registered",
-    "NO_DREAMS_DESCRIPTION": "Start by registering your first dream"
+    "NO_DREAMS_DESCRIPTION": "Start by registering your first dream",
+    "ADD_DREAM": "Add Dream",
+    "SEARCH_PLACEHOLDER": "Search dreams..."
   },
   "PROFILE": {
     "TITLE": "Settings",
@@ -70,7 +73,12 @@
     "DESCRIPTION": "Description",
     "CREATED": "Created:",
     "UPDATED": "Updated:",
-    "EDIT": "Edit"
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "ADD_CONTENT": "Add content",
+    "VOICE_TITLE": "Voice Recording",
+    "VOICE_PLAY": "Play audio",
+    "VOICE_PLAYING": "Playing..."
   },
   "ADD_DREAM": {
     "TITLE_NEW": "New Dream",
@@ -93,7 +101,10 @@
     "UPDATE": "Update",
     "DELETE": "Delete",
     "BUTTON": "Add Dream",
-    "CONTENT": "Add content"
+    "CONTENT": "Add content",
+    "TAGS": "Tags",
+    "ADD_TAG": "Add Tag",
+    "TAG_PLACEHOLDER": "Tag name..."
   },
   "DREAM_LIST": {
     "TITLE": "Dreams",

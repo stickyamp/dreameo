@@ -1,16 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicModule, LoadingController, AlertController } from '@ionic/angular';
-import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import {
+  IonicModule,
+  LoadingController,
+  AlertController,
+} from "@ionic/angular";
+import { Router, RouterModule } from "@angular/router";
+import { AuthService } from "../../shared/services/auth.service";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  selector: "app-register",
+  templateUrl: "./register.component.html",
+  styleUrls: ["./register.component.scss"],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, RouterModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonicModule,
+    RouterModule,
+    TranslateModule,
+  ],
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
@@ -23,34 +41,45 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private translate: TranslateService
   ) {
-    this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
-    }, { validators: this.passwordMatchValidator });
+    this.registerForm = this.formBuilder.group(
+      {
+        username: ["", [Validators.required, Validators.minLength(3)]],
+        email: ["", [Validators.required, Validators.email]],
+        password: ["", [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ["", [Validators.required]],
+      },
+      { validators: this.passwordMatchValidator }
+    );
+
+    const lang = localStorage.getItem("lang") || "en";
+    this.translate.use(lang);
   }
 
   ngOnInit() {
     // Check if user is already authenticated
-    this.authService.isAuthenticated$.subscribe(isAuth => {
+    this.authService.isAuthenticated$.subscribe((isAuth) => {
       if (isAuth) {
-        this.router.navigate(['/tabs']);
+        this.router.navigate(["/tabs"]);
       }
     });
   }
 
   passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password');
-    const confirmPassword = form.get('confirmPassword');
+    const password = form.get("password");
+    const confirmPassword = form.get("confirmPassword");
 
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
+    if (
+      password &&
+      confirmPassword &&
+      password.value !== confirmPassword.value
+    ) {
       confirmPassword.setErrors({ passwordMismatch: true });
     } else {
-      if (confirmPassword?.errors?.['passwordMismatch']) {
-        delete confirmPassword.errors['passwordMismatch'];
+      if (confirmPassword?.errors?.["passwordMismatch"]) {
+        delete confirmPassword.errors["passwordMismatch"];
         if (Object.keys(confirmPassword.errors).length === 0) {
           confirmPassword.setErrors(null);
         }
@@ -76,20 +105,26 @@ export class RegisterComponent implements OnInit {
         username: this.registerForm.value.username,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
-        confirmPassword: this.registerForm.value.confirmPassword
+        confirmPassword: this.registerForm.value.confirmPassword,
       };
 
       try {
         const result = await this.authService.register(credentials);
 
         if (result.success) {
-          await this.showAlert('Success', 'Account created successfully!');
-          this.router.navigate(['/tabs']);
+          await this.showAlert("Success", "Account created successfully!");
+          this.router.navigate(["/tabs"]);
         } else {
-          await this.showAlert('Registration Failed', result.message || 'Registration failed');
+          await this.showAlert(
+            "Registration Failed",
+            result.message || "Registration failed"
+          );
         }
       } catch (error: any) {
-        await this.showAlert('Registration Failed', error.message || 'Registration failed');
+        await this.showAlert(
+          "Registration Failed",
+          error.message || "Registration failed"
+        );
       } finally {
         this.isLoading = false;
       }
@@ -97,18 +132,18 @@ export class RegisterComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 
   goToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 
   private async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
       message,
-      buttons: ['OK']
+      buttons: ["OK"],
     });
     await alert.present();
   }

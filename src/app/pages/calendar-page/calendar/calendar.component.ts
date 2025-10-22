@@ -6,13 +6,19 @@ import { Dream } from "../../../models/dream.model";
 import { AddDreamComponent } from "../../add-dream/add-dream.component";
 import { DreamListComponent } from "../../dream-list/dream-list.component";
 import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-calendar",
   templateUrl: "./calendar.component.html",
   styleUrls: ["./calendar.component.scss"],
   standalone: true,
-  imports: [CommonModule, IonicModule, ShowDreamsListDirective],
+  imports: [
+    CommonModule,
+    IonicModule,
+    ShowDreamsListDirective,
+    TranslateModule,
+  ],
 })
 export class CalendarComponent implements OnInit {
   currentDate = new Date();
@@ -29,8 +35,12 @@ export class CalendarComponent implements OnInit {
   constructor(
     private dreamService: DreamService,
     private modalController: ModalController,
-    private navController: NavController
-  ) {}
+    private navController: NavController,
+    private translate: TranslateService
+  ) {
+    const lang = localStorage.getItem("lang") || "en";
+    this.translate.use(lang);
+  }
 
   ngOnInit() {
     this.generateCalendar();

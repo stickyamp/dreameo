@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="dream-toolbar">
-    <ion-title i18n="@@dream.detail.title">Sueño</ion-title>
+    <ion-title>{{ "DREAM_DETAIL.TITLE" | translate }}</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
         <ion-icon name="arrow-back"></ion-icon>
@@ -38,7 +38,7 @@
       <div *ngIf="dream.description" class="description-section">
         <h3 class="section-title">
           <ion-icon name="document-text" class="section-icon"></ion-icon>
-          <span i18n="@@dream.detail.description">Descripción</span>
+          <span>{{ "DREAM_DETAIL.DESCRIPTION" | translate }}</span>
         </h3>
         <div class="description-text">
           {{ dream.description }}
@@ -49,14 +49,23 @@
       <div class="audio-section">
         <h3 class="section-title">
           <ion-icon name="volume-high" class="section-icon"></ion-icon>
-          <span i18n="@@add.dream.voice.title">Grabación de Voz</span>
+          <span>{{ "DREAM_DETAIL.VOICE_TITLE" | translate }}</span>
         </h3>
         <div class="audio-controls">
-          <ion-button (click)="(1)" fill="outline" class="play-button" [disabled]="isPlayingAudio">
+          <ion-button
+            (click)="(1)"
+            fill="outline"
+            class="play-button"
+            [disabled]="isPlayingAudio"
+          >
             <ion-icon [name]="isPlayingAudio ? 'pause' : 'play'" slot="start">
             </ion-icon>
-            <span *ngIf="isPlayingAudio" i18n="@@add.dream.voice.playing">Reproduciendo...</span>
-            <span *ngIf="!isPlayingAudio" i18n="@@add.dream.voice.play">Reproducir audio</span>
+            <span *ngIf="isPlayingAudio">{{
+              "DREAM_DETAIL.VOICE_PLAYING" | translate
+            }}</span>
+            <span *ngIf="!isPlayingAudio">{{
+              "DREAM_DETAIL.VOICE_PLAY" | translate
+            }}</span>
           </ion-button>
         </div>
       </div>
@@ -64,24 +73,40 @@
       <!-- No Content Message -->
       <div class="no-content">
         <ion-icon name="moon" class="empty-icon"></ion-icon>
-        <p i18n="@@dream.detail.no.description">Este sueño no tiene descripción ni grabación de voz</p>
-        <ion-button (click)="editDream()" fill="outline" class="add-content-button">
+        <p>
+          {{ "DREAM_DETAIL.NO_DESCRIPTION" | translate }}
+        </p>
+        <ion-button
+          (click)="editDream()"
+          fill="outline"
+          class="add-content-button"
+        >
           <ion-icon name="add" slot="start"></ion-icon>
-          <span i18n="@@add.dream.content">Añadir contenido</span>
+          <span>{{ "DREAM_DETAIL.ADD_CONTENT" | translate }}</span>
         </ion-button>
       </div>
     </div>
 
     <!-- Dream Actions -->
     <div class="dream-actions">
-      <ion-button expand="block" fill="outline" class="edit-button" (click)="editDream()">
+      <ion-button
+        expand="block"
+        fill="outline"
+        class="edit-button"
+        (click)="editDream()"
+      >
         <ion-icon name="create" slot="start"></ion-icon>
-        <span i18n="@@dream.detail.edit">Editar</span>
+        <span>{{ "DREAM_DETAIL.EDIT" | translate }}</span>
       </ion-button>
 
-      <ion-button expand="block" fill="clear" color="danger" (click)="deleteDream()">
+      <ion-button
+        expand="block"
+        fill="clear"
+        color="danger"
+        (click)="deleteDream()"
+      >
         <ion-icon name="trash" slot="start"></ion-icon>
-        <span i18n="@@add.dream.delete">Eliminar</span>
+        <span>{{ "DREAM_DETAIL.DELETE" | translate }}</span>
       </ion-button>
     </div>
   </div>

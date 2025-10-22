@@ -1,30 +1,39 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { DreamService } from '../../shared/services/dream.service';
-import { Dream } from '../../models/dream.model';
-import { AddDreamComponent } from '../add-dream/add-dream.component';
-import { DreamDetailComponent } from '../dream-detail/dream-detail.component';
-import { ShowDreamsListDirective } from 'src/app/shared/directives/add-dream-open-modal.directive';
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { IonicModule, ModalController } from "@ionic/angular";
+import { DreamService } from "../../shared/services/dream.service";
+import { Dream } from "../../models/dream.model";
+import { AddDreamComponent } from "../add-dream/add-dream.component";
+import { DreamDetailComponent } from "../dream-detail/dream-detail.component";
+import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-dream-list',
-  templateUrl: './dream-list.component.html',
-  styleUrls: ['./dream-list.component.scss'],
+  selector: "app-dream-list",
+  templateUrl: "./dream-list.component.html",
+  styleUrls: ["./dream-list.component.scss"],
   standalone: true,
-  imports: [CommonModule, IonicModule, ShowDreamsListDirective]
+  imports: [
+    CommonModule,
+    IonicModule,
+    ShowDreamsListDirective,
+    TranslateModule,
+  ],
 })
 export class DreamListComponent implements OnInit {
   @Input() selectedDate!: string;
   dreams: Dream[] = [];
 
-  @ViewChild('modalOpener') modalOpener!: ShowDreamsListDirective;
-
+  @ViewChild("modalOpener") modalOpener!: ShowDreamsListDirective;
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController
-  ) { }
+    private modalController: ModalController,
+    private translate: TranslateService
+  ) {
+    const lang = localStorage.getItem("lang") || "es";
+    this.translate.use(lang);
+  }
 
   ngOnInit() {
     this.loadDreams();
@@ -37,23 +46,35 @@ export class DreamListComponent implements OnInit {
   getFormattedDate(): string {
     const date = new Date(this.selectedDate);
     const months = [
-      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
     ];
-    return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${
+      months[date.getMonth()]
+    } de ${date.getFullYear()}`;
   }
 
   getFormattedTime(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleTimeString("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   }
 
   getTruncatedDescription(description: string): string {
     if (description.length > 100) {
-      return description.substring(0, 100) + '...';
+      return description.substring(0, 100) + "...";
     }
     return description;
   }
@@ -70,8 +91,8 @@ export class DreamListComponent implements OnInit {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
       componentProps: {
-        selectedDate: this.selectedDate
-      }
+        selectedDate: this.selectedDate,
+      },
     });
 
     modal.onDidDismiss().then((result) => {
@@ -87,8 +108,8 @@ export class DreamListComponent implements OnInit {
     const modal = await this.modalController.create({
       component: DreamDetailComponent,
       componentProps: {
-        dream: dream
-      }
+        dream: dream,
+      },
     });
 
     modal.onDidDismiss().then((result) => {

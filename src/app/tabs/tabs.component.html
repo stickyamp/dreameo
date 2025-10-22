@@ -10,29 +10,59 @@
   </ion-fab>
 
   <ion-tab-bar class="dream-tabs" slot="bottom">
-    <ion-tab-button [routerLink]="['/tabs/history']" routerLinkActive="tab-selected" class="">
-      <ion-icon name="alarm-outline" ios="alarm-outline" md="alarm-outline"></ion-icon>
-      <ion-label i18n="@@tabs.history" class="text-xs font-medium">Historial</ion-label>
+    <ion-tab-button
+      [routerLink]="['/tabs/history']"
+      routerLinkActive="tab-selected"
+      class=""
+    >
+      <ion-icon
+        name="alarm-outline"
+        ios="alarm-outline"
+        md="alarm-outline"
+      ></ion-icon>
+      <ion-label class="text-xs font-medium">{{
+        "TABS.HISTORY" | translate
+      }}</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button [routerLink]="['/tabs/calendar']" routerLinkActive="tab-selected" class="">
+    <ion-tab-button
+      [routerLink]="['/tabs/calendar']"
+      routerLinkActive="tab-selected"
+      class=""
+    >
       <ion-icon name="calendar" ios="calendar-outline" md="calendar"></ion-icon>
-      <ion-label i18n="@@tabs.calendar" class="text-xs font-medium">Calendario</ion-label>
+      <ion-label class="text-xs font-medium">{{
+        "TABS.CALENDAR" | translate
+      }}</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="placeholder">
+    <ion-tab-button class="placeholder"> </ion-tab-button>
 
-    </ion-tab-button>
-
-    <ion-tab-button [routerLink]="['/tabs/statistics']" routerLinkActive="tab-selected" class="">
+    <ion-tab-button
+      [routerLink]="['/tabs/statistics']"
+      routerLinkActive="tab-selected"
+      class=""
+    >
       <ion-icon name="sparkles-sharp"></ion-icon>
-      <ion-label i18n="@@tabs.ai" class="text-xs font-medium">Estadísticas</ion-label>
+      <ion-label class="text-xs font-medium">{{
+        "TABS.STATISTICS" | translate
+      }}</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button [routerLink]="['/tabs/profile']" routerLinkActive="tab-selected" class="">
+    <ion-tab-button
+      [routerLink]="['/tabs/profile']"
+      routerLinkActive="tab-selected"
+      class=""
+    >
       <ion-icon name="person" ios="person-outline" md="person"></ion-icon>
-      <ion-label i18n="@@tabs.profile" class="text-xs font-medium">Perfil</ion-label>
+      <ion-label class="text-xs font-medium">{{
+        "TABS.PROFILE" | translate
+      }}</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
-  <div id="add-dream-modal" #modalOpener="appShowDreamsList" appShowDreamsList></div>
+  <div
+    id="add-dream-modal"
+    #modalOpener="appShowDreamsList"
+    appShowDreamsList
+  ></div>
 </div>

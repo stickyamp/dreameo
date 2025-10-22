@@ -48,12 +48,15 @@
     "STREAK": "Racha de días",
     "TOTAL_DREAMS": "Total de sueños",
     "GOOD_DREAMS": "Sueños buenos",
-    "BAD_DREAMS": "Sueños malos"
+    "BAD_DREAMS": "Sueños malos",
+    "MONTHLY_DREAM_COUNT": "Conteo mensual de sueños"
   },
   "DREAMS": {
     "TITLE": "Sueños",
     "NO_DREAMS": "No hay sueños registrados",
-    "NO_DREAMS_DESCRIPTION": "Comienza registrando tu primer sueño"
+    "NO_DREAMS_DESCRIPTION": "Comienza registrando tu primer sueño",
+    "ADD_DREAM": "Añadir Sueño",
+    "SEARCH_PLACEHOLDER": "Buscar sueños..."
   },
   "PROFILE": {
     "TITLE": "Configuración",
@@ -70,7 +73,12 @@
     "DESCRIPTION": "Descripción",
     "CREATED": "Creado:",
     "UPDATED": "Actualizado:",
-    "EDIT": "Editar"
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "ADD_CONTENT": "Añadir contenido",
+    "VOICE_TITLE": "Grabación de Voz",
+    "VOICE_PLAY": "Reproducir audio",
+    "VOICE_PLAYING": "Reproduciendo..."
   },
   "ADD_DREAM": {
     "TITLE_NEW": "Nuevo Sueño",
@@ -93,7 +101,10 @@
     "UPDATE": "Actualizar",
     "DELETE": "Eliminar",
     "BUTTON": "Añadir Sueño",
-    "CONTENT": "Añadir contenido"
+    "CONTENT": "Añadir contenido",
+    "TAGS": "Etiquetas",
+    "ADD_TAG": "Añadir Etiqueta",
+    "TAG_PLACEHOLDER": "Nombre de etiqueta..."
   },
   "DREAM_LIST": {
     "TITLE": "Sueños",

@@ -1,29 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { DreamService } from '../../shared/services/dream.service';
-import { Dream } from '../../models/dream.model';
-import { DreamDetailComponent } from '../dream-detail/dream-detail.component';
-import { AddDreamComponent } from '../add-dream/add-dream.component';
-import { NoDreamsComponent } from 'src/app/shared/ui-elements/no-dreams-splash.component';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { IonicModule, ModalController } from "@ionic/angular";
+import { DreamService } from "../../shared/services/dream.service";
+import { Dream } from "../../models/dream.model";
+import { DreamDetailComponent } from "../dream-detail/dream-detail.component";
+import { AddDreamComponent } from "../add-dream/add-dream.component";
+import { NoDreamsComponent } from "src/app/shared/ui-elements/no-dreams-splash.component";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-dreams',
-  templateUrl: './dreams.component.html',
-  styleUrls: ['./dreams.component.scss'],
+  selector: "app-dreams",
+  templateUrl: "./dreams.component.html",
+  styleUrls: ["./dreams.component.scss"],
   standalone: true,
-  imports: [CommonModule, IonicModule, NoDreamsComponent]
+  imports: [CommonModule, IonicModule, NoDreamsComponent, TranslateModule],
 })
 export class DreamsComponent implements OnInit {
   recentDreams: Dream[] = [];
   dreamGroups: DreamGroup[] = [];
   private allDreams: Dream[] = [];
-  searchQuery: string = '';
+  searchQuery: string = "";
   showSearch: boolean = false;
   showSearchbar() {
     this.showSearch = true;
     setTimeout(() => {
-      const sb: any = document.querySelector('ion-searchbar');
+      const sb: any = document.querySelector("ion-searchbar");
       if (sb) sb.setFocus && sb.setFocus();
     }, 200);
   }
@@ -35,26 +36,30 @@ export class DreamsComponent implements OnInit {
 
   // Month selector state
   months: { label: string; index: number }[] = [
-    { label: 'enero', index: 0 },
-    { label: 'febrero', index: 1 },
-    { label: 'marzo', index: 2 },
-    { label: 'abril', index: 3 },
-    { label: 'mayo', index: 4 },
-    { label: 'junio', index: 5 },
-    { label: 'julio', index: 6 },
-    { label: 'agosto', index: 7 },
-    { label: 'septiembre', index: 8 },
-    { label: 'octubre', index: 9 },
-    { label: 'noviembre', index: 10 },
-    { label: 'diciembre', index: 11 }
+    { label: "enero", index: 0 },
+    { label: "febrero", index: 1 },
+    { label: "marzo", index: 2 },
+    { label: "abril", index: 3 },
+    { label: "mayo", index: 4 },
+    { label: "junio", index: 5 },
+    { label: "julio", index: 6 },
+    { label: "agosto", index: 7 },
+    { label: "septiembre", index: 8 },
+    { label: "octubre", index: 9 },
+    { label: "noviembre", index: 10 },
+    { label: "diciembre", index: 11 },
   ];
   selectedYear: number = new Date().getFullYear();
   selectedMonthIndex: number = new Date().getMonth();
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController
-  ) { }
+    private modalController: ModalController,
+    private translate: TranslateService
+  ) {
+    const lang = localStorage.getItem("lang") || "es";
+    this.translate.use(lang);
+  }
 
   ngOnInit() {
     this.loadRecentDreams();
@@ -75,14 +80,15 @@ export class DreamsComponent implements OnInit {
     const source = this.allDreams.slice(0, 200); // cap for performance
 
     const filteredByQuery = normalizedQuery
-      ? source.filter(d =>
-        (d.title || '').toLowerCase().includes(normalizedQuery) ||
-        (d.description || '').toLowerCase().includes(normalizedQuery)
-      )
+      ? source.filter(
+          (d) =>
+            (d.title || "").toLowerCase().includes(normalizedQuery) ||
+            (d.description || "").toLowerCase().includes(normalizedQuery)
+        )
       : source;
 
     // Filter by selected month/year
-    const filteredByMonth = filteredByQuery.filter(d => {
+    const filteredByMonth = filteredByQuery.filter((d) => {
       const date = new Date(d.date);
       return (
         date.getMonth() === this.selectedMonthIndex &&
@@ -95,13 +101,15 @@ export class DreamsComponent implements OnInit {
       .sort((a, b) => {
         const byDate = new Date(b.date).getTime() - new Date(a.date).getTime();
         if (byDate !== 0) return byDate;
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
       })
       .slice(0, 200);
 
     const groups: { [key: string]: Dream[] } = {};
 
-    this.recentDreams.forEach(dream => {
+    this.recentDreams.forEach((dream) => {
       const dateKey = dream.date;
       if (!groups[dateKey]) {
         groups[dateKey] = [];
@@ -111,26 +119,27 @@ export class DreamsComponent implements OnInit {
 
     this.dreamGroups = Object.keys(groups)
       .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
-      .map(date => ({
+      .map((date) => ({
         date: this.getFormattedDate(date),
-        dreams: groups[date].sort((a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        )
+        dreams: groups[date].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        ),
       }));
   }
 
   onSearchChange(event: any) {
-    this.searchQuery = event.target?.value || event.detail?.value || '';
+    this.searchQuery = event.target?.value || event.detail?.value || "";
     this.applyFilterAndGroup();
   }
 
   getHeaderTitle(): string {
     if (this.recentDreams.length === 0) {
-      return 'Sueños';
+      return "Sueños";
     }
 
     const count = this.recentDreams.length;
-    return `${count} sueño${count !== 1 ? 's' : ''}`;
+    return `${count} sueño${count !== 1 ? "s" : ""}`;
   }
 
   getFormattedDate(dateString: string): string {
@@ -141,34 +150,54 @@ export class DreamsComponent implements OnInit {
 
     // Check if it's today
     if (date.toDateString() === today.toDateString()) {
-      return 'Hoy';
+      return "Hoy";
     }
 
     // Check if it's yesterday
     if (date.toDateString() === yesterday.toDateString()) {
-      return 'Ayer';
+      return "Ayer";
     }
 
     // Check if it's this week
-    const daysDiff = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    const daysDiff = Math.floor(
+      (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+    );
     if (daysDiff < 7) {
-      const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+      const days = [
+        "domingo",
+        "lunes",
+        "martes",
+        "miércoles",
+        "jueves",
+        "viernes",
+        "sábado",
+      ];
       return days[date.getDay()];
     }
 
     // Format as date
     const months = [
-      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
     ];
     return `${date.getDate()} de ${months[date.getMonth()]}`;
   }
 
   getFormattedTime(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleTimeString("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   }
 
@@ -195,8 +224,8 @@ export class DreamsComponent implements OnInit {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
       componentProps: {
-        selectedDate: new Date().toISOString().split('T')[0]
-      }
+        selectedDate: new Date().toISOString().split("T")[0],
+      },
     });
 
     modal.onDidDismiss().then((result) => {
@@ -212,8 +241,8 @@ export class DreamsComponent implements OnInit {
     const modal = await this.modalController.create({
       component: DreamDetailComponent,
       componentProps: {
-        dream: dream
-      }
+        dream: dream,
+      },
     });
 
     modal.onDidDismiss().then((result) => {
@@ -260,16 +289,16 @@ export class DreamsComponent implements OnInit {
 
   getCurrentMonthYearLabel(): string {
     const date = new Date(this.selectedYear, this.selectedMonthIndex, 1);
-    const monthFormatter = new Intl.DateTimeFormat('es-ES', { month: 'long' });
+    const monthFormatter = new Intl.DateTimeFormat("es-ES", { month: "long" });
     const month = monthFormatter.format(date);
     const year = this.selectedYear;
     // Capitalize first letter and combine without "de"
-    return month.charAt(0).toUpperCase() + month.slice(1) + ' ' + year;
+    return month.charAt(0).toUpperCase() + month.slice(1) + " " + year;
   }
 
   getAdjacentMonthLabel(offset: number): string {
     const d = new Date(this.selectedYear, this.selectedMonthIndex + offset, 1);
-    const formatter = new Intl.DateTimeFormat('es-ES', { month: 'long' });
+    const formatter = new Intl.DateTimeFormat("es-ES", { month: "long" });
     const label = formatter.format(d);
     return label.charAt(0).toUpperCase() + label.slice(1);
   }
