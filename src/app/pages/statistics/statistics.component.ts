@@ -18,6 +18,7 @@ export class DreamStatisticsPage implements OnInit {
   stats = {
     totalDreams: 0,
     lucidDreams: 0,
+    nightmares: 0,
     dreamFrequency: 0,
   };
 
@@ -29,10 +30,15 @@ export class DreamStatisticsPage implements OnInit {
   ];
 
   chartData: number[] = [];
+  chartDataLucid: number[] = [];
+  chartDataNormal: number[] = [];
+  chartDataNightmare: number[] = [];
   chartLabels: string[] = [];
   chartPath: string = "";
+  chartPathLucid: string = "";
+  chartPathNormal: string = "";
+  chartPathNightmare: string = "";
 
-  // This should come from your dream service
   private allDreams: DreamForStatistics[] = [];
 
   constructor(
@@ -58,9 +64,9 @@ export class DreamStatisticsPage implements OnInit {
     this.allDreams = this.dreamService.getAllDreams().map((d) => {
       return {
         id: d.id,
-        date: new Date(d.date), // This is now ALWAYS a Date object
-        isLucid: d.tags?.some((t) => t === DreamType.LUCID.toString()),
-        isNightmare: d.tags?.some((t) => t === DreamType.NIGHTMARE.toString()),
+        date: new Date(d.date),
+        isLucid: d.isLucid ?? false,
+        isNightmare: d.isNightmare ?? false,
         tags: d.tags,
       } as unknown as DreamForStatistics;
     });
@@ -71,14 +77,12 @@ export class DreamStatisticsPage implements OnInit {
     let startDate: Date;
     let filteredDreams: DreamForStatistics[];
 
-    // Determine date range
     switch (period) {
       case "thisWeek":
         {
-          // Get Monday of this week
           startDate = new Date(now);
           const day = startDate.getDay();
-          const diff = startDate.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
+          const diff = startDate.getDate() - day + (day === 0 ? -6 : 1);
           startDate.setDate(diff);
           startDate.setHours(0, 0, 0, 0);
           filteredDreams = this.allDreams.filter((d) => d.date >= startDate);
@@ -101,24 +105,16 @@ export class DreamStatisticsPage implements OnInit {
         filteredDreams = this.allDreams;
     }
 
-    // Update stats
     this.stats.totalDreams = filteredDreams.length;
     this.stats.lucidDreams = filteredDreams.filter((d) => d.isLucid).length;
+    this.stats.nightmares = filteredDreams.filter((d) => d.isNightmare).length;
     this.stats.dreamFrequency = filteredDreams.length;
 
-    // Update dream types percentages
-    const lucidCount = filteredDreams.filter((d) =>
-      d.tags?.some((d) => d === DreamType.LUCID.toString())
-    ).length;
+    const lucidCount = filteredDreams.filter((d) => d.isLucid).length;
     const normalCount = filteredDreams.filter(
-      (d) =>
-        !d.tags?.includes(DreamType.NIGHTMARE.toString()) &&
-        !d.tags?.some((t) => t === DreamType.LUCID.toString())
+      (d) => !d.isLucid && !d.isNightmare
     ).length;
-    const nightmareCount = filteredDreams.filter((d) =>
-      d.tags?.includes(DreamType.NIGHTMARE.toString())
-    ).length;
-    const total = filteredDreams.length || 1;
+    const nightmareCount = filteredDreams.filter((d) => d.isNightmare).length;
 
     this.dreamTypes = [
       { type: "Lucid", count: lucidCount },
@@ -126,31 +122,44 @@ export class DreamStatisticsPage implements OnInit {
       { type: "Nightmare", count: nightmareCount },
     ];
 
-    // Update keywords
     this.updateKeywords(filteredDreams);
   }
 
   private prepareWeeklyData(dreams: DreamForStatistics[], startDate: Date) {
     this.chartLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     this.chartData = new Array(7).fill(0);
+    this.chartDataLucid = new Array(7).fill(0);
+    this.chartDataNormal = new Array(7).fill(0);
+    this.chartDataNightmare = new Array(7).fill(0);
 
     dreams.forEach((dream) => {
       const dayIndex = dream.date.getDay();
-      const adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1; // Convert Sunday from 0 to 6
+      const adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1;
       this.chartData[adjustedIndex]++;
+
+      if (dream.isLucid) {
+        this.chartDataLucid[adjustedIndex]++;
+      }
+      if (dream.isNightmare) {
+        this.chartDataNightmare[adjustedIndex]++;
+      }
+      if (!dream.isLucid && !dream.isNightmare) {
+        this.chartDataNormal[adjustedIndex]++;
+      }
     });
   }
 
   private prepareMonthlyData(dreams: DreamForStatistics[], startDate: Date) {
-    // Calculate the number of weeks in the current month
     const now = new Date();
     const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     const daysInMonth = lastDayOfMonth.getDate();
     const numberOfWeeks = Math.ceil(daysInMonth / 7);
 
-    // Generate date range labels for each week
     this.chartLabels = this.generateWeeklyDateLabels(startDate, numberOfWeeks);
     this.chartData = new Array(numberOfWeeks).fill(0);
+    this.chartDataLucid = new Array(numberOfWeeks).fill(0);
+    this.chartDataNormal = new Array(numberOfWeeks).fill(0);
+    this.chartDataNightmare = new Array(numberOfWeeks).fill(0);
 
     dreams.forEach((dream) => {
       const daysDiff = Math.floor(
@@ -159,6 +168,16 @@ export class DreamStatisticsPage implements OnInit {
       const weekIndex = Math.min(Math.floor(daysDiff / 7), numberOfWeeks - 1);
       if (weekIndex >= 0 && weekIndex < numberOfWeeks) {
         this.chartData[weekIndex]++;
+
+        if (dream.isLucid) {
+          this.chartDataLucid[weekIndex]++;
+        }
+        if (dream.isNightmare) {
+          this.chartDataNightmare[weekIndex]++;
+        }
+        if (!dream.isLucid && !dream.isNightmare) {
+          this.chartDataNormal[weekIndex]++;
+        }
       }
     });
   }
@@ -179,6 +198,9 @@ export class DreamStatisticsPage implements OnInit {
       "Dec",
     ];
     this.chartData = new Array(12).fill(0);
+    this.chartDataLucid = new Array(12).fill(0);
+    this.chartDataNormal = new Array(12).fill(0);
+    this.chartDataNightmare = new Array(12).fill(0);
 
     const now = new Date();
     const oneYearAgo = new Date(
@@ -191,27 +213,44 @@ export class DreamStatisticsPage implements OnInit {
       if (dream.date >= oneYearAgo) {
         const monthIndex = dream.date.getMonth();
         this.chartData[monthIndex]++;
+
+        if (dream.isLucid) {
+          this.chartDataLucid[monthIndex]++;
+        }
+        if (dream.isNightmare) {
+          this.chartDataNightmare[monthIndex]++;
+        }
+        if (!dream.isLucid && !dream.isNightmare) {
+          this.chartDataNormal[monthIndex]++;
+        }
       }
     });
   }
 
   private generateChartPath() {
-    if (this.chartData.length === 0) {
-      this.chartPath = "";
-      return;
+    this.chartPath = this.createPath(this.chartData);
+    this.chartPathLucid = this.createPath(this.chartDataLucid, -2);
+    this.chartPathNormal = this.createPath(this.chartDataNormal, 0);
+    this.chartPathNightmare = this.createPath(this.chartDataNightmare, 2);
+  }
+
+  private createPath(data: number[], offset: number = 0): string {
+    if (data.length === 0) {
+      return "";
     }
 
     const width = 240;
     const height = 100;
     const padding = 5;
     const maxValue = Math.max(...this.chartData, 1);
-    const stepX = width / (this.chartData.length - 1 || 1);
+    const stepX = width / (data.length - 1 || 1);
 
     let path = "";
 
-    this.chartData.forEach((value, index) => {
+    data.forEach((value, index) => {
       const x = index * stepX;
-      const y = height - padding - (value / maxValue) * (height - padding * 2);
+      const y =
+        height - padding - (value / maxValue) * (height - padding * 2) + offset;
 
       if (index === 0) {
         path += `M ${x},${y}`;
@@ -220,9 +259,8 @@ export class DreamStatisticsPage implements OnInit {
       }
     });
 
-    this.chartPath = path;
+    return path;
   }
-
   private generateWeeklyDateLabels(
     startDate: Date,
     numberOfWeeks: number
@@ -236,7 +274,6 @@ export class DreamStatisticsPage implements OnInit {
       const weekEnd = new Date(weekStart);
       weekEnd.setDate(weekStart.getDate() + 6);
 
-      // Handle end of month case
       const now = new Date();
       const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
       if (weekEnd > lastDayOfMonth) {

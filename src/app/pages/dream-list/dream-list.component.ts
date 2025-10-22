@@ -1,12 +1,14 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, DestroyRef, Input, OnInit, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
 import { DreamService } from "../../shared/services/dream.service";
 import { Dream } from "../../models/dream.model";
 import { AddDreamComponent } from "../add-dream/add-dream.component";
-import { DreamDetailComponent } from "../dream-detail/dream-detail.component";
+
 import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { NoDreamsComponent } from "@/app/shared/ui-elements/no-dreams-splash.component";
 
 @Component({
   selector: "app-dream-list",
@@ -18,6 +20,7 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
     IonicModule,
     ShowDreamsListDirective,
     TranslateModule,
+    NoDreamsComponent,
   ],
 })
 export class DreamListComponent implements OnInit {
@@ -29,13 +32,22 @@ export class DreamListComponent implements OnInit {
   constructor(
     private dreamService: DreamService,
     private modalController: ModalController,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private destroyRef: DestroyRef
   ) {
     const lang = localStorage.getItem("lang") || "es";
     this.translate.use(lang);
   }
 
   ngOnInit() {
+    // Subscribe to dreams changes to reactively update the component
+    this.dreamService.dreams$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((dreamsByDate) => {
+        this.dreams = this.dreamService.getDreamsByDate(this.selectedDate);
+      });
+
+    // Load initial dreams
     this.loadDreams();
   }
 
@@ -95,29 +107,20 @@ export class DreamListComponent implements OnInit {
       },
     });
 
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.dreamAdded) {
-        this.loadDreams();
-      }
-    });
-
+    // No need to manually reload dreams - the subscription will handle it
     await modal.present();
   }
 
   async viewDream(dream: Dream) {
     const modal = await this.modalController.create({
-      component: DreamDetailComponent,
+      component: AddDreamComponent,
       componentProps: {
         dream: dream,
+        selectedDate: dream.date,
       },
     });
 
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.dreamUpdated || result.data?.dreamDeleted) {
-        this.loadDreams();
-      }
-    });
-
+    // No need to manually reload dreams - the subscription will handle it
     await modal.present();
   }
 

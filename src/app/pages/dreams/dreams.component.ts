@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
 import { DreamService } from "../../shared/services/dream.service";
 import { Dream } from "../../models/dream.model";
-import { DreamDetailComponent } from "../dream-detail/dream-detail.component";
+
 import { AddDreamComponent } from "../add-dream/add-dream.component";
 import { NoDreamsComponent } from "src/app/shared/ui-elements/no-dreams-splash.component";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
@@ -239,18 +239,14 @@ export class DreamsComponent implements OnInit {
 
   async viewDream(dream: Dream) {
     const modal = await this.modalController.create({
-      component: DreamDetailComponent,
+      component: AddDreamComponent,
       componentProps: {
         dream: dream,
+        selectedDate: dream.date,
       },
     });
 
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.dreamUpdated || result.data?.dreamDeleted) {
-        this.loadRecentDreams();
-      }
-    });
-
+    // No need to manually reload dreams - the subscription will handle it
     await modal.present();
   }
 

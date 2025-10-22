@@ -130,13 +130,18 @@ export class AddDreamComponent implements OnInit {
 
   async startRecording() {
     try {
-      await this.audioService.startListening();
-      this.isRecording = true;
+      const success = await this.audioService.startListening();
+      if (success) {
+        this.isRecording = true;
+        console.log("Grabación iniciada correctamente");
+      } else {
+        //await this.showAlert('Error', 'No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono.');
+      }
     } catch (error) {
       console.error("Error starting recording:", error);
       await this.showAlert(
         "Error",
-        "No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono."
+        `No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono. ${error}`
       );
     }
   }
@@ -149,6 +154,30 @@ export class AddDreamComponent implements OnInit {
       console.error("Error stopping recording:", error);
       await this.showAlert("Error", "Error al detener la grabación.");
       this.isRecording = false;
+    }
+  }
+
+  async toggleRecording() {
+    try {
+      const success = await this.audioService.toggleListening();
+      if (success) {
+        this.isRecording = !this.isRecording;
+        console.log(
+          this.isRecording ? "Grabación iniciada" : "Grabación detenida"
+        );
+      } else if (!this.isRecording) {
+        // Only show error if we were trying to start recording
+        await this.showAlert(
+          "Error",
+          "No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono."
+        );
+      }
+    } catch (error) {
+      console.error("Error toggling recording:", error);
+      await this.showAlert(
+        "Error",
+        "Error al cambiar el estado de la grabación."
+      );
     }
   }
 
@@ -190,11 +219,8 @@ export class AddDreamComponent implements OnInit {
 
   async saveDream() {
     if (this.isSaveDisabled) return;
+
     this.isSaveDisabled = true;
-    if (!this.canSave()) {
-      await this.showAlert("Error", "El título es obligatorio");
-      return;
-    }
 
     try {
       if (this.isEditing && this.dream) {
@@ -203,6 +229,12 @@ export class AddDreamComponent implements OnInit {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
           tags: this.tags.filter((t) => t.checked).map((t) => t.name),
+          isLucid: !!this.tags.find(
+            (t) => t.type == OfficialTags.LUCID && t.checked
+          ),
+          isNightmare: !!this.tags.find(
+            (t) => t.type == OfficialTags.NIGHTMARE && t.checked
+          ),
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });
@@ -213,6 +245,12 @@ export class AddDreamComponent implements OnInit {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
           tags: this.tags.filter((t) => t.checked).map((t) => t.name),
+          isLucid: !!this.tags.find(
+            (t) => t.type == OfficialTags.LUCID && t.checked
+          ),
+          isNightmare: !!this.tags.find(
+            (t) => t.type == OfficialTags.NIGHTMARE && t.checked
+          ),
           //type: this.dreamData.type,
           //audioPath: this.audioPath
         });
@@ -274,5 +312,44 @@ export class AddDreamComponent implements OnInit {
     console.log("confirmation", confirmation);
 
     this.dreamService.deleteTag(tagName);
+  }
+
+  async deleteDream() {
+    if (!this.isEditing || !this.dream) return;
+
+    const alert = await this.alertController.create({
+      header: "Eliminar sueño",
+      message:
+        "¿Estás seguro de que quieres eliminar este sueño? Esta acción no se puede deshacer.",
+      buttons: [
+        {
+          text: "Cancelar",
+          role: "cancel",
+        },
+        {
+          text: "Eliminar",
+          role: "destructive",
+          handler: async () => {
+            try {
+              const deleted = await this.dreamService.deleteDream(
+                this.dream!.id
+              );
+              if (deleted) {
+                this.modalController.dismiss({
+                  dreamDeleted: true,
+                });
+              } else {
+                await this.showAlert("Error", "No se pudo eliminar el sueño.");
+              }
+            } catch (error) {
+              console.error("Error deleting dream:", error);
+              await this.showAlert("Error", "Error al eliminar el sueño.");
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

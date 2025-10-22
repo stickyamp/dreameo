@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background gradient matching your HTML design -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#030014"
+                android:endColor="#0D0A1C"
+                android:angle="270" />
+        </shape>
+    </item>
+    
+    <!-- App Title Text -->
+    <item android:gravity="center">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <size android:width="400dp" android:height="200dp" />
+        </shape>
+    </item>
+    
+    <!-- Logo/Icon (if you have one) -->
+    <item android:gravity="center" android:bottom="100dp">
+        <bitmap
+            android:src="@drawable/splash"
+            android:gravity="center" />
+    </item>
+</layer-list>

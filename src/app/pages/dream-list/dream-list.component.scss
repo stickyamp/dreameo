@@ -35,11 +35,308 @@ ion-content {
   flex-direction: column;
 }
 
-.no-dreams-text {
-  opacity: 0.7;
-  font-size: 16px;
-  margin: 0;
+.month-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 6px 8px;
+  width: 100%;
 }
+
+.nav-side {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-secondary);
+  background: transparent;
+  justify-self: start;
+}
+
+.nav-side:last-child {
+  justify-self: end;
+}
+
+.side-text {
+  font-size: 14px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.current-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  text-align: center;
+  justify-self: center;
+  min-width: 120px;
+}
+
+/* List row */
+.dream-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  //background: rgba(255, 255, 255, 0.06);
+  //border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.dream-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
+  //background: #151515;
+  border-radius: 10px;
+  //border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 56px;
+  height: 56px;
+}
+
+.dream-date .day {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.dream-date .month {
+  font-size: 15px;
+  opacity: 0.8;
+  letter-spacing: 0.6px;
+}
+
+.dream-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.title {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fav-btn {
+  --padding-start: 6px;
+  --padding-end: 6px;
+  color: #ffd60a;
+  --ripple-color: transparent;
+}
+
+.content {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.tags ion-chip.dream-tag {
+  --background: #ffd60a !important;
+  --color: #ffd60a !important;
+  --border-width: 1px;
+  --border-style: solid;
+  font-size: 11px;
+  height: 24px;
+  font-weight: 500;
+  background: #ffe87744 !important;
+}
+
+.dream-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.dream-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  flex: 1;
+  overflow: hidden;
+}
+
+.dream-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+.dream-type-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 10px;
+
+  &.good {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+  }
+
+  &.bad {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    color: white;
+  }
+
+  ion-icon {
+    font-size: 10px;
+  }
+}
+
+.audio-icon {
+  color: var(--ion-color-primary);
+  font-size: 16px;
+}
+
+.chevron-icon {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.dream-description {
+  color: var(--color-text-secondary);
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.dream-meta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dream-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.time-icon {
+  font-size: 12px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.empty-state p {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+}
+
+.fab-dream {
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
+  --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
+  width: 56px;
+  height: 56px;
+}
+
+.dream-toolbar {
+  --ion-toolbar-background: var(--color-surface);
+  --background: var(--color-surface);
+}
+
+.dream-searchbar {
+  padding-top: none;
+}
+
+.dream-searchbar.purple {
+  //--background: linear-gradient(90deg, rgba(67, 56, 202, 0.35), rgba(126, 34, 206, 0.35));
+  --color: #eee;
+  --placeholder-color: #d5c9ff;
+  --icon-color: #d5c9ff;
+  border-radius: 32px;
+  --border-radius: 32px;
+  --searchbar-input-padding-start: 44px;
+  /* More space for icon */
+  --icon-padding-start: 20px;
+  /* Move icon away from edge */
+  //inset-inline-start: 20px !important;
+}
+
+.dream-searchbar.purple::part(input) {
+  padding-left: 44px !important;
+  border-radius: 32px !important;
+}
+
+#ion-title {
+  font-weight: 700;
+  margin-left: 10px !important;
+}
+
+ion-searchbar {
+  --color: var(--color-text-primary);
+  --placeholder-color: var(--color-text-primary);
+  --icon-color: var(--color-text-primary);
+  --clear-button-color: var(--color-text-primary);
+
+  --border-radius: 8px;
+  --box-shadow: none;
+
+  padding: 12px 16px;
+}
+
+// /* Ajustar el input interno */
+// ion-searchbar .searchbar-input-container {
+//   height: 80px;
+// }
+
+// ion-searchbar .searchbar-input {
+//   padding-inline-start: 40px !important;
+//   padding-inline-end: 12px !important;
+//   font-size: 15px;
+//   font-weight: 400;
+// }
+
+// /* Icono de búsqueda */
+// ion-searchbar .searchbar-search-icon {
+//   left: 12px;
+//   width: 18px;
+//   height: 18px;
+//   opacity: 0.6;
+// }
 
 // DREAM CARD MODERN LAYOUT
 .dream-row {
@@ -115,33 +412,398 @@ ion-content {
 .dream-desc {
   color: var(--color-text-secondary);
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.4;
+  margin-bottom: 2px;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  display: block !important;
+  max-height: unset !important;
+  white-space: pre-line !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 .dream-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 4px;
+  gap: var(--spacing-xxs)
 }
 
-.dream-tags ion-chip.dream-tag {
-  --background: #ffd60a !important;
-  --color: #ffd60a !important;
-  --border-width: 1px;
-  --border-style: solid;
-  font-size: 11px;
-  height: 24px;
-  font-weight: 500;
-  background: #ffe87744 !important;
+// Colorful tags (see tagColor pipe/classes)
+.dream-tag {
+  font-size: var(--font-size-xxs) !important;
+  font-weight: var(--font-weight-medium);
+  padding: var(--spacing-xxhs);
+  padding-left: var(--spacing-xxs);
+  padding-right: var(--spacing-xxs);
+  margin: 0;
+  min-height: calc(var(--spacing-xxs));
+  border-radius: calc(var(--spacing-xs)) !important;
+  color: var(--color-text-primary, #fff) !important;
+  background: var(--color-surface, #444a6d) !important;
+  --background: var(--color-surface, #444a6d) !important;
+  --color: var(--color-text-primary, #fff) !important;
 }
 
-.add-dream-section {
-  padding: 20px;
-  text-align: center;
+// // Fallback
+// .dream-tag {
+//   background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%) !important;
+// }
+
+// Hide fav/star btn in cards
+.fav-btn {
+  display: none !important;
 }
 
-.menu-add {
-  --background: var(--menu-add-button);
-  --color: var(--color-text-primary);
+.dream-toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  position: relative;
+  gap: 0;
+  color: var(--color-text-primary);
+}
+
+.dream-toolbar-row .fade-in-right {
+  animation: fadeInRight 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dream-toolbar-row .fade-out-right {
+  animation: fadeOutRight 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+.dream-toolbar-row .fade-in-left {
+  animation: fadeInLeft 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dream-toolbar-row .fade-out-left {
+  animation: fadeOutLeft 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+
+// Apply transitions to ion-searchbar, ion-title, and buttons
+.dream-toolbar-row ion-searchbar,
+.dream-toolbar-row ion-title,
+.dream-toolbar-row ion-buttons[slot="end"] {
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+ion-searchbar.dream-searchbar {
+  flex: 1 1 220px;
+  max-width: 340px;
+  margin-left: 10px;
+  transition: all 0.23s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+  z-index: 2;
+  background: transparent;
+}
+
+ion-buttons[slot="end"] {
+  margin-left: 8px;
+  z-index: 3;
+}
+
+ion-button {
+  --color: #a78bfa;
+  font-size: 22px;
+}
+
+.dream-toolbar-row ion-searchbar {
+  animation: fadeInSlideRight 0.29s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Make toolbar not stretch vertically
+.topbar.ion-toolbar,
+.dream-toolbar.ion-toolbar {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  box-sizing: border-box;
+  padding: 0 !important;
+}
+
+.dream-toolbar-row ion-title,
+.dream-toolbar-row ion-searchbar,
+.dream-toolbar-row ion-buttons[slot="end"] {
+  flex: 1 1 0%;
+  min-width: 0;
+  margin: 0 !important;
+}
+
+.dream-toolbar-row ion-searchbar.dream-searchbar {
+  max-width: 100% !important;
+  flex: 1 1 100%;
+  min-width: 0;
+  margin: 0 !important;
+  width: 100%;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dream-toolbar-row ion-buttons[slot="end"] {
+  flex: none;
+  margin: 0 !important;
+  z-index: 2;
+}
+
+/* Remove searchbar inner padding/margin that forces input narrow */
+ion-searchbar.dream-searchbar::part(container),
+ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
+  padding-left: 36px !important;
+  width: 100% !important;
+}
+
+/* Force input area to fit toolbar height */
+ion-searchbar.dream-searchbar::part(input) {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  align-items: center;
+}
+
+/* --- FORCE HEADER HEIGHT TO FIX SEARCHBAR JUMP --- */
+.topbar.ion-toolbar,
+.dream-toolbar.ion-toolbar {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+.dream-toolbar-row,
+.dream-toolbar-row * {
+  box-sizing: border-box !important;
+}
+
+.dream-toolbar-row ion-searchbar {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-sizing: border-box !important;
+  line-height: 52px !important;
+}
+
+ion-searchbar.dream-searchbar::part(container),
+ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+ion-searchbar.dream-searchbar::part(input),
+ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
+  min-height: 52px !important;
+  height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 52px !important;
+  border: none !important;
+  box-sizing: border-box !important;
+}
+
+ion-searchbar.dream-searchbar {
+  --background: transparent !important;
+}
+
+/* END FORCE HEADER HEIGHT */
+
+/* --- HEADER AND SEARCHBAR HEIGHT FIX --- */
+.topbar.ion-toolbar,
+.dream-toolbar.ion-toolbar,
+.dream-toolbar-row,
+.dream-toolbar-row>*,
+ion-searchbar.dream-searchbar,
+ion-searchbar.dream-searchbar::part(container),
+ion-searchbar.dream-searchbar::part(input),
+.searchbar-input-container.sc-ion-searchbar-md,
+input.searchbar-input.sc-ion-searchbar-md {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.dream-toolbar-row {
+  align-items: center !important;
+}
+
+.dream-toolbar-row ion-title {
+  margin-right: auto !important;
+  text-align: left;
+}
+
+.dream-toolbar-row ion-buttons[slot="end"] {
+  margin-left: auto !important;
+  margin-right: 16px !important;
+}
+
+/* --- END HEADER AND SEARCHBAR HEIGHT FIX --- */
+
+// Modo claro: Estilo de barra superior del buscador y X para destacar con fondo oscuro
+html.ion-palette-light ion-searchbar.dream-searchbar {
+  --background: #2b3040 !important;
+}
+
+html.ion-palette-light ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
+  background: #2b3040 !important;
+}
+
+html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+html.ion-palette-light ion-icon[name="close"] {
+  color: #fff !important;
+}
+
+// SEARCHBAR EN MODO CLARO
+html.ion-palette-light ion-searchbar.dream-searchbar {
+  --background: #2b3040 !important;
+  --placeholder-color: #d1d5db !important;
+  --icon-color: var(--color-text-primary) !important;
+}
+
+html.ion-palette-light ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
+  background: #2b3040 !important;
+}
+
+html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+// Ion Searchbar letras y lupa negras cuando está abierto en modo claro
+html.ion-palette-light ion-searchbar.dream-searchbar {
+  --background: #2b3040 !important;
+  --color: #1a1a1f !important;
+  --placeholder-color: #1a1a1f !important;
+  --icon-color: #1a1a1f !important;
+}
+
+html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
+  background: transparent !important;
+  color: #1a1a1f !important;
+}
+
+// BOTÓN X FONDO NEGRO EN MODO CLARO
+html.ion-palette-light ion-buttons[slot="end"] ion-button {
+  background: #000 !important;
+  border-radius: 50% !important;
+  padding: 8px !important;
+}
+
+html.ion-palette-light ion-buttons[slot="end"] ion-icon[name="close"] {
+  color: #fff !important;
+}
+
+// Icono de buscar (search-outline) negro en modo claro
+html.ion-palette-light .dream-toolbar-row ion-icon[name="search-outline"] {
+  color: var(--color-text-primary) !important;
 }

@@ -31,7 +31,7 @@
     <!-- Dream Counts -->
     <div class="stats-grid">
       <ion-card class="stat-card">
-        <ion-card-content>
+        <ion-card-content class="dream-count">
           <div class="stat-header">
             <span class="stat-label">{{
               "STATISTICS.TOTAL_DREAMS" | translate
@@ -46,7 +46,7 @@
       </ion-card>
 
       <ion-card class="stat-card">
-        <ion-card-content>
+        <ion-card-content class="dream-count">
           <div class="stat-header">
             <span class="stat-label">{{
               "STATISTICS.LUCID_DREAMS" | translate
@@ -56,7 +56,9 @@
               class="info-icon"
             ></ion-icon>
           </div>
-          <div class="stat-value lucid">{{ stats.lucidDreams }}</div>
+          <div class="stat-value lucid">
+            {{ stats.lucidDreams + stats.nightmares }}
+          </div>
         </ion-card-content>
       </ion-card>
     </div>
@@ -88,18 +90,52 @@
           ></ion-icon>
         </div>
 
+        <div class="chart-legend">
+          <div class="legend-item">
+            <span class="legend-color lucid"></span>
+            <span class="legend-label">Lucid</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color normal"></span>
+            <span class="legend-label">Normal</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color nightmare"></span>
+            <span class="legend-label">Nightmare</span>
+          </div>
+        </div>
+
         <div class="chart-container">
           <svg
             class="frequency-chart"
             viewBox="0 0 240 100"
             preserveAspectRatio="none"
           >
+            <!-- Lucid Dreams Line -->
             <path
-              *ngIf="chartPath"
-              [attr.d]="chartPath"
+              *ngIf="chartPathLucid"
+              [attr.d]="chartPathLucid"
+              fill="none"
+              stroke="#8B5CF6"
+              stroke-width="1"
+              vector-effect="non-scaling-stroke"
+            />
+            <!-- Normal Dreams Line -->
+            <path
+              *ngIf="chartPathNormal"
+              [attr.d]="chartPathNormal"
               fill="none"
               stroke="#5B5FC7"
-              stroke-width="2.5"
+              stroke-width="1"
+              vector-effect="non-scaling-stroke"
+            />
+            <!-- Nightmare Dreams Line -->
+            <path
+              *ngIf="chartPathNightmare"
+              [attr.d]="chartPathNightmare"
+              fill="none"
+              stroke="#EF4444"
+              stroke-width="1"
               vector-effect="non-scaling-stroke"
             />
           </svg>
