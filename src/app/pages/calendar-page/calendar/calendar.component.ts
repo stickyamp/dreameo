@@ -35,12 +35,8 @@ export class CalendarComponent implements OnInit {
   constructor(
     private dreamService: DreamService,
     private modalController: ModalController,
-    private navController: NavController,
-    private translate: TranslateService
-  ) {
-    const lang = localStorage.getItem("lang") || "en";
-    this.translate.use(lang);
-  }
+    private navController: NavController
+  ) {}
 
   ngOnInit() {
     this.generateCalendar();

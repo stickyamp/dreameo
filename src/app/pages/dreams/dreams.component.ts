@@ -54,12 +54,8 @@ export class DreamsComponent implements OnInit {
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController,
-    private translate: TranslateService
-  ) {
-    const lang = localStorage.getItem("lang") || "es";
-    this.translate.use(lang);
-  }
+    private modalController: ModalController
+  ) {}
 
   ngOnInit() {
     this.loadRecentDreams();
