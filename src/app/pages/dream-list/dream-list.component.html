@@ -27,7 +27,11 @@
               {{ getTruncatedDescription(dream.description || "") }}
             </div>
             <div class="dream-tags" *ngIf="dream.tags?.length">
-              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag">{{
+              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag" [ngClass]="{
+                'tag-nightmare': tag.type === OfficialTags.NIGHTMARE,
+                'tag-lucid': tag.type === OfficialTags.LUCID,
+                'tag-regular': tag.type === OfficialTags.REGULAR
+              }">{{
                 tag
                 }}</ion-chip>
             </div>

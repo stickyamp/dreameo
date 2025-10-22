@@ -807,3 +807,19 @@ html.ion-palette-light ion-buttons[slot="end"] ion-icon[name="close"] {
 html.ion-palette-light .dream-toolbar-row ion-icon[name="search-outline"] {
   color: var(--color-text-primary) !important;
 }
+
+
+.tag-regular {
+  --background: var(--dream-list-tag-regular-background);
+  --color: var(--dream-list-tag-regular-color);
+}
+
+.tag-nightmare {
+  --background: var(--dream-list-tag-nightmare-background);
+  --color: var(--dream-list-tag-nightmare-color);
+}
+
+.tag-lucid {
+  --background: var(--dream-list-tag-lucid-background);
+  --color: var(--dream-list-tag-lucid-color);
+}

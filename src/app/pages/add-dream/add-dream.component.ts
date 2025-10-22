@@ -226,7 +226,9 @@ export class AddDreamComponent implements OnInit {
         await this.dreamService.updateDream(this.dream.id, {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter((t) => t.checked).map((t) => t.name),
+          tags: this.tags.filter((t) => t.checked).map((t) => {
+            return { name: t.name, type: t.type } as TagModel;
+          }),
           isLucid: !!this.tags.find(
             (t) => t.type == OfficialTags.LUCID && t.checked
           ),
@@ -242,7 +244,9 @@ export class AddDreamComponent implements OnInit {
           date: this.selectedDate,
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter((t) => t.checked).map((t) => t.name),
+          tags: this.tags.filter((t) => t.checked).map((t) => {
+            return { name: t.name, type: t.type } as TagModel;
+          }),
           isLucid: !!this.tags.find(
             (t) => t.type == OfficialTags.LUCID && t.checked
           ),
@@ -293,7 +297,7 @@ export class AddDreamComponent implements OnInit {
     console.log("manuXX aa", this.newTagText);
     if (this.newTagText.length <= 0) return;
 
-    this.dreamService.addTag(this.newTagText);
+    this.dreamService.addTag(this.newTagText, OfficialTags.REGULAR);
     this.cancelTag();
   }
 
