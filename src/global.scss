@@ -95,30 +95,35 @@ html.ion-palette-dark {
 
 // Enable light mode
 html.ion-palette-light {
-  --color-bg: #f7f8fa;
+  --ion-background-color: #f6f7fb;
+  --ion-background-color-rgb: 246, 247, 251;
+  --ion-text-color: #1a1a1a;
+  --ion-text-color-rgb: 26, 26, 26;
+
+  --color-bg: #ffffff;
+  --color-bg-content: #f0f1f6;
   --color-surface: #ffffff;
-  --color-text-primary: #1a1a1f;
-  --color-text-secondary: rgb(109, 111, 117);
-  /* gris neutro para texto secundario */
-  --color-bg-content: rgb(181, 187, 204);
+
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #555b6b;
+
+  /* Morado principal */
   --color-accent: #7c3aed;
-  /* morado principal */
   --color-accent-hover: #8b5cf6;
-  /* tono más claro al hover */
   --color-active: #a78bfa;
-  --color-border: #e1e4eb;
-  --shadow-elevation: 0 2px 6px rgba(0, 0, 0, 0.08);
 
+  --color-border: #d9dbe0;
+  --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.08);
 
-  //CONFIG PAGE
-  --config-danger-button-hover-bg: rgba(241, 24, 8, 0.1);
-  --config-icon-color: rgba(255, 255, 255, 0.7);
-  --config-label-color: #ffffff;
+  /* CONFIG PAGE */
+  --config-danger-button-hover-bg: rgba(241, 24, 8, 0.08);
+  --config-icon-color: rgba(0, 0, 0, 0.6);
+  --config-label-color: #1a1a1a;
 
-  //TAB MENU
-  --menu-add-button: #a78bfa;
-  --menu-tab-button: #c4b5fd;
-  --menu-background-color: #2b3040;
+  /* TAB MENU */
+  --menu-add-button: #7c3aed;
+  --menu-tab-button: #8b5cf6;
+  --menu-background-color: #f0f1f6;
 }
 
 :root {
@@ -212,9 +217,11 @@ textarea {
 }
 
 .dream-container .calendar-day.has-dreams {
-  background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   color: white;
 }
 
@@ -289,9 +296,11 @@ textarea {
 
 // Button styles
 .dream-button {
-  --background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --border-radius: 25px;
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
   --color: white;
@@ -301,9 +310,11 @@ textarea {
 }
 
 .fab-dream {
-  --background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
 }
 
