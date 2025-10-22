@@ -7,6 +7,7 @@ import { AddDreamComponent } from "../../add-dream/add-dream.component";
 import { DreamListComponent } from "../../dream-list/dream-list.component";
 import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { ConfigService } from "@/app/shared/services/config.service";
 
 @Component({
   selector: "app-calendar",
@@ -36,7 +37,8 @@ export class CalendarComponent implements OnInit {
     private dreamService: DreamService,
     private modalController: ModalController,
     private navController: NavController,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private configService: ConfigService
   ) {
     const lang = localStorage.getItem("lang") || "en";
     this.translate.use(lang);
@@ -231,9 +233,8 @@ export class CalendarComponent implements OnInit {
       "Noviembre",
       "Diciembre",
     ];
-    return `${
-      months[this.currentDate.getMonth()]
-    } ${this.currentDate.getFullYear()}`;
+    return `${months[this.currentDate.getMonth()]
+      } ${this.currentDate.getFullYear()}`;
   }
 
   previousMonth() {
@@ -264,6 +265,7 @@ export class CalendarComponent implements OnInit {
   async addDream() {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         selectedDate: this.selectedDate || this.formatDate(new Date()),
       },

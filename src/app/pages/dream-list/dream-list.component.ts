@@ -9,6 +9,7 @@ import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-ope
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NoDreamsComponent } from "@/app/shared/ui-elements/no-dreams-splash.component";
+import { ConfigService } from "@/app/shared/services/config.service";
 
 @Component({
   selector: "app-dream-list",
@@ -33,7 +34,8 @@ export class DreamListComponent implements OnInit {
     private dreamService: DreamService,
     private modalController: ModalController,
     private translate: TranslateService,
-    private destroyRef: DestroyRef
+    private destroyRef: DestroyRef,
+    private configService: ConfigService
   ) {
     const lang = localStorage.getItem("lang") || "es";
     this.translate.use(lang);
@@ -71,9 +73,8 @@ export class DreamListComponent implements OnInit {
       "noviembre",
       "diciembre",
     ];
-    return `${date.getDate()} de ${
-      months[date.getMonth()]
-    } de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${months[date.getMonth()]
+      } de ${date.getFullYear()}`;
   }
 
   getFormattedTime(dateString: string): string {
@@ -102,6 +103,7 @@ export class DreamListComponent implements OnInit {
   async addDream() {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         selectedDate: this.selectedDate,
       },
@@ -114,6 +116,7 @@ export class DreamListComponent implements OnInit {
   async viewDream(dream: Dream) {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         dream: dream,
         selectedDate: dream.date,

@@ -1,7 +1,6 @@
 <ion-header>
-  <ion-toolbar class="dream-toolbar">
-    <ion-title
-      >{{ "DREAM_LIST.TITLE" | translate }} - {{ getFormattedDate() }}
+  <ion-toolbar class="dream-toolbar dream-toolbar-row">
+    <ion-title>{{ "DREAM_LIST.TITLE" | translate }} - {{ getFormattedDate() }}
     </ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
@@ -14,10 +13,7 @@
 <ion-content [fullscreen]="true" class="dream-container">
   <div class="dreams-container">
     <div class="dreams-list" *ngIf="dreams.length > 0">
-      <div
-        class="dream-row"
-        *ngFor="let dream of dreams; trackBy: trackByDream"
-      >
+      <div class="dream-row" *ngFor="let dream of dreams; trackBy: trackByDream">
         <div class="dream-date-col">
           <div class="date-label">
             {{ dream.date | date : "MMM" | uppercase }}
@@ -33,7 +29,7 @@
             <div class="dream-tags" *ngIf="dream.tags?.length">
               <ion-chip *ngFor="let tag of dream.tags" class="dream-tag">{{
                 tag
-              }}</ion-chip>
+                }}</ion-chip>
             </div>
           </div>
         </div>
@@ -53,8 +49,4 @@
   </ion-fab-button>
 </ion-fab>
 
-<div
-  id="add-dream-modal"
-  #modalOpener="appShowDreamsList"
-  appShowDreamsList
-></div>
+<div id="add-dream-modal" #modalOpener="appShowDreamsList" appShowDreamsList></div>

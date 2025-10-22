@@ -116,9 +116,8 @@ export class AddDreamComponent implements OnInit {
       "noviembre",
       "diciembre",
     ];
-    return `${date.getDate()} de ${
-      months[date.getMonth()]
-    } de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${months[date.getMonth()]
+      } de ${date.getFullYear()}`;
   }
 
   canSave(): boolean {
@@ -309,7 +308,11 @@ export class AddDreamComponent implements OnInit {
       "Confirm the delete for tag:",
       tagName
     );
+
+
     console.log("confirmation", confirmation);
+
+    if (!confirmation) return;
 
     this.dreamService.deleteTag(tagName);
   }
