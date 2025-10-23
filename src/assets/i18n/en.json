@@ -53,6 +53,7 @@
     "BAD_DREAMS": "Bad Dreams",
     "MONTHLY_DREAM_COUNT": "Monthly Dream Count",
     "DAYS_SHORT": ["S", "M", "T", "W", "T", "F", "S"],
+    "DAYS_FULL": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     "MONTHS": [
     "January",
     "February",
@@ -66,7 +67,9 @@
     "October",
     "November",
     "December"
-  ]
+  ],
+  "TODAY": "Today",
+  "YESTERDAY": "Yesterday"
   },
   "DREAMS": {
     "TITLE": "Dreams",
@@ -103,6 +106,7 @@
     "TITLE_EDIT": "Edit Dream",
     "TITLE_LABEL": "Title",
     "TITLE_PLACEHOLDER": "Give your dream a name",
+    "DEFAULT_TITLE": "Dream",
     "DESCRIPTION_LABEL": "Description",
     "DESCRIPTION_PLACEHOLDER": "Describe your dream...",
     "TYPE_TITLE": "Dream Type",
@@ -122,7 +126,9 @@
     "CONTENT": "Add content",
     "TAGS": "Tags",
     "ADD_TAG": "Add Tag",
-    "TAG_PLACEHOLDER": "Tag name..."
+    "TAG_PLACEHOLDER": "Tag name...",
+    "TAG_LUCID": "Lucid Dream",
+    "TAG_NIGHTMARE": "Nightmare"
   },
   "DREAM_LIST": {
     "TITLE": "Dreams",

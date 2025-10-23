@@ -53,6 +53,7 @@
     "BAD_DREAMS": "Sueños malos",
     "MONTHLY_DREAM_COUNT": "Conteo mensual de sueños",
     "DAYS_SHORT": ["D", "L", "M", "X", "J", "V", "S"],
+    "DAYS_FULL": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
     "MONTHS": [
     "Enero",
     "Febrero",
@@ -66,7 +67,9 @@
     "Octubre",
     "Noviembre",
     "Diciembre"
-  ]
+  ],
+  "TODAY": "Hoy",
+  "YESTERDAY": "Ayer"
   },
   "DREAMS": {
     "TITLE": "Sueños",
@@ -103,6 +106,7 @@
     "TITLE_EDIT": "Editar Sueño",
     "TITLE_LABEL": "Título",
     "TITLE_PLACEHOLDER": "Dale un nombre a tu sueño",
+    "DEFAULT_TITLE": "Sueño",
     "DESCRIPTION_LABEL": "Descripción",
     "DESCRIPTION_PLACEHOLDER": "Describe tu sueño...",
     "TYPE_TITLE": "Tipo de sueño",
@@ -122,7 +126,9 @@
     "CONTENT": "Añadir contenido",
     "TAGS": "Etiquetas",
     "ADD_TAG": "Añadir Etiqueta",
-    "TAG_PLACEHOLDER": "Nombre de etiqueta..."
+    "TAG_PLACEHOLDER": "Nombre de etiqueta...",
+    "TAG_LUCID": "Sueño Lúcido",
+    "TAG_NIGHTMARE": "Pesadilla"
   },
   "DREAM_LIST": {
     "TITLE": "Sueños",

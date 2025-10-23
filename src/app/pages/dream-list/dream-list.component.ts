@@ -2,7 +2,12 @@ import { Component, DestroyRef, Input, OnInit, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
 import { DreamService } from "../../shared/services/dream.service";
-import { Dream, OfficialTags, TagElement, TagModel } from "../../models/dream.model";
+import {
+  Dream,
+  OfficialTags,
+  TagElement,
+  TagModel,
+} from "../../models/dream.model";
 import { AddDreamComponent } from "../add-dream/add-dream.component";
 
 import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
@@ -29,6 +34,7 @@ export class DreamListComponent implements OnInit {
   dreams: Dream[] = [];
   tags: TagModel[] = [];
   public OfficialTags = OfficialTags;
+  private monthNames: string[] = [];
 
   @ViewChild("modalOpener") modalOpener!: ShowDreamsListDirective;
 
@@ -44,6 +50,8 @@ export class DreamListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.updateLocalizedLabels();
+
     // Subscribe to dreams changes to reactively update the component
     this.dreamService.dreams$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -57,9 +65,21 @@ export class DreamListComponent implements OnInit {
         this.tags = tags;
       });
 
+    // Subscribe to language changes
+    this.translate.onLangChange.subscribe(() => {
+      this.updateLocalizedLabels();
+    });
 
     // Load initial dreams
     this.loadDreams();
+  }
+
+  private updateLocalizedLabels() {
+    this.translate.get("CALENDAR.MONTHS").subscribe((months: string[]) => {
+      if (Array.isArray(months) && months.length === 12) {
+        this.monthNames = months;
+      }
+    });
   }
 
   loadDreams() {
@@ -68,22 +88,26 @@ export class DreamListComponent implements OnInit {
 
   getFormattedDate(): string {
     const date = new Date(this.selectedDate);
-    const months = [
-      "enero",
-      "febrero",
-      "marzo",
-      "abril",
-      "mayo",
-      "junio",
-      "julio",
-      "agosto",
-      "septiembre",
-      "octubre",
-      "noviembre",
-      "diciembre",
-    ];
-    return `${date.getDate()} de ${months[date.getMonth()]
-      } de ${date.getFullYear()}`;
+    const monthName =
+      this.monthNames.length === 12
+        ? this.monthNames[date.getMonth()]
+        : date.getMonth() + 1;
+    const lang = this.translate.currentLang || "es";
+    return lang === "en"
+      ? `${monthName} ${date.getDate()}, ${date.getFullYear()}`
+      : `${date.getDate()} de ${monthName} de ${date.getFullYear()}`;
+  }
+
+  getMonthAbbreviation(date: string): string {
+    const d = new Date(date);
+    const monthName =
+      this.monthNames.length === 12
+        ? this.monthNames[d.getMonth()]
+        : (d.getMonth() + 1).toString();
+    // Get first 3 letters for abbreviation
+    return typeof monthName === "string"
+      ? monthName.substring(0, 3).toUpperCase()
+      : monthName;
   }
 
   getFormattedTime(dateString: string): string {
@@ -112,7 +136,9 @@ export class DreamListComponent implements OnInit {
   async addDream() {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
-      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
+      cssClass: (await this.configService.isDarkMode())
+        ? "ion-palette-dark"
+        : "ion-palette-light",
       componentProps: {
         selectedDate: this.selectedDate,
       },
@@ -125,7 +151,9 @@ export class DreamListComponent implements OnInit {
   async viewDream(dream: Dream) {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
-      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
+      cssClass: (await this.configService.isDarkMode())
+        ? "ion-palette-dark"
+        : "ion-palette-light",
       componentProps: {
         dream: dream,
         selectedDate: dream.date,

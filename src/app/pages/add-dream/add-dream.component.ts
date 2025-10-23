@@ -33,20 +33,7 @@ export class AddDreamComponent implements OnInit {
   newTagText = "";
   isSaveDisabled = false;
 
-  baseTags = [
-    {
-      name: "Lucid Dream",
-      checked: false,
-      canBeRemoved: false,
-      type: OfficialTags.LUCID,
-    },
-    {
-      name: "Nightmare",
-      checked: false,
-      canBeRemoved: false,
-      type: OfficialTags.NIGHTMARE,
-    },
-  ] as TagElement[];
+  baseTags: TagElement[] = [];
 
   tags: TagElement[] = [];
   dreamData = {
@@ -62,12 +49,29 @@ export class AddDreamComponent implements OnInit {
     private audioService: AudioService,
     private destroyRef: DestroyRef,
     private toastNotifierService: ToastNotifierService,
-   
+    private translate: TranslateService
   ) {
-   
+    const lang = localStorage.getItem("lang") || "en";
+    this.translate.use(lang);
   }
 
   async ngOnInit() {
+    // Initialize base tags with translations
+    this.baseTags = [
+      {
+        name: this.translate.instant("ADD_DREAM.TAG_LUCID"),
+        checked: false,
+        canBeRemoved: false,
+        type: OfficialTags.LUCID,
+      },
+      {
+        name: this.translate.instant("ADD_DREAM.TAG_NIGHTMARE"),
+        checked: false,
+        canBeRemoved: false,
+        type: OfficialTags.NIGHTMARE,
+      },
+    ];
+
     if (this.dream) {
       this.isEditing = true;
       this.dreamData.title = this.dream.title;
@@ -77,7 +81,8 @@ export class AddDreamComponent implements OnInit {
       this.selectedDate = this.dream.date;
     } else {
       const dreams = await this.dreamService.getAllDreams();
-      this.dreamData.title = "Dream " + (dreams.length + 1); //TODO TRANSLATE THIS DREAM
+      const dreamWord = this.translate.instant("ADD_DREAM.DEFAULT_TITLE");
+      this.dreamData.title = `${dreamWord} ${dreams.length + 1}`;
     }
 
     this.tags = this.baseTags;
@@ -115,8 +120,9 @@ export class AddDreamComponent implements OnInit {
       "noviembre",
       "diciembre",
     ];
-    return `${date.getDate()} de ${months[date.getMonth()]
-      } de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${
+      months[date.getMonth()]
+    } de ${date.getFullYear()}`;
   }
 
   canSave(): boolean {
@@ -226,9 +232,11 @@ export class AddDreamComponent implements OnInit {
         await this.dreamService.updateDream(this.dream.id, {
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter((t) => t.checked).map((t) => {
-            return { name: t.name, type: t.type } as TagModel;
-          }),
+          tags: this.tags
+            .filter((t) => t.checked)
+            .map((t) => {
+              return { name: t.name, type: t.type } as TagModel;
+            }),
           isLucid: !!this.tags.find(
             (t) => t.type == OfficialTags.LUCID && t.checked
           ),
@@ -244,9 +252,11 @@ export class AddDreamComponent implements OnInit {
           date: this.selectedDate,
           title: this.dreamData.title.trim(),
           description: this.dreamData.description.trim() || undefined,
-          tags: this.tags.filter((t) => t.checked).map((t) => {
-            return { name: t.name, type: t.type } as TagModel;
-          }),
+          tags: this.tags
+            .filter((t) => t.checked)
+            .map((t) => {
+              return { name: t.name, type: t.type } as TagModel;
+            }),
           isLucid: !!this.tags.find(
             (t) => t.type == OfficialTags.LUCID && t.checked
           ),
@@ -311,7 +321,6 @@ export class AddDreamComponent implements OnInit {
       "Confirm the delete for tag:",
       tagName
     );
-
 
     console.log("confirmation", confirmation);
 
