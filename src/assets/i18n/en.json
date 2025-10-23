@@ -82,7 +82,8 @@
     "CLOSE_SESSION": "Close Session",
     "CLEAN_DATA": "Clean Data",
     "ENGLISH": "English",
-    "SPANISH": "Spanish"
+    "SPANISH": "Spanish",
+    "CANCEL": "Cancel"
   },
   "DREAM_DETAIL": {
     "TITLE": "Dream",

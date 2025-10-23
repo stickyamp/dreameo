@@ -14,22 +14,14 @@
     <!-- Settings List -->
     <ion-list class="settings-list">
       <!-- Language Option -->
-      <ion-item detail="true">
+      <ion-item button detail="true" (click)="toggleLanguage($event)">
         <ion-icon name="globe-outline" slot="start"></ion-icon>
         <ion-label>{{ "PROFILE.LANGUAGE" | translate }}</ion-label>
-        <ion-select
-          slot="end"
-          interface="popover"
-          [(ngModel)]="selectedLanguage"
-          (ionChange)="changeLang($event)"
-        >
-          <ion-select-option value="en">{{
-            "PROFILE.ENGLISH" | translate
-          }}</ion-select-option>
-          <ion-select-option value="es">{{
-            "PROFILE.SPANISH" | translate
-          }}</ion-select-option>
-        </ion-select>
+        <ion-note slot="end">{{
+          selectedLanguage === "en"
+            ? ("PROFILE.ENGLISH" | translate)
+            : ("PROFILE.SPANISH" | translate)
+        }}</ion-note>
       </ion-item>
       <!-- Dark Mode Toggle -->
       <ion-item>

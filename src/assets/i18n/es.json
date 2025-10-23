@@ -82,7 +82,8 @@
     "CLOSE_SESSION": "Cerrar sesión",
     "CLEAN_DATA": "Limpiar datos",
     "ENGLISH": "Inglés",
-    "SPANISH": "Español"
+    "SPANISH": "Español",
+    "CANCEL": "Cancelar"
   },
   "DREAM_DETAIL": {
     "TITLE": "Sueño",

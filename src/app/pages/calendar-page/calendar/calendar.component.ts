@@ -45,6 +45,7 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.updateLocalizedLabels();
     this.generateCalendar();
     this.generateWeeklyData();
 
@@ -53,6 +54,24 @@ export class CalendarComponent implements OnInit {
       this.generateCalendar();
       this.generateWeeklyData();
       this.decorateMoonBadges();
+    });
+
+    // Subscribe to language changes to update labels
+    this.translate.onLangChange.subscribe(() => {
+      this.updateLocalizedLabels();
+      this.generateCalendar();
+      this.generateWeeklyData();
+    });
+  }
+
+  private updateLocalizedLabels() {
+    // Días de la semana abreviados
+    this.translate.get("CALENDAR.DAYS_SHORT").subscribe((days: string[]) => {
+      if (Array.isArray(days) && days.length === 7) {
+        this.daysOfWeek = days;
+      } else {
+        this.daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
+      }
     });
   }
 
@@ -218,23 +237,46 @@ export class CalendarComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  // getMonthYearLabel(): string {
+  //   const months = [
+  //     "Enero",
+  //     "Febrero",
+  //     "Marzo",
+  //     "Abril",
+  //     "Mayo",
+  //     "Junio",
+  //     "Julio",
+  //     "Agosto",
+  //     "Septiembre",
+  //     "Octubre",
+  //     "Noviembre",
+  //     "Diciembre",
+  //   ];
+  //   return `${months[this.currentDate.getMonth()]
+  //     } ${this.currentDate.getFullYear()}`;
+  // }
   getMonthYearLabel(): string {
-    const months = [
-      "Enero",
-      "Febrero",
-      "Marzo",
-      "Abril",
-      "Mayo",
-      "Junio",
-      "Julio",
-      "Agosto",
-      "Septiembre",
-      "Octubre",
-      "Noviembre",
-      "Diciembre",
-    ];
-    return `${months[this.currentDate.getMonth()]
-      } ${this.currentDate.getFullYear()}`;
+    const months = this.translate.instant("CALENDAR.MONTHS") as string[];
+    const monthNames =
+      Array.isArray(months) && months.length === 12
+        ? months
+        : [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+          ];
+    return `${
+      monthNames[this.currentDate.getMonth()]
+    } ${this.currentDate.getFullYear()}`;
   }
 
   previousMonth() {
@@ -265,7 +307,9 @@ export class CalendarComponent implements OnInit {
   async addDream() {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
-      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
+      cssClass: (await this.configService.isDarkMode())
+        ? "ion-palette-dark"
+        : "ion-palette-light",
       componentProps: {
         selectedDate: this.selectedDate || this.formatDate(new Date()),
       },
