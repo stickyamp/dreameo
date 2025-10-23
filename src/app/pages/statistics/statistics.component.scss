@@ -90,11 +90,15 @@ ion-title {
     color: var(--color-text-secondary);
 
     &.lucid {
-      color: #8B5CF6;
+      color: var(--statistics-lucid-color);
     }
 
     &.nightmare {
-      color: #EF4444;
+      color: var(--statistics-nighmare-color);
+    }
+
+    &.special {
+      color: var(--statistics-special-color);
     }
   }
 }
@@ -165,15 +169,15 @@ ion-title {
     border-radius: 2px;
 
     &.lucid {
-      background: #8B5CF6;
+      background: var(--statistics-lucid-color);
     }
 
     &.normal {
-      background: #5B5FC7;
+      background: var(--statistics-normal-color);
     }
 
     &.nightmare {
-      background: #EF4444;
+      background: var(--statistics-nightmare-color);
     }
   }
 
@@ -294,15 +298,15 @@ ion-title {
   transition: width 0.3s ease;
 
   &.lucid {
-    background: #8B5CF6;
+    background: var(--statistics-lucid-color);
   }
 
   &.normal {
-    background: #5B5FC7;
+    background: var(--statistics-normal-color);
   }
 
   &.nightmare {
-    background: #EF4444;
+    background: var(--statistics-nightmare-color);
   }
 }
 

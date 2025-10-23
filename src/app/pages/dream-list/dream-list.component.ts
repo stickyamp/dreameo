@@ -2,13 +2,14 @@ import { Component, DestroyRef, Input, OnInit, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
 import { DreamService } from "../../shared/services/dream.service";
-import { Dream } from "../../models/dream.model";
+import { Dream, OfficialTags, TagElement, TagModel } from "../../models/dream.model";
 import { AddDreamComponent } from "../add-dream/add-dream.component";
 
 import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NoDreamsComponent } from "@/app/shared/ui-elements/no-dreams-splash.component";
+import { ConfigService } from "@/app/shared/services/config.service";
 
 @Component({
   selector: "app-dream-list",
@@ -26,6 +27,8 @@ import { NoDreamsComponent } from "@/app/shared/ui-elements/no-dreams-splash.com
 export class DreamListComponent implements OnInit {
   @Input() selectedDate!: string;
   dreams: Dream[] = [];
+  tags: TagModel[] = [];
+  public OfficialTags = OfficialTags;
 
   @ViewChild("modalOpener") modalOpener!: ShowDreamsListDirective;
 
@@ -33,7 +36,8 @@ export class DreamListComponent implements OnInit {
     private dreamService: DreamService,
     private modalController: ModalController,
     private translate: TranslateService,
-    private destroyRef: DestroyRef
+    private destroyRef: DestroyRef,
+    private configService: ConfigService
   ) {
     const lang = localStorage.getItem("lang") || "es";
     this.translate.use(lang);
@@ -46,6 +50,13 @@ export class DreamListComponent implements OnInit {
       .subscribe((dreamsByDate) => {
         this.dreams = this.dreamService.getDreamsByDate(this.selectedDate);
       });
+
+    this.dreamService.tags$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((tags) => {
+        this.tags = tags;
+      });
+
 
     // Load initial dreams
     this.loadDreams();
@@ -71,9 +82,8 @@ export class DreamListComponent implements OnInit {
       "noviembre",
       "diciembre",
     ];
-    return `${date.getDate()} de ${
-      months[date.getMonth()]
-    } de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${months[date.getMonth()]
+      } de ${date.getFullYear()}`;
   }
 
   getFormattedTime(dateString: string): string {
@@ -102,6 +112,7 @@ export class DreamListComponent implements OnInit {
   async addDream() {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         selectedDate: this.selectedDate,
       },
@@ -114,6 +125,7 @@ export class DreamListComponent implements OnInit {
   async viewDream(dream: Dream) {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         dream: dream,
         selectedDate: dream.date,

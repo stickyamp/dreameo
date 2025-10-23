@@ -38,6 +38,7 @@
   --spacing-md: 24px;
   --spacing-lg: 32px;
   --spacing-xl: 64px;
+  --spacing-xxl: 84px;
 
   /* ------------------------------
      FONT SIZES
@@ -91,6 +92,23 @@ html.ion-palette-dark {
   --menu-add-button: #a78bfa;
   --menu-tab-button: #c4b5fd;
   --menu-background-color: #2b3040;
+
+  //STATISTICS
+  --statistics-lucid-color: #8B5CF6;
+  --statistics-nightmare-color: #EF4444;
+  --statistics-normal-color: #5B5FC7;
+  --statistics-special-color: #c8fad4;
+
+
+  //DREAM LIST
+  --dream-list-tag-lucid-color: var(--color-text-primary);
+  --dream-list-tag-lucid-background: #8B5CF6;
+
+  --dream-list-tag-nightmare-color: var(--color-text-primary);
+  --dream-list-tag-nightmare-background: #EF4444;
+
+  --dream-list-tag-regular-color: var(--color-text-primary);
+  --dream-list-tag-regular-background: #c8fad4;
 }
 
 // Enable light mode
@@ -124,6 +142,22 @@ html.ion-palette-light {
   --menu-add-button: #7c3aed;
   --menu-tab-button: #8b5cf6;
   --menu-background-color: #f0f1f6;
+
+  //STATISTICS
+  --statistics-lucid-color: #8B5CF6;
+  --statistics-nightmare-color: #EF4444;
+  --statistics-normal-color: #5B5FC7;
+  --statistics-special-color: #c8fad4;
+
+  //DREAM LIST
+  --dream-list-tag-lucid-color: var(--color-text-primary);
+  --dream-list-tag-lucid-background: #8B5CF6;
+
+  --dream-list-tag-nightmare-color: var(--color-text-primary);
+  --dream-list-tag-nightmare-background: #EF4444;
+
+  --dream-list-tag-regular-color: var(--color-text-primary);
+  --dream-list-tag-regular-background: #c8fad4;
 }
 
 :root {
@@ -217,11 +251,9 @@ textarea {
 }
 
 .dream-container .calendar-day.has-dreams {
-  background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   color: white;
 }
 
@@ -296,11 +328,9 @@ textarea {
 
 // Button styles
 .dream-button {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   --border-radius: 25px;
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
   --color: white;
@@ -310,11 +340,9 @@ textarea {
 }
 
 .fab-dream {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-primary),
-    var(--ion-color-secondary)
-  );
+  --background: linear-gradient(135deg,
+      var(--ion-color-primary),
+      var(--ion-color-secondary));
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
 }
 
@@ -449,4 +477,14 @@ ion-datetime::part(next-button) {
   position: absolute;
   right: 8px;
   color: var(--color-text-primary);
+}
+
+//STYLING ALERTS IONIC GLOBALLY
+
+ion-alert {
+  //--ion-backdrop-opacity: 0.1;
+  --ion-text-color: var(--color-text-primary);
+  --ion-overlay-background-color: var(--color-bg);
+  --ion-color-step-550: var(--color-text-secondary);
+  --ion-color-primary: var(--color-text-secondary);
 }

@@ -2,11 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
 import { DreamService } from "../../shared/services/dream.service";
-import { Dream } from "../../models/dream.model";
+import { Dream, OfficialTags } from "../../models/dream.model";
 
 import { AddDreamComponent } from "../add-dream/add-dream.component";
 import { NoDreamsComponent } from "src/app/shared/ui-elements/no-dreams-splash.component";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { ConfigService } from "@/app/shared/services/config.service";
 
 @Component({
   selector: "app-dreams",
@@ -21,6 +22,9 @@ export class DreamsComponent implements OnInit {
   private allDreams: Dream[] = [];
   searchQuery: string = "";
   showSearch: boolean = false;
+  public OfficialTags = OfficialTags;
+
+
   showSearchbar() {
     this.showSearch = true;
     setTimeout(() => {
@@ -54,8 +58,13 @@ export class DreamsComponent implements OnInit {
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController
-  ) {}
+    private modalController: ModalController,
+    private translate: TranslateService,
+    private configService: ConfigService
+  ) {
+    const lang = localStorage.getItem("lang") || "es";
+    this.translate.use(lang);
+  }
 
   ngOnInit() {
     this.loadRecentDreams();
@@ -77,10 +86,10 @@ export class DreamsComponent implements OnInit {
 
     const filteredByQuery = normalizedQuery
       ? source.filter(
-          (d) =>
-            (d.title || "").toLowerCase().includes(normalizedQuery) ||
-            (d.description || "").toLowerCase().includes(normalizedQuery)
-        )
+        (d) =>
+          (d.title || "").toLowerCase().includes(normalizedQuery) ||
+          (d.description || "").toLowerCase().includes(normalizedQuery)
+      )
       : source;
 
     // Filter by selected month/year
@@ -236,6 +245,7 @@ export class DreamsComponent implements OnInit {
   async viewDream(dream: Dream) {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         dream: dream,
         selectedDate: dream.date,

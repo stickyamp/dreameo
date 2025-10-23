@@ -1,31 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="topbar dream-toolbar">
     <div class="dream-toolbar-row">
-      <ion-title
-        id="ion-title"
-        class="page-title"
-        *ngIf="!showSearch"
-        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }"
-        >{{ "DREAMS.TITLE" | translate }}</ion-title
-      >
-      <ion-buttons
-        slot="end"
-        *ngIf="!showSearch"
-        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }"
-      >
+      <ion-title id="ion-title" class="page-title" *ngIf="!showSearch"
+        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }">{{ "DREAMS.TITLE" | translate
+        }}</ion-title>
+      <ion-buttons slot="end" *ngIf="!showSearch"
+        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }">
         <ion-button (click)="showSearchbar()">
           <ion-icon name="search-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-searchbar
-        *ngIf="showSearch"
-        class="dream-searchbar purple fade-in-right"
-        [placeholder]="'DREAMS.SEARCH_PLACEHOLDER' | translate"
-        debounce="250"
-        show-clear-button="focus"
-        (ionInput)="onSearchChange($event)"
-        [autofocus]="true"
-      >
+      <ion-searchbar *ngIf="showSearch" class="dream-searchbar purple fade-in-right"
+        [placeholder]="'DREAMS.SEARCH_PLACEHOLDER' | translate" debounce="250" show-clear-button="focus"
+        (ionInput)="onSearchChange($event)" [autofocus]="true">
         <ion-buttons slot="end">
           <ion-button (click)="hideSearch()">
             <ion-icon name="close"></ion-icon>
@@ -52,10 +39,7 @@
 <ion-content [fullscreen]="true" class="dream-container">
   <div class="dreams-container">
     <div class="dreams-list" *ngIf="recentDreams.length > 0">
-      <div
-        class="dream-row"
-        *ngFor="let dream of recentDreams; trackBy: trackByDream"
-      >
+      <div class="dream-row" *ngFor="let dream of recentDreams; trackBy: trackByDream">
         <div class="dream-date-col">
           <div class="date-label">
             {{ dream.date | date : "MMM" | uppercase }}
@@ -69,9 +53,13 @@
               {{ getTruncatedDescription(dream.description || "") }}
             </div>
             <div class="dream-tags" *ngIf="dream.tags?.length">
-              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag">{{
-                tag
-              }}</ion-chip>
+              <ion-chip *ngFor="let tag of dream.tags" class="dream-tag" [ngClass]="{
+                'tag-nightmare': tag.type === OfficialTags.NIGHTMARE,
+                'tag-lucid': tag.type === OfficialTags.LUCID,
+                'tag-regular': tag.type === OfficialTags.REGULAR
+              }">
+                {{tag.name
+                }}</ion-chip>
             </div>
           </div>
         </div>
@@ -80,13 +68,6 @@
 
     <!-- Empty State -->
     <div class="empty-state" *ngIf="recentDreams.length === 0">
-      <!-- <div class="empty-icon">🌙</div>
-      <h3 i18n="@@dreams.no.dreams">No hay sueños registrados</h3>
-      <p i18n="@@dreams.no.dreams.description">Comienza registrando tu primer sueño</p>
-      <ion-button class="dream-button" (click)="addDream()">
-        <ion-icon name="add-circle" slot="start"></ion-icon>
-        Añadir Sueño
-      </ion-button> -->
       <app-no-dreams></app-no-dreams>
     </div>
   </div>

@@ -191,8 +191,8 @@ export class DreamService {
 
   getDreamStatistics(): DreamStatistics {
     const allDreams = this.getAllDreams();
-    const goodDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag === OfficialTags.REGULAR)).length;
-    const badDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag === OfficialTags.NIGHTMARE)).length;
+    const goodDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag.type === OfficialTags.REGULAR)).length;
+    const badDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag.type === OfficialTags.NIGHTMARE)).length;
     const streakDays = this.calculateStreakDays();
 
     return {
@@ -261,9 +261,10 @@ export class DreamService {
   }
 
 
-  public async addTag(tagName: string) {
+  public async addTag(tagName: string, type: OfficialTags) {
     const newTag: TagModel = {
       id: this.generateId(),
+      type: type,
       name: tagName
     };
 

@@ -3,7 +3,7 @@ export interface Dream {
   date: string;       // YYYY-MM-DD
   title: string;
   description?: string;
-  tags?: string[];
+  tags?: TagModel[];
   createdAt: string;
   updatedAt?: string;
   isLucid: boolean;
@@ -58,6 +58,7 @@ export interface TagElement {
 
 export interface TagModel {
   name: string,
-  id: string
+  id: string,
+  type: OfficialTags
 }
 

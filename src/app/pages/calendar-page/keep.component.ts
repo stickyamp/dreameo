@@ -5,6 +5,7 @@ import { DreamService } from '../../shared/services/dream.service';
 import { Dream, DreamStatistics } from '../../models/dream.model';
 import { AddDreamComponent } from '../add-dream/add-dream.component';
 import { DreamListComponent } from '../dream-list/dream-list.component';
+import { ConfigService } from '@/app/shared/services/config.service';
 
 @Component({
   selector: 'app-keep',
@@ -27,7 +28,8 @@ export class CalendarComponent implements OnInit {
 
   constructor(
     private dreamService: DreamService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private configService: ConfigService
   ) { }
 
   ngOnInit() {
@@ -118,6 +120,7 @@ export class CalendarComponent implements OnInit {
   async addDream() {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
+      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
       componentProps: {
         selectedDate: this.selectedDate || this.formatDate(new Date())
       }
