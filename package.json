@@ -36,6 +36,7 @@
     "@capacitor/keyboard": "5.0.8",
     "@capacitor/preferences": "5.0.7",
     "@capacitor/status-bar": "5.0.7",
+    "@codetrix-studio/capacitor-google-auth": "^3.3.4",
     "@ionic/angular": "^8.7.6",
     "@ionic/core": "^8.7.6",
     "@ionic/pwa-elements": "^3.3.0",

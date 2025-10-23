@@ -22,10 +22,24 @@
       <!-- Email Field -->
       <div class="form-group">
         <label class="form-label" i18n="@@login.email">Email</label>
-        <ion-input formControlName="email" type="email" i18n-placeholder="@@login.email.placeholder" placeholder="Enter your email" class="form-input"
-          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        <ion-input
+          formControlName="email"
+          type="email"
+          i18n-placeholder="@@login.email.placeholder"
+          placeholder="Enter your email"
+          class="form-input"
+          [class.error]="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+        >
         </ion-input>
-        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-message" i18n="@@login.email.error">
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+          class="error-message"
+          i18n="@@login.email.error"
+        >
           Please enter a valid email
         </div>
       </div>
@@ -33,34 +47,86 @@
       <!-- Password Field -->
       <div class="form-group">
         <label class="form-label" i18n="@@login.password">Password</label>
-        <ion-input formControlName="password" [type]="showPassword ? 'text' : 'password'"
-          i18n-placeholder="@@login.password.placeholder" placeholder="Enter your password" class="form-input"
-          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()" class="password-toggle">
-            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        <ion-input
+          formControlName="password"
+          [type]="showPassword ? 'text' : 'password'"
+          i18n-placeholder="@@login.password.placeholder"
+          placeholder="Enter your password"
+          class="form-input"
+          [class.error]="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          <ion-button
+            fill="clear"
+            slot="end"
+            (click)="togglePasswordVisibility()"
+            class="password-toggle"
+          >
+            <ion-icon
+              [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+            ></ion-icon>
           </ion-button>
         </ion-input>
-        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message" i18n="@@login.password.error">
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+          class="error-message"
+          i18n="@@login.password.error"
+        >
           Password is required
         </div>
       </div>
 
       <!-- Forgot Password Link -->
       <div class="forgot-password">
-        <a href="#" class="forgot-link" i18n="@@login.forgot">Forgot Password?</a>
+        <a href="#" class="forgot-link" i18n="@@login.forgot"
+          >Forgot Password?</a
+        >
       </div>
 
       <!-- Login Button -->
-      <ion-button type="submit" expand="block" class="login-button" [disabled]="loginForm.invalid || isLoading">
+      <ion-button
+        type="submit"
+        expand="block"
+        class="login-button"
+        [disabled]="loginForm.invalid || isLoading"
+      >
         <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
         <span *ngIf="!isLoading" i18n="@@login.button">Log In</span>
       </ion-button>
     </form>
 
+    <!-- Divider -->
+    <div class="divider">
+      <span class="divider-text">{{ "LOGIN.OR" | translate }}</span>
+    </div>
+
+    <!-- Google Login Button -->
+    <ion-button
+      expand="block"
+      class="google-button"
+      (click)="onGoogleLogin()"
+      [disabled]="isLoading"
+    >
+      <ion-icon slot="start" name="logo-google"></ion-icon>
+      <span>{{ "LOGIN.GOOGLE_BUTTON" | translate }}</span>
+    </ion-button>
+
     <!-- Sign Up Link -->
     <div class="signup-link">
-      <span class="signup-text" i18n="@@login.signup.text">Don't have an account? </span>
-      <a (click)="goToRegister()" class="signup-link-text" i18n="@@login.signup.link">Sign Up</a>
+      <span class="signup-text" i18n="@@login.signup.text"
+        >Don't have an account?
+      </span>
+      <a
+        (click)="goToRegister()"
+        class="signup-link-text"
+        i18n="@@login.signup.link"
+        >Sign Up</a
+      >
     </div>
   </div>
 </ion-content>

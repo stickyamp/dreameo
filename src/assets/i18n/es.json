@@ -10,6 +10,8 @@
     "PASSWORD_ERROR": "La contraseña es requerida",
     "FORGOT": "¿Olvidaste tu contraseña?",
     "BUTTON": "Iniciar Sesión",
+    "OR": "o",
+    "GOOGLE_BUTTON": "Continuar con Google",
     "SIGNUP_TEXT": "¿No tienes una cuenta? ",
     "SIGNUP_LINK": "Registrarse"
   },

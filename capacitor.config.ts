@@ -1,11 +1,11 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'com.dreamjournal.app',
-  appName: 'Dream Journal',
-  webDir: 'dist',
+  appId: "com.dreamjournal.app",
+  appName: "Dream Journal",
+  webDir: "dist",
   server: {
-    androidScheme: 'https'
+    androidScheme: "https",
   },
   plugins: {
     SplashScreen: {
@@ -16,13 +16,18 @@ const config: CapacitorConfig = {
       splashFullScreen: true,
       splashImmersive: true,
       launchAutoHide: true,
-      androidScaleType: "CENTER_CROP"
+      androidScaleType: "CENTER_CROP",
     },
     StatusBar: {
-      style: 'dark',
-      backgroundColor: "#030014"
-    }
-  }
+      style: "dark",
+      backgroundColor: "#030014",
+    },
+    GoogleAuth: {
+      scopes: ["profile", "email"],
+      serverClientId: "YOUR_WEB_CLIENT_ID.apps.googleusercontent.com",
+      forceCodeForRefreshToken: true,
+    },
+  },
 };
 
 export default config;
