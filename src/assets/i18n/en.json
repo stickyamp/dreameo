@@ -51,7 +51,22 @@
     "TOTAL_DREAMS": "Total Dreams",
     "GOOD_DREAMS": "Good Dreams",
     "BAD_DREAMS": "Bad Dreams",
-    "MONTHLY_DREAM_COUNT": "Monthly Dream Count"
+    "MONTHLY_DREAM_COUNT": "Monthly Dream Count",
+    "DAYS_SHORT": ["S", "M", "T", "W", "T", "F", "S"],
+    "MONTHS": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
   },
   "DREAMS": {
     "TITLE": "Dreams",

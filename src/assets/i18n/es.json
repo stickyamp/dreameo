@@ -51,7 +51,22 @@
     "TOTAL_DREAMS": "Total de sueños",
     "GOOD_DREAMS": "Sueños buenos",
     "BAD_DREAMS": "Sueños malos",
-    "MONTHLY_DREAM_COUNT": "Conteo mensual de sueños"
+    "MONTHLY_DREAM_COUNT": "Conteo mensual de sueños",
+    "DAYS_SHORT": ["D", "L", "M", "X", "J", "V", "S"],
+    "MONTHS": [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+  ]
   },
   "DREAMS": {
     "TITLE": "Sueños",
