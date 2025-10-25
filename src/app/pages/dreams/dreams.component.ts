@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
 import { DreamService } from "../../shared/services/dream.service";
@@ -15,6 +15,7 @@ import { ConfigService } from "@/app/shared/services/config.service";
   styleUrls: ["./dreams.component.scss"],
   standalone: true,
   imports: [CommonModule, IonicModule, NoDreamsComponent, TranslateModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DreamsComponent implements OnInit {
   recentDreams: Dream[] = [];
