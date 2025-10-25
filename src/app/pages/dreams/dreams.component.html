@@ -15,7 +15,7 @@
         (ionInput)="onSearchChange($event)" [autofocus]="true">
         <ion-buttons slot="end">
           <ion-button (click)="hideSearch()">
-            <ion-icon name="close"></ion-icon>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-searchbar>
@@ -25,11 +25,11 @@
     <div class="month-nav">
       <button class="nav-side" (click)="previousMonth()">
         <ion-icon name="chevron-back"></ion-icon>
-        <span class="side-text">{{ getAdjacentMonthLabel(-1) }}</span>
+        <span class="side-text">{{ previousMonthText }}</span>
       </button>
-      <div class="current-text">{{ getCurrentMonthYearLabel() }}</div>
+      <div class="current-text">{{ currentMonthText }}</div>
       <button class="nav-side" (click)="nextMonth()">
-        <span class="side-text">{{ getAdjacentMonthLabel(1) }}</span>
+        <span class="side-text">{{ nextMonthText }}</span>
         <ion-icon name="chevron-forward"></ion-icon>
       </button>
     </div>
@@ -50,7 +50,7 @@
           <div class="dream-main">
             <div class="dream-title">{{ dream.title }}</div>
             <div class="dream-desc">
-              {{ getTruncatedDescription(dream.description || "") }}
+              {{ dream.description }}
             </div>
             <div class="dream-tags" *ngIf="dream.tags?.length">
               <ion-chip *ngFor="let tag of dream.tags" class="dream-tag" [ngClass]="{

@@ -55,11 +55,13 @@
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab-area">
 
     @if(isListening){
-    <ion-fab-button color="danger" (click)="stopRecording()">
-      <ion-icon name="barcode-outline"></ion-icon>
+    <ion-fab-button color="danger" (click)="stopRecording()" class="recording-btn">
+      <div class="recording-icon-wrapper">
+        <ion-icon name="radio-button-on" class="recording-icon"></ion-icon>
+      </div>
     </ion-fab-button>
     }@else{
-    <ion-fab-button color="success" (click)="startRecording()">
+    <ion-fab-button color="success" (click)="startRecording()" class="mic-btn">
       <ion-icon name="mic"></ion-icon>
     </ion-fab-button>
     }

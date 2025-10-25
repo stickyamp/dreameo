@@ -284,9 +284,9 @@ ion-content {
 
 .dream-searchbar.purple {
   //--background: linear-gradient(90deg, rgba(67, 56, 202, 0.35), rgba(126, 34, 206, 0.35));
-  --color: #eee;
-  --placeholder-color: #d5c9ff;
-  --icon-color: #d5c9ff;
+  --color: var(--color-text-primary);
+  --placeholder-color: var(--color-text-secondary);
+  --icon-color: #var(--color-text-primary);
   border-radius: 32px;
   --border-radius: 32px;
   --searchbar-input-padding-start: 44px;

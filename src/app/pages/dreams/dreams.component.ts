@@ -24,6 +24,11 @@ export class DreamsComponent implements OnInit {
   showSearch: boolean = false;
   public OfficialTags = OfficialTags;
 
+  previousMonthText = '';
+  currentMonthText = '';
+  nextMonthText = '';
+
+
   showSearchbar() {
     this.showSearch = true;
     setTimeout(() => {
@@ -33,8 +38,8 @@ export class DreamsComponent implements OnInit {
   }
   hideSearch() {
     this.showSearch = false;
-    // Optionally clear search: this.searchQuery = '';
-    // this.applyFilterAndGroup();
+    this.searchQuery = '';
+    this.applyFilterAndGroup();
   }
 
   // Month selector state
@@ -57,16 +62,19 @@ export class DreamsComponent implements OnInit {
   ngOnInit() {
     this.updateLocalizedLabels();
     this.loadRecentDreams();
+    this.refreshData();
 
     // Subscribe to dreams changes
     this.dreamService.dreams$.subscribe(() => {
       this.loadRecentDreams();
+      this.refreshData();
     });
 
     // Subscribe to language changes
     this.translate.onLangChange.subscribe(() => {
       this.updateLocalizedLabels();
       this.applyFilterAndGroup();
+      this.refreshData();
     });
   }
 
@@ -96,10 +104,10 @@ export class DreamsComponent implements OnInit {
 
     const filteredByQuery = normalizedQuery
       ? source.filter(
-          (d) =>
-            (d.title || "").toLowerCase().includes(normalizedQuery) ||
-            (d.description || "").toLowerCase().includes(normalizedQuery)
-        )
+        (d) =>
+          (d.title || "").toLowerCase().includes(normalizedQuery) ||
+          (d.description || "").toLowerCase().includes(normalizedQuery)
+      )
       : source;
 
     // Filter by selected month/year
@@ -201,21 +209,6 @@ export class DreamsComponent implements OnInit {
     });
   }
 
-  getTruncatedDescription(description: string): string {
-    // if (description.length > 80) {
-    //   return description.substring(0, 80) + '...';
-    // }
-    return description;
-  }
-
-  // getDreamType(dream: Dream): 'good' | 'bad' {
-  //   return dream.type || 'good'; // Default to 'good' for existing dreams without type
-  // }
-
-  // getDreamTypeIcon(dream: Dream): string {
-  //   return this.getDreamType(dream) === 'good' ? 'heart' : 'warning';
-  // }
-
   getDisplayedDreams(dreams: Dream[]): Dream[] {
     return dreams.slice(0, 5); // Show maximum 5 dreams
   }
@@ -268,6 +261,7 @@ export class DreamsComponent implements OnInit {
     } else {
       this.selectedMonthIndex -= 1;
     }
+    this.refreshData();
     this.applyFilterAndGroup();
   }
 
@@ -278,6 +272,7 @@ export class DreamsComponent implements OnInit {
     } else {
       this.selectedMonthIndex += 1;
     }
+    this.refreshData();
     this.applyFilterAndGroup();
   }
 
@@ -302,14 +297,12 @@ export class DreamsComponent implements OnInit {
     return this.monthNames.length === 12 ? this.monthNames[monthIndex] : "";
   }
 
-  // async toggleFavorite(dream: Dream, event?: Event) {
-  //   if (event) {
-  //     event.stopPropagation();
-  //     event.preventDefault();
-  //   }
-  //   await this.dreamService.updateDream(dream.id, { favorite: !dream.favorite });
-  //   this.loadRecentDreams();
-  // }
+
+  refreshData() {
+    this.previousMonthText = this.getAdjacentMonthLabel(-1);
+    this.currentMonthText = this.getCurrentMonthYearLabel();
+    this.nextMonthText = this.getAdjacentMonthLabel(1);
+  }
 }
 
 interface DreamGroup {

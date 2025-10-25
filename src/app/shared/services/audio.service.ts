@@ -69,8 +69,6 @@ export class AudioService {
       this.isListeningSubject.next(false)
       return this.transcript;
     } catch (error) {
-      console.error('Error al iniciar el reconocimiento de voz:', error);
-      await this.showAlert('Error', `Error al iniciar el reconocimiento de voz: ${error}`);
       this.isListeningSubject.next(false)
       return this.transcript;
     }
