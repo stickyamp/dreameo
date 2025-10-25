@@ -26,7 +26,7 @@ export class AddDreamComponent implements OnInit {
   @Input() dream?: Dream;
 
   isEditing = false;
-  isRecording = false;
+  isListening = false;
   isPlayingAudio = false;
   audioPath?: string;
   isAddingTag = false;
@@ -56,6 +56,9 @@ export class AddDreamComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.audioService.isListening$.subscribe((isListening) => {
+      this.isListening = isListening;
+    });
     // Initialize base tags with translations
     this.baseTags = [
       {
@@ -120,9 +123,8 @@ export class AddDreamComponent implements OnInit {
       "noviembre",
       "diciembre",
     ];
-    return `${date.getDate()} de ${
-      months[date.getMonth()]
-    } de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${months[date.getMonth()]
+      } de ${date.getFullYear()}`;
   }
 
   canSave(): boolean {
@@ -136,8 +138,9 @@ export class AddDreamComponent implements OnInit {
     try {
       const success = await this.audioService.startListening();
       if (success) {
-        this.isRecording = true;
         console.log("Grabación iniciada correctamente");
+        this.dreamData.description = success;
+
       } else {
         //await this.showAlert('Error', 'No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono.');
       }
@@ -153,72 +156,10 @@ export class AddDreamComponent implements OnInit {
   async stopRecording() {
     try {
       await this.audioService.stopListening();
-      this.isRecording = false;
     } catch (error) {
       console.error("Error stopping recording:", error);
       await this.showAlert("Error", "Error al detener la grabación.");
-      this.isRecording = false;
     }
-  }
-
-  async toggleRecording() {
-    try {
-      const success = await this.audioService.toggleListening();
-      if (success) {
-        this.isRecording = !this.isRecording;
-        console.log(
-          this.isRecording ? "Grabación iniciada" : "Grabación detenida"
-        );
-      } else if (!this.isRecording) {
-        // Only show error if we were trying to start recording
-        await this.showAlert(
-          "Error",
-          "No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono."
-        );
-      }
-    } catch (error) {
-      console.error("Error toggling recording:", error);
-      await this.showAlert(
-        "Error",
-        "Error al cambiar el estado de la grabación."
-      );
-    }
-  }
-
-  // async playAudio() {
-  //   if (!this.audioPath) return;
-
-  //   try {
-  //     this.isPlayingAudio = true;
-  //     await this.audioService.playAudio(this.audioPath);
-  //   } catch (error) {
-  //     console.error('Error playing audio:', error);
-  //     await this.showAlert('Error', 'No se pudo reproducir el audio.');
-  //   } finally {
-  //     this.isPlayingAudio = false;
-  //   }
-  // }
-
-  async deleteAudio() {
-    const alert = await this.alertController.create({
-      header: "Eliminar audio",
-      message: "¿Estás seguro de que quieres eliminar la grabación de voz?",
-      buttons: [
-        {
-          text: "Cancelar",
-          role: "cancel",
-        },
-        {
-          text: "Eliminar",
-          role: "destructive",
-          handler: () => {
-            this.audioPath = undefined;
-          },
-        },
-      ],
-    });
-
-    await alert.present();
   }
 
   async saveDream() {

@@ -41,7 +41,7 @@ export class DreamStatisticsPage implements OnInit {
 
   private allDreams: DreamForStatistics[] = [];
 
-  constructor(private dreamService: DreamService) {}
+  constructor(private dreamService: DreamService) { }
 
   ngOnInit() {
     this.loadDreams();
@@ -61,9 +61,11 @@ export class DreamStatisticsPage implements OnInit {
         date: new Date(d.date),
         isLucid: d.isLucid ?? false,
         isNightmare: d.isNightmare ?? false,
-        tags: d.tags,
+        tags: (d.tags ?? []).map(t => t.name),
       } as unknown as DreamForStatistics;
     });
+
+    console.log("manuXX this alldreams", this.allDreams);
   }
 
   private updateStatistics(period: string) {
@@ -98,7 +100,7 @@ export class DreamStatisticsPage implements OnInit {
       default:
         filteredDreams = this.allDreams;
     }
-
+    console.log("manuXX filteredDreams", filteredDreams);
     this.stats.totalDreams = filteredDreams.length;
     this.stats.lucidDreams = filteredDreams.filter((d) => d.isLucid).length;
     this.stats.nightmares = filteredDreams.filter((d) => d.isNightmare).length;
@@ -108,6 +110,7 @@ export class DreamStatisticsPage implements OnInit {
     const normalCount = filteredDreams.filter(
       (d) => !d.isLucid && !d.isNightmare
     ).length;
+    console.log("manuXX normal count", normalCount);
     const nightmareCount = filteredDreams.filter((d) => d.isNightmare).length;
 
     this.dreamTypes = [

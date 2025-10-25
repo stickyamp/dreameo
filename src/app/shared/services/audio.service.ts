@@ -3,56 +3,37 @@ import { Directory, Filesystem } from '@capacitor/filesystem';
 import { GenericResponse, RecordingData, VoiceRecorder } from 'capacitor-voice-recorder';
 import { SpeechRecognition } from '@capacitor-community/speech-recognition';
 import { AlertController } from '@ionic/angular';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AudioService {
   constructor(private alertController: AlertController) { }
-  private recording: boolean = false;
 
-  // requestRecordingPermission(): Promise<GenericResponse> {
-  //   return VoiceRecorder.requestAudioRecordingPermission();
-  // }
-  // async startRecording(): Promise<void> {
-  //   if (this.recording) return;
-  //   this.recording = true;
-  //   VoiceRecorder.startRecording();
-  // }
-
-  // async stopRecording(): Promise<void> {
-  //   if (!this.recording) return;
-  //   this.recording = false;
-  //   VoiceRecorder.stopRecording().then(async (result: RecordingData) => {
-  //     const recordedData = result.value.recordDataBase64;
-  //     const fileName = new Date().getTime() + '.wav'
-  //     await Filesystem.writeFile({
-  //       path: fileName,
-  //       directory: Directory.Data,
-  //       data: recordedData ?? ''
-  //     })
-  //   });
-  // }
+  private isListeningSubject = new BehaviorSubject<boolean>(false);
+  public isListening$ = this.isListeningSubject.asObservable();
 
   isListening = false;
   transcript = '';
   private recognitionResults: string[] = [];
 
-  async toggleListening(): Promise<boolean> {
+  async toggleListening(): Promise<string> {
     if (!this.isListening) {
       return await this.startListening();
     } else {
       await this.stopListening();
-      return true;
+      return "true";
     }
   }
 
-  async startListening(): Promise<boolean> {
+  async startListening(): Promise<string> {
     try {
       // Check if speech recognition is available
+      this.transcript = "";
       const available = await SpeechRecognition.available();
       if (!available) {
         console.warn('Reconocimiento de voz no disponible');
         await this.showAlert('Error', 'Reconocimiento de voz no disponible');
-        return false;
+        return "false";
       }
 
       // Request permissions and wait for user confirmation
@@ -63,16 +44,15 @@ export class AudioService {
         console.warn('Permisos de micrófono no concedidos');
         await this.showAlert('Error', 'Permisos de micrófono no concedidos');
 
-        return false;
+        return "false";
       }
 
-      // Set listening state
-      this.isListening = true;
+      this.isListeningSubject.next(true)
 
       // Start speech recognition
       const result = await SpeechRecognition.start({
-        language: 'es-ES',
-        partialResults: true,
+        language: 'es-ES', //TODO CHANGE THIS SO IT ALSO GOES WITH ENGLISH,
+        partialResults: false,
         prompt: 'Habla ahora...'
       });
 
@@ -82,32 +62,28 @@ export class AudioService {
         this.recognitionResults = result.matches;
         console.log('Texto reconocido:', result.matches);
       } else {
-        console.log('Speech recognition started but no immediate results');
-        console.log('Result object:', result);
         this.transcript = '';
         this.recognitionResults = [];
-
-        // On mobile, results might come through events, so we'll wait for them
-        console.log('Waiting for speech recognition results...');
       }
 
-      return true;
+      this.isListeningSubject.next(false)
+      return this.transcript;
     } catch (error) {
       console.error('Error al iniciar el reconocimiento de voz:', error);
       await this.showAlert('Error', `Error al iniciar el reconocimiento de voz: ${error}`);
-      this.isListening = false;
-      return false;
+      this.isListeningSubject.next(false)
+      return this.transcript;
     }
   }
 
   async stopListening(): Promise<void> {
     try {
       await SpeechRecognition.stop();
-      this.isListening = false;
+      this.isListeningSubject.next(false)
       console.log('Grabación detenida');
     } catch (error) {
       console.error('Error al detener el reconocimiento de voz:', error);
-      this.isListening = false;
+      this.isListeningSubject.next(false)
     }
   }
 
