@@ -1,13 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, inject, OnInit, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController, NavController } from "@ionic/angular";
-import { DreamService } from "../../../shared/services/dream.service";
 import { Dream } from "../../../models/dream.model";
 import { AddDreamComponent } from "../../add-dream/add-dream.component";
 import { DreamListComponent } from "../../dream-list/dream-list.component";
 import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { ConfigService } from "@/app/shared/services/config.service";
+import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
 
 @Component({
   selector: "app-calendar",
@@ -32,9 +32,9 @@ export class CalendarComponent implements OnInit {
   @ViewChild("dt", { read: ElementRef })
   datetimeEl?: ElementRef<HTMLIonDatetimeElement>;
   private decorateScheduled = false;
+  private dreamService: DreamService = inject(DreamService);
 
   constructor(
-    private dreamService: DreamService,
     private modalController: ModalController,
     private navController: NavController,
     private translate: TranslateService,
@@ -261,22 +261,21 @@ export class CalendarComponent implements OnInit {
       Array.isArray(months) && months.length === 12
         ? months
         : [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre",
-          ];
-    return `${
-      monthNames[this.currentDate.getMonth()]
-    } ${this.currentDate.getFullYear()}`;
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre",
+        ];
+    return `${monthNames[this.currentDate.getMonth()]
+      } ${this.currentDate.getFullYear()}`;
   }
 
   previousMonth() {

@@ -1,7 +1,7 @@
-import { Component, DestroyRef, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, DestroyRef, inject, Input, OnInit, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
-import { DreamService } from "../../shared/services/dream.service";
+import { DreamService } from "../../shared/services/dreams/dream.base.service";
 import {
   Dream,
   OfficialTags,
@@ -15,6 +15,7 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NoDreamsComponent } from "@/app/shared/ui-elements/no-dreams-splash.component";
 import { ConfigService } from "@/app/shared/services/config.service";
+import { provideDreamService } from "@/app/shared/services/providers";
 
 @Component({
   selector: "app-dream-list",
@@ -28,6 +29,7 @@ import { ConfigService } from "@/app/shared/services/config.service";
     TranslateModule,
     NoDreamsComponent,
   ],
+  providers: [provideDreamService()]
 })
 export class DreamListComponent implements OnInit {
   @Input() selectedDate!: string;
@@ -37,9 +39,9 @@ export class DreamListComponent implements OnInit {
   private monthNames: string[] = [];
   public formattedDate: string = '';
   @ViewChild("modalOpener") modalOpener!: ShowDreamsListDirective;
+  private dreamService: DreamService = inject(DreamService);
 
   constructor(
-    private dreamService: DreamService,
     private modalController: ModalController,
     private translate: TranslateService,
     private destroyRef: DestroyRef,

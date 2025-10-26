@@ -4,8 +4,9 @@ import { RouterOutlet } from '@angular/router';
 import { IonicModule, Platform } from '@ionic/angular';
 // import { StatusBar, Style } from '@capacitor/status-bar';
 // import { SplashScreen } from '@capacitor/splash-screen';
-import { DreamService } from './shared/services/dream.service';
+import { DreamService } from './shared/services/dreams/dream.base.service';
 import { ConfigService } from './shared/services/config.service';
+import { provideDreamService } from './shared/services/providers';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ import { ConfigService } from './shared/services/config.service';
     }
   `],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, IonicModule]
+  imports: [CommonModule, RouterOutlet, IonicModule],
+  providers: [provideDreamService()]
 })
 export class AppComponent implements OnInit {
   constructor(

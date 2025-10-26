@@ -1,32 +1,22 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { Dream, DreamsByDate, UserProfile, DreamStatistics, OfficialTags, TagElement, TagModel } from '../../models/dream.model';
+import { Dream, DreamsByDate, UserProfile, DreamStatistics, OfficialTags, TagElement, TagModel } from '../../../models/dream.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ToastLevelEnum, ToastNotifierService } from './toast-notifier';
+import { ToastLevelEnum, ToastNotifierService } from '../toast-notifier';
+import { DreamService } from './dream.base.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class DreamService {
+@Injectable()
+export class DreamWebService extends DreamService {
+  private toastNotifierService: ToastNotifierService = inject(ToastNotifierService);
+
   private readonly DREAMS_KEY = 'dreams';
   private readonly TAGS_KEY = 'tags';
   private readonly USER_PROFILE_KEY = 'user_profile';
   private readonly MAX_ALLOWED_TAGS = 10;
 
-  private dreamsSubject = new BehaviorSubject<DreamsByDate>({});
-  public dreams$ = this.dreamsSubject.asObservable();
-
-  private tagsSubject = new BehaviorSubject<TagModel[]>([]);
-  public tags$ = this.tagsSubject.asObservable();
-
-  private userProfileSubject = new BehaviorSubject<UserProfile>({
-    name: 'Lucía',
-    email: 'lucia.sanchez@email.com',
-    darkMode: true
-  });
-  public userProfile$ = this.userProfileSubject.asObservable();
-
-  constructor(private toastNotifierService: ToastNotifierService) {
+  constructor() {
+    console.log("manuXX initting dream web");
+    super();
     this.loadDreams().catch(err => console.error('Error loading dreams:', err));
     this.loadTags().catch(err => console.error('Error loading tags:', err));
     this.loadUserProfile().catch(err => console.error('Error loading profile:', err));

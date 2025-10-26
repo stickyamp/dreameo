@@ -2,7 +2,7 @@ import { Component, DestroyRef, Input, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { IonicModule, ModalController, AlertController } from "@ionic/angular";
-import { DreamService } from "../../shared/services/dream.service";
+import { DreamService } from "../../shared/services/dreams/dream.base.service";
 import { AudioService } from "../../shared/services/audio.service";
 import {
   Dream,
@@ -13,6 +13,7 @@ import {
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ToastNotifierService } from "../../shared/services/toast-notifier";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { provideDreamService } from "@/app/shared/services/providers";
 
 @Component({
   selector: "app-add-dream",
@@ -20,6 +21,7 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
   styleUrls: ["./add-dream.component.scss"],
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, TranslateModule],
+  providers: [provideDreamService()]
 })
 export class AddDreamComponent implements OnInit {
   @Input() selectedDate!: string;

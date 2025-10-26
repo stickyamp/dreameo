@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
-import { DreamService } from "../../shared/services/dream.service";
 import { Dream, OfficialTags } from "../../models/dream.model";
 
 import { AddDreamComponent } from "../add-dream/add-dream.component";
 import { NoDreamsComponent } from "src/app/shared/ui-elements/no-dreams-splash.component";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { ConfigService } from "@/app/shared/services/config.service";
+import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
 
 @Component({
   selector: "app-dreams",
@@ -27,6 +27,8 @@ export class DreamsComponent implements OnInit {
   previousMonthText = '';
   currentMonthText = '';
   nextMonthText = '';
+
+  private dreamService: DreamService = inject(DreamService);
 
 
   showSearchbar() {
@@ -50,7 +52,6 @@ export class DreamsComponent implements OnInit {
   private dayNames: string[] = [];
 
   constructor(
-    private dreamService: DreamService,
     private modalController: ModalController,
     private translate: TranslateService,
     private configService: ConfigService

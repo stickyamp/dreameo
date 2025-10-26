@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
-import { DreamService } from "src/app/shared/services/dream.service";
+import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
 import { Dream, DreamForStatistics, DreamType } from "../../models/dream.model";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
@@ -13,6 +13,7 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
   standalone: true,
 })
 export class DreamStatisticsPage implements OnInit {
+  private dreamService: DreamService = inject(DreamService);
   selectedPeriod: string = "thisMonth";
 
   stats = {
@@ -41,7 +42,7 @@ export class DreamStatisticsPage implements OnInit {
 
   private allDreams: DreamForStatistics[] = [];
 
-  constructor(private dreamService: DreamService) { }
+  constructor() { }
 
   ngOnInit() {
     this.loadDreams();

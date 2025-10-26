@@ -7,7 +7,7 @@ import {
   PopoverController,
 } from "@ionic/angular";
 import { ConfigService } from "src/app/shared/services/config.service";
-import { DreamService } from "src/app/shared/services/dream.service";
+import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
 import { Preferences } from "@capacitor/preferences";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule } from "@angular/forms";
