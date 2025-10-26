@@ -322,4 +322,8 @@ export class ProfileComponent implements OnInit {
       throw error;
     }
   }
+
+  goToDebug() {
+    this.router.navigate(["/tabs/test"]);
+  }
 }
