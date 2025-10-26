@@ -79,6 +79,7 @@ html.ion-palette-dark {
   --color-accent: #a78bfa;
   /* morado principal */
   --color-accent-hover: #b9a6ff;
+  --color-accent-hover-downgraded: #8a5cf636;
   --color-active: #c4b5fd;
   --color-border: #2b3040;
   --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -128,6 +129,8 @@ html.ion-palette-light {
   /* Morado principal */
   --color-accent: #7c3aed;
   --color-accent-hover: #8b5cf6;
+  --color-accent-hover-downgraded: #8a5cf636;
+
   --color-active: #a78bfa;
 
   --color-border: #d9dbe0;

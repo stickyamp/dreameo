@@ -1,10 +1,14 @@
 ion-content {
     --background: var(--color-bg);
     --ion-color-primary: var(--color-accent);
+    color: var(--color-text-primary);
+    --color: var(--color-text-primary);
+    --inner-border-width: 0;
 }
 
 ion-toggle {
     --track-background-checked: var(--color-accent-hover);
+    --track-background: var(--color-accent-hover-downgraded);
 }
 
 .content-wrapper {
@@ -16,9 +20,9 @@ ion-toggle {
     align-items: center;
     padding: var(--spacing-lg) var(--spacing-sm);
     margin: var(--spacing-xs);
-    background: linear-gradient(135deg, #1a1d2e 0%, #252940 100%);
+    background: var(--color-bg-content);
     gap: var(--spacing-sm);
-    --background: #252940;
+    --background: var(--color-bg-content);
     --border-radius: 12px;
     --padding-start: var(--spacing-sm);
     --padding-end: var(--spacing-sm);
@@ -28,7 +32,7 @@ ion-toggle {
     .user-avatar {
         width: var(--spacing-xl);
         height: var(--spacing-xl);
-        border: 3px solid rgba(255, 255, 255, 0.1);
+        border: 3px solid var(--color-bg);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -41,13 +45,11 @@ ion-toggle {
             margin: 0 0 var(--spacing-xxxs) 0;
             font-size: var(--font-size-lg);
             font-weight: var(--font-weight-semibold);
-            color: #ffffff;
         }
 
         .user-email {
             margin: 0;
             font-size: var(--font-size-sm);
-            color: rgba(255, 255, 255, 0.6);
         }
     }
 }
@@ -58,13 +60,20 @@ ion-toggle {
     padding: 0 var(--spacing-xs);
 
     ion-item {
-        --background: #252940;
+        --background: var(--color-bg-content);
+        --inner-border-width: 0 !important;
         --border-radius: 12px;
         --padding-start: var(--spacing-sm);
         --padding-end: var(--spacing-sm);
         --inner-padding-end: 0;
         margin-bottom: var(--spacing-xxs);
         border-radius: 12px;
+        color: var(--color-text-primary);
+        --detail-icon-color: var(--color-text-primary);
+        --detail-icon-opacity: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         ion-icon {
             font-size: 22px;
@@ -80,6 +89,10 @@ ion-toggle {
         ion-note {
             font-size: var(--font-size-sm);
             margin-right: var(--spacing-xxs);
+            --ion-color-step-600: var(--color-text-primary);
+            padding-top: 0;
+            padding-bottom: 0;
+            align-self: auto !important;
         }
     }
 }
@@ -91,6 +104,7 @@ ion-toggle {
 
     ion-item {
         --background: transparent;
+        --inner-border-width: 0 !important;
         --border-radius: 12px;
         --padding-start: var(--spacing-sm);
         --padding-end: var(--spacing-sm);

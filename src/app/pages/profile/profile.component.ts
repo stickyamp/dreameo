@@ -65,14 +65,25 @@ interface User {
         --padding-end: 16px;
         --min-height: 44px;
         cursor: pointer;
+        --ion-item-background: var(--color-bg);
+        color: var(--color-text-primary);
+        --color: var(--color-text-primary);
+        --ion-color-primary: var(--color-text-primary);
       }
 
       ion-item.selected {
-        --background: var(--ion-color-primary-tint);
+        --background: var(--color-bg);
+        color: var(--color-text-primary);
+        --color: var(--color-text-primary);
+        --ion-color-primary: var(--color-text-primary);
+
       }
 
       ion-item:hover {
-        --background: var(--ion-color-light);
+        --background: var(--color-bg-content);
+        color: var(--color-text-primary);
+        --color: var(--color-text-primary);
+        --ion-color-primary: var(--color-text-primary);
       }
 
       ion-label {
@@ -116,6 +127,7 @@ export class ProfileComponent implements OnInit {
 
   darkMode: boolean = false;
   selectedLanguage: string = "en";
+  isUserLogged: boolean = true;
 
   constructor(
     private router: Router,
@@ -124,7 +136,7 @@ export class ProfileComponent implements OnInit {
     private dreamService: DreamService,
     private translate: TranslateService,
     private popoverController: PopoverController
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.darkMode = await this.configService.isDarkMode();

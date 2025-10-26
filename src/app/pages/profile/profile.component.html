@@ -34,6 +34,7 @@
 
     <!-- Danger Zone -->
     <ion-list class="danger-zone">
+      @if(isUserLogged){
       <!-- Close Session -->
       <ion-item button (click)="closeSession()" lines="none">
         <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
@@ -41,6 +42,7 @@
           "PROFILE.CLOSE_SESSION" | translate
           }}</ion-label>
       </ion-item>
+      }
       <!-- Clean Data -->
       <ion-item button (click)="cleanData()" lines="none">
         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
