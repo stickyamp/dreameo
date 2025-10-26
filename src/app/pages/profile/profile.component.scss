@@ -1,131 +1,178 @@
 ion-content {
-    --background: var(--color-bg);
-    --ion-color-primary: var(--color-accent);
-    color: var(--color-text-primary);
-    --color: var(--color-text-primary);
-    --inner-border-width: 0;
+  --background: var(--color-bg);
+  --ion-color-primary: var(--color-accent);
+  color: var(--color-text-primary);
+  --color: var(--color-text-primary);
+  --inner-border-width: 0;
 }
 
 ion-toggle {
-    --track-background-checked: var(--color-accent-hover);
-    --track-background: var(--color-accent-hover-downgraded);
+  --track-background-checked: var(--color-accent-hover);
+  --track-background: var(--color-accent-hover-downgraded);
 }
 
 .content-wrapper {
-    padding: 0;
+  padding: 0;
 }
 
 .user-profile {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-sm);
+  margin: var(--spacing-xs);
+  background: var(--color-bg-content);
+  gap: var(--spacing-sm);
+  --background: var(--color-bg-content);
+  --border-radius: 12px;
+  --padding-start: var(--spacing-sm);
+  --padding-end: var(--spacing-sm);
+  --inner-padding-end: 0;
+  border-radius: 12px;
+
+  .user-avatar {
+    width: var(--spacing-xl);
+    height: var(--spacing-xl);
+    border: 3px solid var(--color-bg);
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding: var(--spacing-lg) var(--spacing-sm);
-    margin: var(--spacing-xs);
-    background: var(--color-bg-content);
-    gap: var(--spacing-sm);
+  }
+
+  .user-info {
+    flex: 1;
+
+    .user-name {
+      margin: 0 0 var(--spacing-xxxs) 0;
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .user-email {
+      margin: 0;
+      font-size: var(--font-size-sm);
+    }
+  }
+}
+
+.settings-list {
+  background: transparent;
+  margin: var(--spacing-md) 0;
+  padding: 0 var(--spacing-xs);
+
+  ion-item {
     --background: var(--color-bg-content);
+    --inner-border-width: 0 !important;
     --border-radius: 12px;
     --padding-start: var(--spacing-sm);
     --padding-end: var(--spacing-sm);
     --inner-padding-end: 0;
+    margin-bottom: var(--spacing-xxs);
     border-radius: 12px;
+    color: var(--color-text-primary);
+    --detail-icon-color: var(--color-text-primary);
+    --detail-icon-opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    .user-avatar {
-        width: var(--spacing-xl);
-        height: var(--spacing-xl);
-        border: 3px solid var(--color-bg);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    ion-icon {
+      font-size: 22px;
+      color: var(--config-icon-color);
+      margin-right: var(--spacing-xs);
     }
 
-    .user-info {
-        flex: 1;
-
-        .user-name {
-            margin: 0 0 var(--spacing-xxxs) 0;
-            font-size: var(--font-size-lg);
-            font-weight: var(--font-weight-semibold);
-        }
-
-        .user-email {
-            margin: 0;
-            font-size: var(--font-size-sm);
-        }
+    ion-label {
+      color: var(--config-label-color);
+      font-weight: var(--font-weight-medium);
     }
-}
 
-.settings-list {
-    background: transparent;
-    margin: var(--spacing-md) 0;
-    padding: 0 var(--spacing-xs);
-
-    ion-item {
-        --background: var(--color-bg-content);
-        --inner-border-width: 0 !important;
-        --border-radius: 12px;
-        --padding-start: var(--spacing-sm);
-        --padding-end: var(--spacing-sm);
-        --inner-padding-end: 0;
-        margin-bottom: var(--spacing-xxs);
-        border-radius: 12px;
-        color: var(--color-text-primary);
-        --detail-icon-color: var(--color-text-primary);
-        --detail-icon-opacity: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        ion-icon {
-            font-size: 22px;
-            color: var(--config-icon-color);
-            margin-right: var(--spacing-xs);
-        }
-
-        ion-label {
-            color: var(--config-label-color);
-            font-weight: var(--font-weight-medium);
-        }
-
-        ion-note {
-            font-size: var(--font-size-sm);
-            margin-right: var(--spacing-xxs);
-            --ion-color-step-600: var(--color-text-primary);
-            padding-top: 0;
-            padding-bottom: 0;
-            align-self: auto !important;
-        }
+    ion-note {
+      font-size: var(--font-size-sm);
+      margin-right: var(--spacing-xxs);
+      --ion-color-step-600: var(--color-text-primary);
+      padding-top: 0;
+      padding-bottom: 0;
+      align-self: auto !important;
     }
+  }
 }
 
 .danger-zone {
-    background: transparent;
-    margin: var(--spacing-lg) 0;
-    padding: 0 var(--spacing-xs);
+  background: transparent;
+  margin: var(--spacing-lg) 0;
+  padding: 0 var(--spacing-xs);
 
-    ion-item {
-        --background: transparent;
-        --inner-border-width: 0 !important;
-        --border-radius: 12px;
-        --padding-start: var(--spacing-sm);
-        --padding-end: var(--spacing-sm);
-        margin-bottom: var(--spacing-xxs);
-        border-radius: 12px;
+  ion-item {
+    --background: transparent;
+    --inner-border-width: 0 !important;
+    --border-radius: 12px;
+    --padding-start: var(--spacing-sm);
+    --padding-end: var(--spacing-sm);
+    margin-bottom: var(--spacing-xxs);
+    border-radius: 12px;
 
-        ion-icon {
-            font-size: 22px;
-            margin-right: var(--spacing-xs);
-        }
-
-        ion-label {
-            font-weight: var(--font-weight-medium);
-        }
-
-        &:hover {
-            --background: var(--config-danger-button-hover-bg);
-        }
+    ion-icon {
+      font-size: 22px;
+      margin-right: var(--spacing-xs);
     }
+
+    ion-label {
+      font-weight: var(--font-weight-medium);
+    }
+
+    &:hover {
+      --background: var(--config-danger-button-hover-bg);
+    }
+  }
 }
 
 .user-icon {
+  font-size: var(--font-size-lg);
+}
+
+// Google Account Section
+.google-section {
+  // Usar el mismo margen y padding que user-profile
+  padding: var(--spacing-lg) var(--spacing-sm);
+  margin: var(--spacing-xs);
+  background: var(--color-bg-content);
+  border-radius: 12px;
+
+  .section-title {
+    margin: 0 0 var(--spacing-xxs) 0;
     font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .google-description {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .google-connect-button {
+    --background: #4285f4;
+    --background-hover: #357ae8;
+    --background-activated: #2a63c7;
+    --color: #ffffff;
+    --border-radius: 8px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: none;
+    letter-spacing: 0.25px;
+    margin: var(--spacing-sm) 0 0 0;
+
+    ion-icon {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
 }

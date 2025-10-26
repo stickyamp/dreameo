@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   AlertController,
@@ -8,6 +8,8 @@ import {
 } from "@ionic/angular";
 import { ConfigService } from "src/app/shared/services/config.service";
 import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { FirebaseAuthService } from "src/app/shared/services/firebase-auth.service";
 import { Preferences } from "@capacitor/preferences";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule } from "@angular/forms";
@@ -76,7 +78,6 @@ interface User {
         color: var(--color-text-primary);
         --color: var(--color-text-primary);
         --ion-color-primary: var(--color-text-primary);
-
       }
 
       ion-item:hover {
@@ -128,21 +129,91 @@ export class ProfileComponent implements OnInit {
   darkMode: boolean = false;
   selectedLanguage: string = "en";
   isUserLogged: boolean = true;
+  isGoogleUserLogged: boolean = false;
+  isConnectingGoogle: boolean = false;
 
   constructor(
     private router: Router,
     private alertController: AlertController,
     private configService: ConfigService,
     private dreamService: DreamService,
+    private authService: AuthService,
+    private firebaseAuthService: FirebaseAuthService,
     private translate: TranslateService,
-    private popoverController: PopoverController
-  ) { }
+    private popoverController: PopoverController,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   async ngOnInit() {
     this.darkMode = await this.configService.isDarkMode();
     const savedLang = localStorage.getItem("lang") || "en";
     this.selectedLanguage = savedLang; // Sin traducción aquí: se hará en template
     this.setLanguage(savedLang);
+
+    // Verificar si hay usuario de Google logeado
+    const googleUser = this.firebaseAuthService.getCurrentUser();
+    if (googleUser) {
+      this.user = {
+        name: googleUser.displayName || googleUser.email.split("@")[0],
+        email: googleUser.email,
+        avatar: "assets/avatar.jpg",
+      };
+      this.isGoogleUserLogged = true;
+      this.isUserLogged = true;
+    } else {
+      // Si no hay usuario de Google, verificar usuario básico
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser) {
+        this.user = {
+          name: currentUser.username,
+          email: currentUser.email,
+          avatar: "assets/avatar.jpg",
+        };
+        this.isUserLogged = true;
+        this.isGoogleUserLogged = false;
+      } else {
+        this.isUserLogged = false;
+        this.isGoogleUserLogged = false;
+      }
+    }
+
+    // Suscribirse a cambios en el estado de autenticación de Firebase
+    this.firebaseAuthService.currentUser$.subscribe((user) => {
+      console.log("Firebase user state changed:", user);
+      if (user) {
+        this.user = {
+          name: user.displayName || user.email.split("@")[0],
+          email: user.email,
+          avatar: "assets/avatar.jpg",
+        };
+        this.isGoogleUserLogged = true;
+        this.isUserLogged = true;
+        console.log(
+          "Google user logged in, isGoogleUserLogged:",
+          this.isGoogleUserLogged
+        );
+      } else {
+        // Verificar si hay usuario básico
+        const basicUser = this.authService.getCurrentUser();
+        if (basicUser) {
+          this.user = {
+            name: basicUser.username,
+            email: basicUser.email,
+            avatar: "assets/avatar.jpg",
+          };
+          this.isUserLogged = true;
+          this.isGoogleUserLogged = false;
+        } else {
+          this.isGoogleUserLogged = false;
+        }
+        console.log(
+          "No Google user, isGoogleUserLogged:",
+          this.isGoogleUserLogged
+        );
+      }
+      // Forzar detección de cambios
+      this.cdr.detectChanges();
+    });
   }
 
   goBack(): void {
@@ -216,6 +287,72 @@ export class ProfileComponent implements OnInit {
   //   await alert.present();
   // }
 
+  async connectGoogleAccount(): Promise<void> {
+    if (this.isConnectingGoogle) return;
+
+    this.isConnectingGoogle = true;
+
+    try {
+      console.log("Starting Google Sign-In from profile...");
+      await this.firebaseAuthService.signInWithGoogle();
+
+      // Esperar un poco para que Firebase actualice el estado
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Actualizar información del usuario después de conectar
+      const currentUser = this.firebaseAuthService.getCurrentUser();
+      console.log("Current user after sign in:", currentUser);
+
+      if (currentUser) {
+        this.user = {
+          name: currentUser.displayName || currentUser.email.split("@")[0],
+          email: currentUser.email,
+          avatar: "assets/avatar.jpg",
+        };
+        this.isGoogleUserLogged = true;
+        this.isUserLogged = true;
+
+        console.log(
+          "User state updated - isGoogleUserLogged:",
+          this.isGoogleUserLogged
+        );
+
+        // Forzar detección de cambios
+        this.cdr.detectChanges();
+
+        await this.showSuccessAlert(
+          this.translate.instant("profile.googleConnected") ||
+            "Google Account Connected",
+          this.translate.instant("profile.googleConnectedMessage") ||
+            "Your Google account has been connected successfully."
+        );
+      } else {
+        console.warn("No user found after Google sign in");
+      }
+    } catch (error: any) {
+      console.error("Google connection error:", error);
+
+      // No mostrar alerta si el usuario canceló
+      if (
+        error.message?.includes("cancelado") ||
+        error.message?.includes("cancelled")
+      ) {
+        console.log("User cancelled Google connection");
+        return;
+      }
+
+      await this.showAlert(
+        this.translate.instant("profile.googleError") || "Connection Error",
+        error.message ||
+          this.translate.instant("profile.googleErrorMessage") ||
+          "Could not connect to Google account"
+      );
+    } finally {
+      this.isConnectingGoogle = false;
+      this.cdr.detectChanges();
+    }
+  }
+
   async closeSession(): Promise<void> {
     const alert = await this.alertController.create({
       header: this.translate.instant("profile.logoutHeader"),
@@ -260,9 +397,15 @@ export class ProfileComponent implements OnInit {
     await alert.present();
   }
 
-  private performCloseSession(): void {
-    localStorage.removeItem("userToken");
-    this.router.navigate(["/login"]);
+  private async performCloseSession(): Promise<void> {
+    try {
+      await this.authService.logout();
+      // El AuthService ya navega a /login
+    } catch (error) {
+      console.error("Error during logout:", error);
+      // Fallback: intentar navegar a login de todas formas
+      this.router.navigate(["/login"]);
+    }
   }
 
   private async performCleanData(): Promise<void> {
@@ -321,5 +464,27 @@ export class ProfileComponent implements OnInit {
       console.error("Error clearing Preferences:", error);
       throw error;
     }
+  }
+
+  private async showAlert(header: string, message: string): Promise<void> {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ["OK"],
+    });
+    await alert.present();
+  }
+
+  private async showSuccessAlert(
+    header: string,
+    message: string
+  ): Promise<void> {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ["OK"],
+      cssClass: "success-alert",
+    });
+    await alert.present();
   }
 }

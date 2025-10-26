@@ -19,6 +19,8 @@
 
 # environment files (if you use API keys or secrets locally)
 src/environments/environment.*.ts
+# Google Auth credentials (keep secrets safe)
+src/environments/google-auth.config.ts
 
 # ============================
 # IDEs and editors

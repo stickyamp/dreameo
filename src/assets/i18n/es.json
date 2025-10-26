@@ -88,7 +88,14 @@
     "CLEAN_DATA": "Limpiar datos",
     "ENGLISH": "Inglés",
     "SPANISH": "Español",
-    "CANCEL": "Cancelar"
+    "CANCEL": "Cancelar",
+    "GOOGLE_ACCOUNT": "Cuenta de Google",
+    "CONNECT_GOOGLE": "Conectar con Google",
+    "GOOGLE_DESCRIPTION": "Conecta tu cuenta de Google para sincronizar tus sueños en todos tus dispositivos",
+    "GOOGLE_CONNECTED": "Éxito",
+    "GOOGLE_CONNECTED_MESSAGE": "Tu cuenta de Google se ha conectado exitosamente",
+    "GOOGLE_ERROR": "Error de Conexión",
+    "GOOGLE_ERROR_MESSAGE": "No se pudo conectar con la cuenta de Google"
   },
   "DREAM_DETAIL": {
     "TITLE": "Sueño",

@@ -1,7 +1,27 @@
 <ion-content [scrollEvents]="false" scrollY="true" [fullscreen]="true">
   <div class="content-wrapper">
-    <!-- User Profile Section -->
-    <div class="user-profile">
+    <!-- Google Account Section (shown when NOT logged in with Google) -->
+    <div class="google-section" *ngIf="!isGoogleUserLogged">
+      <h3 class="section-title">{{ "PROFILE.GOOGLE_ACCOUNT" | translate }}</h3>
+      <p class="google-description">
+        {{ "PROFILE.GOOGLE_DESCRIPTION" | translate }}
+      </p>
+      <ion-button
+        expand="block"
+        class="google-connect-button"
+        (click)="connectGoogleAccount()"
+        [disabled]="isConnectingGoogle"
+      >
+        <ion-icon slot="start" name="logo-google"></ion-icon>
+        <span *ngIf="!isConnectingGoogle">{{
+          "PROFILE.CONNECT_GOOGLE" | translate
+        }}</span>
+        <ion-spinner *ngIf="isConnectingGoogle" name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+
+    <!-- User Profile Section (shown when logged in with Google) -->
+    <div class="user-profile" *ngIf="isGoogleUserLogged">
       <ion-avatar class="user-avatar">
         <ion-icon name="person-outline" class="user-icon"></ion-icon>
       </ion-avatar>
@@ -19,15 +39,19 @@
         <ion-label>{{ "PROFILE.LANGUAGE" | translate }}</ion-label>
         <ion-note slot="end">{{
           selectedLanguage === "en"
-          ? ("PROFILE.ENGLISH" | translate)
-          : ("PROFILE.SPANISH" | translate)
-          }}</ion-note>
+            ? ("PROFILE.ENGLISH" | translate)
+            : ("PROFILE.SPANISH" | translate)
+        }}</ion-note>
       </ion-item>
       <!-- Dark Mode Toggle -->
       <ion-item>
         <ion-icon name="moon-outline" slot="start"></ion-icon>
         <ion-label>{{ "PROFILE.DARK_MODE" | translate }}</ion-label>
-        <ion-toggle slot="end" [checked]="darkMode" (ionChange)="toggleDarkMode($event)">
+        <ion-toggle
+          slot="end"
+          [checked]="darkMode"
+          (ionChange)="toggleDarkMode($event)"
+        >
         </ion-toggle>
       </ion-item>
     </ion-list>
@@ -40,7 +64,7 @@
         <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
         <ion-label color="danger">{{
           "PROFILE.CLOSE_SESSION" | translate
-          }}</ion-label>
+        }}</ion-label>
       </ion-item>
       }
       <!-- Clean Data -->
@@ -48,7 +72,7 @@
         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
         <ion-label color="danger">{{
           "PROFILE.CLEAN_DATA" | translate
-          }}</ion-label>
+        }}</ion-label>
       </ion-item>
     </ion-list>
   </div>
