@@ -11,10 +11,12 @@ import {
 } from '../../../models/dream.model';
 import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacitor-community/sqlite';
 import { DreamService } from './dream.base.service';
+import { LoggerService } from '../log.service';
 
 @Injectable()
 export class DreamMobileService extends DreamService {
     private toastNotifierService: ToastNotifierService = inject(ToastNotifierService);
+    private loggerService = inject(LoggerService);
     private sqlite = new SQLiteConnection(CapacitorSQLite);
     private db!: SQLiteDBConnection;
 
@@ -22,6 +24,7 @@ export class DreamMobileService extends DreamService {
 
     constructor() {
         super();
+        this.loggerService.log(`Initting mobile dream service`);
         this.initDB().then(() => {
             this.loadDreams();
             this.loadTags();

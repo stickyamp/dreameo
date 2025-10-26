@@ -4,10 +4,12 @@ import { Dream, DreamsByDate, UserProfile, DreamStatistics, OfficialTags, TagEle
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastLevelEnum, ToastNotifierService } from '../toast-notifier';
 import { DreamService } from './dream.base.service';
+import { LoggerService } from '../log.service';
 
 @Injectable()
 export class DreamWebService extends DreamService {
   private toastNotifierService: ToastNotifierService = inject(ToastNotifierService);
+  private loggerService = inject(LoggerService);
 
   private readonly DREAMS_KEY = 'dreams';
   private readonly TAGS_KEY = 'tags';
@@ -17,6 +19,7 @@ export class DreamWebService extends DreamService {
   constructor() {
     console.log("manuXX initting dream web");
     super();
+    this.loggerService.log(`Initting web dream service`);
     this.loadDreams().catch(err => console.error('Error loading dreams:', err));
     this.loadTags().catch(err => console.error('Error loading tags:', err));
     this.loadUserProfile().catch(err => console.error('Error loading profile:', err));

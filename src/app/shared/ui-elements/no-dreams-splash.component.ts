@@ -15,9 +15,7 @@ import { LoggerService } from '../services/log.service';
     styleUrls: ['./no-dreams-splash.component.scss']
 })
 export class NoDreamsComponent {
-    constructor(private loggerService: LoggerService) { }
-    logs: string = "";
+    constructor() { }
     ngOnInit() {
-        this.logs = this.loggerService.getLogs();
     }
 }

@@ -70,7 +70,7 @@
     </div>
 
     <!-- Empty State -->
-    <div class="empty-state" *ngIf="recentDreams.length === 0">
+    <div class="empty-state" *ngIf="recentDreams.length === 0 && areDreamsLoaded">
       <app-no-dreams></app-no-dreams>
     </div>
   </div>
