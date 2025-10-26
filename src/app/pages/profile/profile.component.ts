@@ -466,6 +466,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+<<<<<<< HEAD
   private async showAlert(header: string, message: string): Promise<void> {
     const alert = await this.alertController.create({
       header,
@@ -486,5 +487,9 @@ export class ProfileComponent implements OnInit {
       cssClass: "success-alert",
     });
     await alert.present();
+=======
+  goToDebug() {
+    this.router.navigate(["/tabs/test"]);
+>>>>>>> ed2bc35921c14cef32de6e366eda2fb0fabf7e61
   }
 }

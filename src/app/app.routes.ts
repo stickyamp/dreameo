@@ -47,7 +47,7 @@ export const routes: Routes = [
       },
       {
         path: 'test',
-        loadComponent: () => import('../app/shared/ui-elements/no-dreams-splash.component').then(m => m.NoDreamsComponent)
+        loadComponent: () => import('../app/shared/ui-elements/logViewer/log-viewer.component').then(m => m.LogViewerComponent)
       }
     ]
   }

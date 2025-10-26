@@ -20,6 +20,7 @@ export class DreamsComponent implements OnInit {
   recentDreams: Dream[] = [];
   dreamGroups: DreamGroup[] = [];
   private allDreams: Dream[] = [];
+  areDreamsLoaded = false;
   searchQuery: string = "";
   showSearch: boolean = false;
   public OfficialTags = OfficialTags;
@@ -150,6 +151,8 @@ export class DreamsComponent implements OnInit {
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         ),
       }));
+
+    this.areDreamsLoaded = true;
   }
 
   onSearchChange(event: any) {

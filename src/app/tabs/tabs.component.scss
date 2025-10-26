@@ -11,12 +11,12 @@
 }
 
 .dream-tabs {
-    --background: #2d1b69;
-    --color: rgba(255, 255, 255, 0.6);
-    --color-selected: white;
+    --background: var(--menu-background-color);
+    --color: var(--color-text-primary);
+    --color-selected: var(--menu-tab-button);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 
-    ion-tab-button {
+    --ion-color-primary: var(--menu-tab-button) ion-tab-button {
         --color: rgba(255, 255, 255, 0.6);
         --color-selected: white;
 

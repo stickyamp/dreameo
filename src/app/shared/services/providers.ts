@@ -12,7 +12,6 @@ export function provideDreamService(): Provider {
         provide: DreamService,
         useFactory: () => {
             // Return cached instance if available
-            debugger;
             if (cachedInstance) {
                 return cachedInstance;
             }
