@@ -18,6 +18,7 @@
 # ============================
 
 # environment files (if you use API keys or secrets locally)
+src/environments/environment.ts
 src/environments/environment.*.ts
 # Google Auth credentials (keep secrets safe)
 src/environments/google-auth.config.ts
@@ -100,3 +101,20 @@ firebase.json
 # Local tools / build artifacts
 # ============================
 /jspm_pac_
+
+# ============================
+# Java / Maven
+# ============================
+
+# Compiled files
+*.jar
+*.war
+*.ear
+*.class
+
+# Maven target directory
+java-backend/target/
+**/target/
+
+# Maven build files
+**/dependency-reduced-pom.xml
