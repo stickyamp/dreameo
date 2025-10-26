@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="calendar-container">
+<ion-content [scrollEvents]="false" scrollY="true" [fullscreen]="true" class="calendar-container">
   <!-- Calendar Section -->
   <div class="calendar-section">
     <!-- Month Navigation -->
@@ -21,15 +21,9 @@
 
       <!-- Calendar Days -->
       <div class="calendar-days">
-        <div
-          class="calendar-day"
-          *ngFor="let day of calendarDays; trackBy: trackByDay"
-          [class.current-month]="day.currentMonth"
-          [class.selected]="isSelected(day.date)"
-          [class.today]="isToday(day.date)"
-          [class.has-dreams]="hasDreams(day.date)"
-          (click)="selectDay(day)"
-        >
+        <div class="calendar-day" *ngFor="let day of calendarDays; trackBy: trackByDay"
+          [class.current-month]="day.currentMonth" [class.selected]="isSelected(day.date)"
+          [class.today]="isToday(day.date)" [class.has-dreams]="hasDreams(day.date)" (click)="selectDay(day)">
           <span class="day-number">{{ day.day }}</span>
           <span class="dream-indicator" *ngIf="hasDreams(day.date)"></span>
         </div>
@@ -45,9 +39,7 @@
       </h3>
       <div class="stats-numbers">
         <span class="dream-count">{{ getMonthlyDreamCount() }}</span>
-        <span class="percentage-change positive"
-          >+{{ getPercentageChange() }}%</span
-        >
+        <span class="percentage-change positive">+{{ getPercentageChange() }}%</span>
       </div>
     </div>
 
@@ -55,11 +47,7 @@
     <div class="chart-container chart-modern-bar">
       <div class="chart-bars chart-bars-modern">
         <div class="chart-col" *ngFor="let week of weeklyData; let i = index">
-          <div
-            class="chart-bar chart-bar-modern"
-            [style.height.%]="week.height"
-            [class.highest]="week.isHighest"
-          >
+          <div class="chart-bar chart-bar-modern" [style.height.%]="week.height" [class.highest]="week.isHighest">
             <div class="bar-count" *ngIf="week.count > 0">{{ week.count }}</div>
           </div>
           <div class="chart-col-label">{{ week.week }}</div>
@@ -69,9 +57,5 @@
   </div>
 
   <!-- Modal for dreams list -->
-  <div
-    id="add-dream-modal"
-    #modalOpener="appShowDreamsList"
-    appShowDreamsList
-  ></div>
+  <div id="add-dream-modal" #modalOpener="appShowDreamsList" appShowDreamsList></div>
 </ion-content>

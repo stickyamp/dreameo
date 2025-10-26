@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [scrollEvents]="false" scrollY="true" [fullscreen]="true">
   <div class="content-wrapper">
     <!-- User Profile Section -->
     <div class="user-profile">
@@ -19,19 +19,15 @@
         <ion-label>{{ "PROFILE.LANGUAGE" | translate }}</ion-label>
         <ion-note slot="end">{{
           selectedLanguage === "en"
-            ? ("PROFILE.ENGLISH" | translate)
-            : ("PROFILE.SPANISH" | translate)
-        }}</ion-note>
+          ? ("PROFILE.ENGLISH" | translate)
+          : ("PROFILE.SPANISH" | translate)
+          }}</ion-note>
       </ion-item>
       <!-- Dark Mode Toggle -->
       <ion-item>
         <ion-icon name="moon-outline" slot="start"></ion-icon>
         <ion-label>{{ "PROFILE.DARK_MODE" | translate }}</ion-label>
-        <ion-toggle
-          slot="end"
-          [checked]="darkMode"
-          (ionChange)="toggleDarkMode($event)"
-        >
+        <ion-toggle slot="end" [checked]="darkMode" (ionChange)="toggleDarkMode($event)">
         </ion-toggle>
       </ion-item>
     </ion-list>
@@ -43,14 +39,14 @@
         <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
         <ion-label color="danger">{{
           "PROFILE.CLOSE_SESSION" | translate
-        }}</ion-label>
+          }}</ion-label>
       </ion-item>
       <!-- Clean Data -->
       <ion-item button (click)="cleanData()" lines="none">
         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
         <ion-label color="danger">{{
           "PROFILE.CLEAN_DATA" | translate
-        }}</ion-label>
+          }}</ion-label>
       </ion-item>
     </ion-list>
   </div>

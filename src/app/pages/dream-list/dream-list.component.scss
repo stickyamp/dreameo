@@ -441,8 +441,6 @@ ion-searchbar {
   min-height: calc(var(--spacing-xxs));
   border-radius: calc(var(--spacing-xs)) !important;
   color: var(--color-text-primary, #fff) !important;
-  background: var(--color-surface, #444a6d) !important;
-  --background: var(--color-surface, #444a6d) !important;
   --color: var(--color-text-primary, #fff) !important;
 }
 
@@ -822,4 +820,9 @@ html.ion-palette-light .dream-toolbar-row ion-icon[name="search-outline"] {
 .tag-lucid {
   --background: var(--dream-list-tag-lucid-background);
   --color: var(--dream-list-tag-lucid-color);
+}
+
+.menu-add {
+  --background: var(--menu-add-button);
+  --color: var(--color-text-primary);
 }

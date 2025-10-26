@@ -14,8 +14,7 @@ import { ConfigService } from "@/app/shared/services/config.service";
   templateUrl: "./dreams.component.html",
   styleUrls: ["./dreams.component.scss"],
   standalone: true,
-  imports: [CommonModule, IonicModule, NoDreamsComponent, TranslateModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, IonicModule, NoDreamsComponent, TranslateModule]
 })
 export class DreamsComponent implements OnInit {
   recentDreams: Dream[] = [];

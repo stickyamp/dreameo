@@ -14,7 +14,7 @@
     </div>
   </ion-toolbar>
 </ion-header>
-<ion-content class="add-dream-content">
+<ion-content [scrollEvents]="false" scrollY="true" class="add-dream-content">
   <div class="dream-form">
     <div class="form-body-wrapper">
       <ion-textarea autoGrow="true" [(ngModel)]="dreamData.description"

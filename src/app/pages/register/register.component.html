@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="register-content">
+<ion-content [scrollEvents]="false" scrollY="true" [fullscreen]="true" class="register-content">
   <div class="register-container">
     <!-- Moon Icon -->
     <div class="moon-icon-container">
@@ -20,32 +20,20 @@
     <h2 class="main-title">{{ "REGISTER.MAIN_TITLE" | translate }}</h2>
 
     <!-- Register Form -->
-    <form
-      [formGroup]="registerForm"
-      (ngSubmit)="onRegister()"
-      class="register-form"
-    >
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="register-form">
       <!-- Username Field -->
       <div class="form-group">
         <label class="form-label">{{ "REGISTER.USERNAME" | translate }}</label>
-        <ion-input
-          formControlName="username"
-          type="text"
-          [placeholder]="'REGISTER.USERNAME_PLACEHOLDER' | translate"
-          class="form-input"
-          [class.error]="
+        <ion-input formControlName="username" type="text" [placeholder]="'REGISTER.USERNAME_PLACEHOLDER' | translate"
+          class="form-input" [class.error]="
             registerForm.get('username')?.invalid &&
             registerForm.get('username')?.touched
-          "
-        >
+          ">
         </ion-input>
-        <div
-          *ngIf="
+        <div *ngIf="
             registerForm.get('username')?.invalid &&
             registerForm.get('username')?.touched
-          "
-          class="error-message"
-        >
+          " class="error-message">
           {{ "REGISTER.USERNAME_ERROR" | translate }}
         </div>
       </div>
@@ -53,24 +41,16 @@
       <!-- Email Field -->
       <div class="form-group">
         <label class="form-label">{{ "REGISTER.EMAIL" | translate }}</label>
-        <ion-input
-          formControlName="email"
-          type="email"
-          [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
-          class="form-input"
-          [class.error]="
+        <ion-input formControlName="email" type="email" [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
+          class="form-input" [class.error]="
             registerForm.get('email')?.invalid &&
             registerForm.get('email')?.touched
-          "
-        >
+          ">
         </ion-input>
-        <div
-          *ngIf="
+        <div *ngIf="
             registerForm.get('email')?.invalid &&
             registerForm.get('email')?.touched
-          "
-          class="error-message"
-        >
+          " class="error-message">
           {{ "REGISTER.EMAIL_ERROR" | translate }}
         </div>
       </div>
@@ -78,34 +58,19 @@
       <!-- Password Field -->
       <div class="form-group">
         <label class="form-label">{{ "REGISTER.PASSWORD" | translate }}</label>
-        <ion-input
-          formControlName="password"
-          [type]="showPassword ? 'text' : 'password'"
-          [placeholder]="'REGISTER.PASSWORD_PLACEHOLDER' | translate"
-          class="form-input"
-          [class.error]="
+        <ion-input formControlName="password" [type]="showPassword ? 'text' : 'password'"
+          [placeholder]="'REGISTER.PASSWORD_PLACEHOLDER' | translate" class="form-input" [class.error]="
             registerForm.get('password')?.invalid &&
             registerForm.get('password')?.touched
-          "
-        >
-          <ion-button
-            fill="clear"
-            slot="end"
-            (click)="togglePasswordVisibility()"
-            class="password-toggle"
-          >
-            <ion-icon
-              [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
-            ></ion-icon>
+          ">
+          <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()" class="password-toggle">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
           </ion-button>
         </ion-input>
-        <div
-          *ngIf="
+        <div *ngIf="
             registerForm.get('password')?.invalid &&
             registerForm.get('password')?.touched
-          "
-          class="error-message"
-        >
+          " class="error-message">
           {{ "REGISTER.PASSWORD_ERROR" | translate }}
         </div>
       </div>
@@ -114,46 +79,26 @@
       <div class="form-group">
         <label class="form-label">{{
           "REGISTER.CONFIRM_PASSWORD" | translate
-        }}</label>
-        <ion-input
-          formControlName="confirmPassword"
-          [type]="showConfirmPassword ? 'text' : 'password'"
-          [placeholder]="'REGISTER.CONFIRM_PASSWORD_PLACEHOLDER' | translate"
-          class="form-input"
-          [class.error]="
+          }}</label>
+        <ion-input formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+          [placeholder]="'REGISTER.CONFIRM_PASSWORD_PLACEHOLDER' | translate" class="form-input" [class.error]="
             registerForm.get('confirmPassword')?.invalid &&
             registerForm.get('confirmPassword')?.touched
-          "
-        >
-          <ion-button
-            fill="clear"
-            slot="end"
-            (click)="toggleConfirmPasswordVisibility()"
-            class="password-toggle"
-          >
-            <ion-icon
-              [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"
-            ></ion-icon>
+          ">
+          <ion-button fill="clear" slot="end" (click)="toggleConfirmPasswordVisibility()" class="password-toggle">
+            <ion-icon [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
           </ion-button>
         </ion-input>
-        <div
-          *ngIf="
+        <div *ngIf="
             registerForm.get('confirmPassword')?.invalid &&
             registerForm.get('confirmPassword')?.touched
-          "
-          class="error-message"
-        >
+          " class="error-message">
           {{ "REGISTER.CONFIRM_PASSWORD_ERROR" | translate }}
         </div>
       </div>
 
       <!-- Register Button -->
-      <ion-button
-        type="submit"
-        expand="block"
-        class="register-button"
-        [disabled]="registerForm.invalid || isLoading"
-      >
+      <ion-button type="submit" expand="block" class="register-button" [disabled]="registerForm.invalid || isLoading">
         <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
         <span *ngIf="!isLoading">{{ "REGISTER.BUTTON" | translate }}</span>
       </ion-button>
@@ -164,7 +109,7 @@
       <span class="login-text">{{ "REGISTER.LOGIN_TEXT" | translate }} </span>
       <a (click)="goToLogin()" class="login-link-text">{{
         "REGISTER.LOGIN_LINK" | translate
-      }}</a>
+        }}</a>
     </div>
   </div>
 </ion-content>

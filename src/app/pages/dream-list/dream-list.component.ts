@@ -35,7 +35,7 @@ export class DreamListComponent implements OnInit {
   tags: TagModel[] = [];
   public OfficialTags = OfficialTags;
   private monthNames: string[] = [];
-
+  public formattedDate: string = '';
   @ViewChild("modalOpener") modalOpener!: ShowDreamsListDirective;
 
   constructor(
@@ -51,6 +51,7 @@ export class DreamListComponent implements OnInit {
 
   ngOnInit() {
     this.updateLocalizedLabels();
+    this.formattedDate = this.getFormattedDate();
 
     // Subscribe to dreams changes to reactively update the component
     this.dreamService.dreams$

@@ -36,7 +36,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="dream-container">
+<ion-content [scrollEvents]="false" scrollY="true" [fullscreen]="true" class="dream-container">
   <div class="dreams-container">
     <div class="dreams-list" *ngIf="recentDreams.length > 0">
       @for (dream of recentDreams; track dream.id) {
@@ -60,8 +60,7 @@
                 'tag-lucid': tagChosen.type === OfficialTags.LUCID,
                 'tag-regular': tagChosen.type === OfficialTags.REGULAR
               }">
-                {{tagChosen.name
-                }}</ion-chip>
+                {{tagChosen.name}}</ion-chip>
               }
             </div>
           </div>

@@ -189,6 +189,12 @@ textarea {
   font-family: var(--ion-font-family) !important;
 }
 
+ion-content {
+  --overflow: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Material symbols setup */
 .material-symbols-outlined {
   font-family: "Material Symbols Outlined";
