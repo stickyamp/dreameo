@@ -399,8 +399,21 @@ export class ProfileComponent implements OnInit {
 
   private async performCloseSession(): Promise<void> {
     try {
-      await this.authService.logout();
-      // El AuthService ya navega a /login
+      // Verificar si hay un usuario de Google logeado
+      const googleUser = this.firebaseAuthService.getCurrentUser();
+
+      if (googleUser) {
+        // Si hay usuario de Google, cerrar sesión de Firebase
+        console.log("Logging out Google user");
+        await this.firebaseAuthService.logout();
+      } else {
+        // Si no hay usuario de Google, cerrar sesión básica
+        console.log("Logging out basic user");
+        await this.authService.logout();
+      }
+
+      // Navegar a login
+      this.router.navigate(["/login"]);
     } catch (error) {
       console.error("Error during logout:", error);
       // Fallback: intentar navegar a login de todas formas

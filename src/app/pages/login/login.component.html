@@ -105,6 +105,23 @@
       </ion-button>
     </form>
 
+    <!-- Divider -->
+    <div class="divider">
+      <span i18n="@@login.or">or</span>
+    </div>
+
+    <!-- Google Login Button -->
+    <ion-button
+      expand="block"
+      fill="outline"
+      class="google-button"
+      (click)="onGoogleLogin()"
+      [disabled]="isLoading"
+    >
+      <ion-icon name="logo-google" slot="start"></ion-icon>
+      <span i18n="@@login.google.button">Continue with Google</span>
+    </ion-button>
+
     <!-- Sign Up Link -->
     <div class="signup-link">
       <span class="signup-text" i18n="@@login.signup.text"

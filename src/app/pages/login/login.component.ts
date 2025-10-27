@@ -15,7 +15,8 @@ import {
 import { Router, RouterModule } from "@angular/router";
 import { take } from "rxjs/operators";
 import { AuthService } from "../../shared/services/auth.service";
-import { TranslateModule } from "@ngx-translate/core";
+import { FirebaseAuthService } from "../../shared/services/firebase-auth.service";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-login",
@@ -39,9 +40,11 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private firebaseAuthService: FirebaseAuthService,
     private router: Router,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private translate: TranslateService
   ) {
     this.loginForm = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
@@ -94,11 +97,40 @@ export class LoginComponent implements OnInit {
   }
 
   async onGoogleLogin() {
-    // Google login no está disponible con el AuthService básico
-    await this.showAlert(
-      "Función no disponible",
-      "El login con Google requiere configurar Firebase. Usa las credenciales de demo: demo@dream.com / password"
-    );
+    this.isLoading = true;
+
+    try {
+      console.log("Starting Google Sign-In from login page...");
+      const userProfile = await this.firebaseAuthService.signInWithGoogle();
+
+      if (userProfile) {
+        console.log("Google login successful, navigating to tabs");
+        this.router.navigate(["/tabs"]);
+      }
+    } catch (error: any) {
+      console.error("Google login error:", error);
+
+      // No mostrar alerta si el usuario canceló
+      if (
+        error.message?.includes("cancelado") ||
+        error.message?.includes("cancelled")
+      ) {
+        console.log("User cancelled Google login");
+        return;
+      }
+
+      // Mostrar mensaje de error apropiado
+      const header =
+        this.translate.instant("PROFILE.GOOGLE_ERROR") || "Connection Error";
+      const message =
+        error.message ||
+        this.translate.instant("PROFILE.GOOGLE_ERROR_MESSAGE") ||
+        "Could not connect to Google account";
+
+      await this.showAlert(header, message);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   goToRegister() {

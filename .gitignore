@@ -97,6 +97,12 @@ Desktop.ini
 firebase-debug.*
 firebase.json
 
+# Firebase Android configuration (contains sensitive data)
+android/app/google-services.json
+
+# Firebase iOS configuration (contains sensitive data)
+ios/App/GoogleService-Info.plist
+
 # ============================
 # Local tools / build artifacts
 # ============================
