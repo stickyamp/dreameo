@@ -13,6 +13,7 @@ import { FirebaseAuthService } from "src/app/shared/services/firebase-auth.servi
 import { Preferences } from "@capacitor/preferences";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule } from "@angular/forms";
+import { LoggerService } from "@/app/shared/services/log.service";
 
 interface User {
   name: string;
@@ -141,7 +142,8 @@ export class ProfileComponent implements OnInit {
     private firebaseAuthService: FirebaseAuthService,
     private translate: TranslateService,
     private popoverController: PopoverController,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private logService: LoggerService
   ) {}
 
   async ngOnInit() {
@@ -294,15 +296,16 @@ export class ProfileComponent implements OnInit {
 
     try {
       console.log("Starting Google Sign-In from profile...");
+      this.logService.log(`1- Starting google auth flow`);
       await this.firebaseAuthService.signInWithGoogle();
-
+      this.logService.log(`2- Starting google auth flow`);
       // Esperar un poco para que Firebase actualice el estado
       await new Promise((resolve) => setTimeout(resolve, 500));
-
+      this.logService.log(`3- Starting google auth flow`);
       // Actualizar información del usuario después de conectar
       const currentUser = this.firebaseAuthService.getCurrentUser();
       console.log("Current user after sign in:", currentUser);
-
+      this.logService.log(`4- Starting google auth flow ${currentUser}`);
       if (currentUser) {
         this.user = {
           name: currentUser.displayName || currentUser.email.split("@")[0],
@@ -340,7 +343,7 @@ export class ProfileComponent implements OnInit {
         console.log("User cancelled Google connection");
         return;
       }
-
+      this.logService.log(`Error happened in google auth flow ${error}`);
       await this.showAlert(
         this.translate.instant("profile.googleError") || "Connection Error",
         error.message ||

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Input, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, Input, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { IonicModule, ModalController, AlertController } from "@ionic/angular";
@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ToastNotifierService } from "../../shared/services/toast-notifier";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { provideDreamService } from "@/app/shared/services/providers";
+import { LoggerService } from "@/app/shared/services/log.service";
 
 @Component({
   selector: "app-add-dream",
@@ -26,6 +27,8 @@ import { provideDreamService } from "@/app/shared/services/providers";
 export class AddDreamComponent implements OnInit {
   @Input() selectedDate!: string;
   @Input() dream?: Dream;
+
+  private loggerService = inject(LoggerService);
 
   isEditing = false;
   isListening = false;
@@ -141,7 +144,7 @@ export class AddDreamComponent implements OnInit {
       const success = await this.audioService.startListening();
       if (success) {
         console.log("Grabación iniciada correctamente");
-        this.dreamData.description = success;
+        this.dreamData.description += '\n' + success;
 
       } else {
         //await this.showAlert('Error', 'No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono.');
@@ -222,6 +225,8 @@ export class AddDreamComponent implements OnInit {
         "Error",
         "No se pudo guardar el sueño. Inténtalo de nuevo."
       );
+      
+      this.loggerService.log(`Error saving dream ${error}`);
     }
   }
 

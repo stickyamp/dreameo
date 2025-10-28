@@ -67,6 +67,7 @@ export class DreamMobileService extends DreamService {
         );
       `);
         } catch (err) {
+            this.loggerService.log(`Error initializing DB ${err}`);
             console.error('Error initializing DB:', err);
         }
     }
@@ -97,6 +98,10 @@ export class DreamMobileService extends DreamService {
     }
 
     async addDream(dream: Omit<Dream, 'id' | 'createdAt'>): Promise<Dream> {
+
+        try{
+
+        
         const newDream: Dream = {
             ...dream,
             id: this.generateId(),
@@ -120,6 +125,11 @@ export class DreamMobileService extends DreamService {
 
         await this.loadDreams();
         return newDream;
+        }
+        catch(err){
+            this.loggerService.log(`Error initializing DB ${err}`);
+            return {} as Dream;
+        }
     }
 
     async updateDream(dreamId: string, updates: Partial<Dream>): Promise<Dream | null> {

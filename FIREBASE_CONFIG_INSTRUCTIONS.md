@@ -148,4 +148,3 @@ Si tienes problemas, verifica:
 1. Los logs en la consola del navegador
 2. Los logs en Firebase Console → Authentication → Users
 3. Que todas las dependencias estén instaladas correctamente
-

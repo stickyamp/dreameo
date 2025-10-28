@@ -1,5 +1,6 @@
 ion-content {
   --background: var(--color-bg);
+    --ion-card-background: var(--color-surface);
 }
 
 ion-toolbar {
@@ -20,10 +21,12 @@ ion-title {
 // Period Selection Buttons
 .period-buttons {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   margin-bottom: 20px;
+  justify-content: center;
 
   .period-btn {
+    width: 35%;
     --border-radius: 20px;
     --padding-start: 16px;
     --padding-end: 16px;
@@ -39,7 +42,7 @@ ion-title {
 
     &[fill="solid"] {
       --background: var(--color-accent);
-      --color: #ffffff;
+      --color: var(--color-text-primary);;
     }
   }
 }
