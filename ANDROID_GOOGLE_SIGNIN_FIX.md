@@ -85,7 +85,7 @@ Verifica que estos archivos tengan la configuración correcta:
 ```typescript
 GoogleAuth: {
   scopes: ["profile", "email"],
-  serverClientId: "62304341423-dsb11i2h2v3o04j6b5ej7j7pmvmong1v.apps.googleusercontent.com",
+  serverClientId: "998030673719-ns2js6lqoaac12aicev3ser2v3n0m8lo.apps.googleusercontent.com",
   forceCodeForRefreshToken: true,
 }
 ```
@@ -93,7 +93,7 @@ GoogleAuth: {
 #### ✅ `src/environments/google-auth.config.ts` (YA CONFIGURADO)
 
 ```typescript
-webClientId: "62304341423-dsb11i2h2v3o04j6b5ej7j7pmvmong1v.apps.googleusercontent.com";
+webClientId: "998030673719-ns2js6lqoaac12aicev3ser2v3n0m8lo.apps.googleusercontent.com";
 ```
 
 ### 6. Sincronizar Capacitor

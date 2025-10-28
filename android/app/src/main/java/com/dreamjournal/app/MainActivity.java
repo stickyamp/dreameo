@@ -5,10 +5,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.view.View;
 import com.getcapacitor.BridgeActivity;
+import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
 
 public class MainActivity extends BridgeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Register Google Auth plugin
+        registerPlugin(GoogleAuth.class);
+        
         // Apply splash theme before calling super
         setTheme(R.style.SplashTheme);
 

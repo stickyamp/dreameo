@@ -43,9 +43,15 @@ export class FirebaseAuthService {
     try {
       // Solo inicializar GoogleAuth en plataformas nativas (Android/iOS)
       if (!Capacitor.isNativePlatform()) {
-        console.log("Running on web, skipping GoogleAuth initialization");
+        console.log(
+          "[GoogleAuth] Running on web, skipping native initialization"
+        );
         return;
       }
+
+      console.log("[GoogleAuth] Initializing for native platform...");
+      console.log("[GoogleAuth] Platform:", Capacitor.getPlatform());
+      console.log("[GoogleAuth] Client ID:", googleAuthConfig.webClientId);
 
       // Inicializar Google Auth con configuración protegida para móviles
       await GoogleAuth.initialize({
@@ -53,9 +59,15 @@ export class FirebaseAuthService {
         scopes: googleAuthConfig.scopes,
         grantOfflineAccess: googleAuthConfig.grantOfflineAccess,
       });
-      console.log("Google Auth initialized successfully");
-    } catch (error) {
-      console.error("Error initializing Google Auth:", error);
+
+      console.log("[GoogleAuth] ✅ Initialized successfully");
+    } catch (error: any) {
+      console.error("[GoogleAuth] ❌ Error initializing:", error);
+      console.error("[GoogleAuth] Error details:", {
+        message: error?.message,
+        code: error?.code,
+        stack: error?.stack,
+      });
       // No lanzar error para no bloquear la app si Google Auth falla
     }
   }
@@ -153,6 +165,28 @@ export class FirebaseAuthService {
       console.log("Starting Google Sign-In...");
       console.log("Platform:", Capacitor.getPlatform());
 
+      // TEMPORAL: Forzar flujo web en todas las plataformas para evitar Error Code 10
+      // Esto funciona sin necesidad de configurar SHA-1 en Google Cloud Console
+      console.log("Using web authentication flow (universal)");
+      const provider = new GoogleAuthProvider();
+      provider.addScope("profile");
+      provider.addScope("email");
+
+      const userCredential = await signInWithPopup(this.auth, provider);
+      const user = userCredential.user;
+
+      const userProfile: UserProfile = {
+        uid: user.uid,
+        email: user.email || "",
+        displayName: user.displayName || undefined,
+        createdAt: user.metadata.creationTime || new Date().toISOString(),
+      };
+
+      console.log("Google sign-in successful:", userProfile.email);
+      return userProfile;
+
+      /* FLUJO NATIVO COMENTADO TEMPORALMENTE (requiere SHA-1 configurado)
+      
       // Detectar si estamos en web o en plataforma nativa
       const isWeb = !Capacitor.isNativePlatform();
 
@@ -177,52 +211,85 @@ export class FirebaseAuthService {
         return userProfile;
       } else {
         // FLUJO PARA MÓVIL: Usar Capacitor GoogleAuth
-        console.log("Using native authentication flow");
+        console.log("[GoogleAuth] Using native authentication flow");
+        console.log("[GoogleAuth] Platform:", Capacitor.getPlatform());
 
-        // Iniciar el flujo de autenticación con Google
-        const googleUser = await GoogleAuth.signIn();
+        try {
+          // Iniciar el flujo de autenticación con Google
+          console.log("[GoogleAuth] Calling GoogleAuth.signIn()...");
+          const googleUser = await GoogleAuth.signIn();
+          console.log("[GoogleAuth] signIn() completed");
 
-        if (!googleUser) {
-          throw new Error(
-            "No se pudo obtener la información del usuario de Google"
+          if (!googleUser) {
+            console.error(
+              "[GoogleAuth] ❌ No user returned from GoogleAuth.signIn()"
+            );
+            throw new Error(
+              "No se pudo obtener la información del usuario de Google"
+            );
+          }
+
+          console.log("[GoogleAuth] ✅ Google user obtained:", {
+            email: googleUser.email,
+            name: googleUser.name,
+            hasAuthentication: !!googleUser.authentication,
+            hasIdToken: !!googleUser.authentication?.idToken,
+          });
+
+          // Verificar que tenemos el token de autenticación
+          if (
+            !googleUser.authentication ||
+            !googleUser.authentication.idToken
+          ) {
+            console.error("[GoogleAuth] ❌ Missing authentication token");
+            throw new Error(
+              "No se pudo obtener el token de autenticación de Google"
+            );
+          }
+
+          console.log("[GoogleAuth] Creating Firebase credential...");
+          // Crear credencial de Firebase con el token de Google
+          const credential = GoogleAuthProvider.credential(
+            googleUser.authentication.idToken
           );
-        }
 
-        console.log("Google user obtained:", googleUser.email);
-
-        // Verificar que tenemos el token de autenticación
-        if (!googleUser.authentication || !googleUser.authentication.idToken) {
-          throw new Error(
-            "No se pudo obtener el token de autenticación de Google"
+          console.log("[GoogleAuth] Signing in to Firebase...");
+          // Autenticar con Firebase usando la credencial de Google
+          const userCredential = await signInWithCredential(
+            this.auth,
+            credential
           );
+          const user = userCredential.user;
+
+          const userProfile: UserProfile = {
+            uid: user.uid,
+            email: user.email || googleUser.email || "",
+            displayName:
+              user.displayName ||
+              googleUser.name ||
+              googleUser.givenName ||
+              undefined,
+            createdAt: user.metadata.creationTime || new Date().toISOString(),
+          };
+
+          console.log(
+            "[GoogleAuth] ✅ Google sign-in successful (native):",
+            userProfile.email
+          );
+          return userProfile;
+        } catch (nativeError: any) {
+          console.error("[GoogleAuth] ❌ Native flow error:", nativeError);
+          console.error("[GoogleAuth] Error details:", {
+            message: nativeError?.message,
+            code: nativeError?.code,
+            error: nativeError?.error,
+            stack: nativeError?.stack,
+          });
+          throw nativeError;
         }
-
-        // Crear credencial de Firebase con el token de Google
-        const credential = GoogleAuthProvider.credential(
-          googleUser.authentication.idToken
-        );
-
-        // Autenticar con Firebase usando la credencial de Google
-        const userCredential = await signInWithCredential(
-          this.auth,
-          credential
-        );
-        const user = userCredential.user;
-
-        const userProfile: UserProfile = {
-          uid: user.uid,
-          email: user.email || googleUser.email || "",
-          displayName:
-            user.displayName ||
-            googleUser.name ||
-            googleUser.givenName ||
-            undefined,
-          createdAt: user.metadata.creationTime || new Date().toISOString(),
-        };
-
-        console.log("Google sign-in successful (native):", userProfile.email);
-        return userProfile;
       }
+      
+      FIN DEL COMENTARIO DEL FLUJO NATIVO */
     } catch (error: any) {
       console.error("Google sign-in error:", error);
 
