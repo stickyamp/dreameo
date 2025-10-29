@@ -16,11 +16,8 @@ import { Preferences } from "@capacitor/preferences";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { googleAuthConfig } from "../../../environments/google-auth.config";
 import { Capacitor } from "@capacitor/core";
-<<<<<<< HEAD
 import { CrashlyticsService } from "./crashlytics.service";
-=======
 import { LoggerService } from "./log.service";
->>>>>>> 2bd2a7782b888d0969211624bc55d2ef9b3c5a1c
 
 export interface UserProfile {
   uid: string;
@@ -39,15 +36,12 @@ export class FirebaseAuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-<<<<<<< HEAD
   constructor(
     private auth: Auth,
     private router: Router,
-    private crashlytics: CrashlyticsService
+    private crashlytics: CrashlyticsService,
+    private logService: LoggerService
   ) {
-=======
-  constructor(private auth: Auth, private router: Router, private logService: LoggerService) {
->>>>>>> 2bd2a7782b888d0969211624bc55d2ef9b3c5a1c
     this.initializeAuth();
     this.initializeGoogleAuth();
   }
@@ -66,14 +60,18 @@ export class FirebaseAuthService {
       console.log("[GoogleAuth] Platform:", Capacitor.getPlatform());
       console.log("[GoogleAuth] Client ID:", googleAuthConfig.webClientId);
 
-      this.logService.log(`Initializing google auth ${googleAuthConfig.webClientId}, ${googleAuthConfig.scopes}, ${googleAuthConfig.grantOfflineAccess}`)
+      this.logService.log(
+        `Initializing google auth ${googleAuthConfig.webClientId}, ${googleAuthConfig.scopes}, ${googleAuthConfig.grantOfflineAccess}`
+      );
       // Inicializar Google Auth con configuración protegida para móviles
       await GoogleAuth.initialize({
         clientId: googleAuthConfig.webClientId,
         scopes: googleAuthConfig.scopes,
         grantOfflineAccess: googleAuthConfig.grantOfflineAccess,
       });
-            this.logService.log(`Initializing google auth 2 ${googleAuthConfig.webClientId}, ${googleAuthConfig.scopes}, ${googleAuthConfig.grantOfflineAccess}`)
+      this.logService.log(
+        `Initializing google auth 2 ${googleAuthConfig.webClientId}, ${googleAuthConfig.scopes}, ${googleAuthConfig.grantOfflineAccess}`
+      );
       console.log("Google Auth initialized successfully");
     } catch (error) {
       console.error("Error initializing Google Auth:", error);
@@ -179,15 +177,9 @@ export class FirebaseAuthService {
 
   async signInWithGoogle(): Promise<UserProfile> {
     try {
-<<<<<<< HEAD
-      console.log("🔐 Starting Google Sign-In...");
-      console.log("📱 Platform:", Capacitor.getPlatform());
-      console.log("🌐 isNativePlatform:", Capacitor.isNativePlatform());
-=======
       console.log("Starting Google Sign-In...");
       console.log("Platform:", Capacitor.getPlatform());
       this.logService.log(`1.1- Starting google auth flow`);
->>>>>>> 2bd2a7782b888d0969211624bc55d2ef9b3c5a1c
 
       this.crashlytics.log("Iniciando Google Sign-In");
 
@@ -201,9 +193,9 @@ export class FirebaseAuthService {
         provider.addScope("profile");
         provider.addScope("email");
 
-      this.logService.log(`1.2- Starting google auth flow`);
+        this.logService.log(`1.2- Starting google auth flow`);
         const userCredential = await signInWithPopup(this.auth, provider);
-              this.logService.log(`1.3- Starting google auth flow`);
+        this.logService.log(`1.3- Starting google auth flow`);
         const user = userCredential.user;
 
         const userProfile: UserProfile = {
@@ -227,12 +219,10 @@ export class FirebaseAuthService {
         try {
           // Iniciar el flujo de autenticación con Google
           console.log("[GoogleAuth] Calling GoogleAuth.signIn()...");
+          this.logService.log(`1.4- Starting google auth flow`);
           const googleUser = await GoogleAuth.signIn();
+          this.logService.log(`1.5- Starting google auth flow`);
           console.log("[GoogleAuth] signIn() completed");
-        // Iniciar el flujo de autenticación con Google
-              this.logService.log(`1.4- Starting google auth flow`);
-        const googleUser = await GoogleAuth.signIn();
-              this.logService.log(`1.5- Starting google auth flow`);
 
           if (!googleUser) {
             console.error(
