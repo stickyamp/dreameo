@@ -82,6 +82,7 @@ html.ion-palette-dark {
   --color-accent-hover-downgraded: #8a5cf636;
   --color-active: #c4b5fd;
   --color-border: #2b3040;
+  --color-border-add-tag: #3d4459;
   --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.4);
 
   //CONFIG PAGE
@@ -119,7 +120,7 @@ html.ion-palette-light {
   --ion-text-color: #1a1a1a;
   --ion-text-color-rgb: 26, 26, 26;
 
-  --color-bg: #ffffff;
+  --color-bg: #e2e1e1;
   --color-bg-content: #f0f1f6;
   --color-surface: #ffffff;
 
@@ -134,6 +135,8 @@ html.ion-palette-light {
   --color-active: #a78bfa;
 
   --color-border: #d9dbe0;
+  --color-border-add-tag: #7b7c7e;
+
   --shadow-elevation: 0 2px 8px rgba(0, 0, 0, 0.08);
 
   /* CONFIG PAGE */
@@ -222,7 +225,7 @@ ion-content {
 }
 
 .dream-card {
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 16px;
 }
 

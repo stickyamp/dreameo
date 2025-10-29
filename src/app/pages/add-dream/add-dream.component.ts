@@ -87,6 +87,7 @@ export class AddDreamComponent implements OnInit {
       //this.dreamData.type = this.dream.type || 'good';
       //this.audioPath = this.dream.audioPath;
       this.selectedDate = this.dream.date;
+      console.log("manuXX this.dream.tags", this.dream.tags);
     } else {
       const dreams = await this.dreamService.getAllDreams();
       const dreamWord = this.translate.instant("ADD_DREAM.DEFAULT_TITLE");
@@ -98,6 +99,22 @@ export class AddDreamComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((tagsFromSource) => {
         this.tags = [...this.baseTags, ...this.getAllTags(tagsFromSource)];
+
+        if(!this.dream) return;
+
+        this.tags = this.tags.map(item => {
+          if(this.dream!.tags?.some(i => i.name == item.name)){
+                          console.log("manuXX iiiiiiiiiii",);
+            return {
+              ...item,
+              checked: true
+            }
+          }
+          else{
+            return item;
+          }
+        })
+              console.log("manuXX this.dream.tags", this.tags);
       });
   }
 

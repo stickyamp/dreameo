@@ -86,9 +86,9 @@ ion-chip[color="warning"] {
 }
 
 .add-tag {
-  border: 1.5px dashed var(--color-border);
+  border: 1.5px dashed var(--color-border-add-tag);
   background: transparent !important;
-  color: var(--color-border) !important;
+  color: var(--color-border-add-tag) !important;
   font-style: italic;
   cursor: pointer;
   font-weight: var(--font-weight-medium);
