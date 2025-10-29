@@ -507,4 +507,9 @@ export class ProfileComponent implements OnInit {
   goToDebug() {
     this.router.navigate(["/tabs/test"]);
   }
+
+  goToDebug2() {
+    this.router.navigate(["/tabs/test2"]);
+  }
+
 }

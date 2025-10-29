@@ -9,6 +9,7 @@ import { ConfigService } from './shared/services/config.service';
 import { provideDreamService } from './shared/services/providers';
 import { VersionService } from './shared/services/version-checker.service';
 import { Capacitor } from '@capacitor/core';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 @Component({
   selector: 'app-root',
@@ -48,6 +49,8 @@ export class AppComponent implements OnInit {
     if (Capacitor.isNativePlatform()) {
       this.checkVersionAndLaunchPopup();
 
+    }else{
+            GoogleAuth.initialize();
     }
   }
 

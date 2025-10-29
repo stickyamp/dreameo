@@ -48,6 +48,10 @@ export const routes: Routes = [
       {
         path: 'test',
         loadComponent: () => import('../app/shared/ui-elements/logViewer/log-viewer.component').then(m => m.LogViewerComponent)
+      },
+      {
+        path: 'test2',
+        loadComponent: () => import('../app/shared/google-auth/login-google.component').then(m => m.LoginComponent)
       }
     ]
   }
