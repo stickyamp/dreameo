@@ -30,7 +30,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.svg",
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ],
             "styles": [
               "src/theme/variables.scss",

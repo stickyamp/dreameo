@@ -16,6 +16,7 @@ import { Preferences } from "@capacitor/preferences";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { googleAuthConfig } from "../../../environments/google-auth.config";
 import { Capacitor } from "@capacitor/core";
+import { CrashlyticsService } from "./crashlytics.service";
 
 export interface UserProfile {
   uid: string;
@@ -34,7 +35,11 @@ export class FirebaseAuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private auth: Auth, private router: Router) {
+  constructor(
+    private auth: Auth,
+    private router: Router,
+    private crashlytics: CrashlyticsService
+  ) {
     this.initializeAuth();
     this.initializeGoogleAuth();
   }
@@ -129,9 +134,13 @@ export class FirebaseAuthService {
       };
 
       console.log("User registered successfully:", userProfile);
+      this.crashlytics.setUserId(userProfile.uid);
+      this.crashlytics.log(`Usuario registrado: ${userProfile.email}`);
+
       return userProfile;
     } catch (error: any) {
       console.error("Registration error:", error);
+      this.crashlytics.logError(error, "Registration Error");
       throw this.handleAuthError(error);
     }
   }
@@ -153,46 +162,31 @@ export class FirebaseAuthService {
       };
 
       console.log("User logged in successfully:", userProfile);
+      this.crashlytics.setUserId(userProfile.uid);
+      this.crashlytics.log(`Usuario logueado: ${userProfile.email}`);
+
       return userProfile;
     } catch (error: any) {
       console.error("Login error:", error);
+      this.crashlytics.logError(error, "Login Error");
       throw this.handleAuthError(error);
     }
   }
 
   async signInWithGoogle(): Promise<UserProfile> {
     try {
-      console.log("Starting Google Sign-In...");
-      console.log("Platform:", Capacitor.getPlatform());
+      console.log("🔐 Starting Google Sign-In...");
+      console.log("📱 Platform:", Capacitor.getPlatform());
+      console.log("🌐 isNativePlatform:", Capacitor.isNativePlatform());
 
-      // TEMPORAL: Forzar flujo web en todas las plataformas para evitar Error Code 10
-      // Esto funciona sin necesidad de configurar SHA-1 en Google Cloud Console
-      console.log("Using web authentication flow (universal)");
-      const provider = new GoogleAuthProvider();
-      provider.addScope("profile");
-      provider.addScope("email");
+      this.crashlytics.log("Iniciando Google Sign-In");
 
-      const userCredential = await signInWithPopup(this.auth, provider);
-      const user = userCredential.user;
-
-      const userProfile: UserProfile = {
-        uid: user.uid,
-        email: user.email || "",
-        displayName: user.displayName || undefined,
-        createdAt: user.metadata.creationTime || new Date().toISOString(),
-      };
-
-      console.log("Google sign-in successful:", userProfile.email);
-      return userProfile;
-
-      /* FLUJO NATIVO COMENTADO TEMPORALMENTE (requiere SHA-1 configurado)
-      
       // Detectar si estamos en web o en plataforma nativa
       const isWeb = !Capacitor.isNativePlatform();
 
       if (isWeb) {
         // FLUJO PARA WEB: Usar signInWithPopup de Firebase
-        console.log("Using web authentication flow");
+        console.log("✅ Using WEB authentication flow (signInWithPopup)");
         const provider = new GoogleAuthProvider();
         provider.addScope("profile");
         provider.addScope("email");
@@ -207,11 +201,15 @@ export class FirebaseAuthService {
           createdAt: user.metadata.creationTime || new Date().toISOString(),
         };
 
-        console.log("Google sign-in successful (web):", userProfile.email);
+        console.log("✅ Google sign-in successful (web):", userProfile.email);
+        this.crashlytics.setUserId(userProfile.uid);
+        this.crashlytics.log(
+          `Usuario autenticado con Google (web): ${userProfile.email}`
+        );
         return userProfile;
       } else {
-        // FLUJO PARA MÓVIL: Usar Capacitor GoogleAuth
-        console.log("[GoogleAuth] Using native authentication flow");
+        // FLUJO PARA ANDROID/iOS: Usar Capacitor GoogleAuth (flujo nativo)
+        console.log("✅ Using NATIVE authentication flow (GoogleAuth plugin)");
         console.log("[GoogleAuth] Platform:", Capacitor.getPlatform());
 
         try {
@@ -276,6 +274,10 @@ export class FirebaseAuthService {
             "[GoogleAuth] ✅ Google sign-in successful (native):",
             userProfile.email
           );
+          this.crashlytics.setUserId(userProfile.uid);
+          this.crashlytics.log(
+            `Usuario autenticado con Google (native): ${userProfile.email}`
+          );
           return userProfile;
         } catch (nativeError: any) {
           console.error("[GoogleAuth] ❌ Native flow error:", nativeError);
@@ -288,10 +290,9 @@ export class FirebaseAuthService {
           throw nativeError;
         }
       }
-      
-      FIN DEL COMENTARIO DEL FLUJO NATIVO */
     } catch (error: any) {
-      console.error("Google sign-in error:", error);
+      console.error("❌ Google sign-in error:", error);
+      this.crashlytics.logError(error, "Google Sign-In Error");
 
       // Manejar errores específicos de Google Sign-In
       if (
@@ -311,9 +312,14 @@ export class FirebaseAuthService {
         error.message?.includes("clientId") ||
         error.code === "auth/invalid-api-key"
       ) {
-        throw new Error(
+        const configError = new Error(
           "Error de configuración de Google Sign-In. Por favor, configura las credenciales en Firebase Console."
         );
+        this.crashlytics.logError(
+          configError,
+          "Google Sign-In Configuration Error"
+        );
+        throw configError;
       }
 
       // Error de red

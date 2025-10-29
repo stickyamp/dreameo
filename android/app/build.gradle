@@ -1,13 +1,76 @@
+// apply plugin: 'com.android.application'
+
+// android {
+//     namespace "com.dreamjournal.app"
+//     compileSdkVersion rootProject.ext.compileSdkVersion
+//     compileOptions {
+//         // Enforce Java 17 to avoid accidental use of unsupported source level 21
+//         sourceCompatibility JavaVersion.VERSION_17
+//         targetCompatibility JavaVersion.VERSION_17
+//     }
+//     defaultConfig {
+//         applicationId "com.dreamjournal.app"
+//         minSdkVersion rootProject.ext.minSdkVersion
+//         targetSdkVersion rootProject.ext.targetSdkVersion
+//         versionCode 1
+//         versionName "1.0.0"
+//         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//         aaptOptions {
+//              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+//              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+//             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+//         }
+//     }
+//     buildTypes {
+//         release {
+//             minifyEnabled false
+//             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//         }
+//     }
+// }
+
+// repositories {
+//     flatDir{
+//         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+//     }
+// }
+
+// dependencies {
+//     implementation fileTree(include: ['*.jar'], dir: 'libs')
+//     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+//     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+//     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+//     implementation project(':capacitor-android')
+//     testImplementation "junit:junit:$junitVersion"
+//     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+//     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+//     implementation project(':capacitor-cordova-android-plugins')
+// }
+
+// apply from: 'capacitor.build.gradle'
+
+// try {
+//     def servicesJSON = file('google-services.json')
+//     if (servicesJSON.text) {
+//         apply plugin: 'com.google.gms.google-services'
+//     }
+// } catch(Exception e) {
+//     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+// }
+// Archivo: android/app/build.gradle
+
 apply plugin: 'com.android.application'
 
 android {
     namespace "com.dreamjournal.app"
     compileSdkVersion rootProject.ext.compileSdkVersion
+
     compileOptions {
-        // Enforce Java 17 to avoid accidental use of unsupported source level 21
+        // Forzar Java 17 para evitar conflictos con el nivel 21
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     defaultConfig {
         applicationId "com.dreamjournal.app"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -15,12 +78,13 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         aaptOptions {
-             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
-             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            // Archivos a ignorar en los assets
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -30,30 +94,41 @@ android {
 }
 
 repositories {
-    flatDir{
+    flatDir {
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+
     implementation project(':capacitor-android')
+    implementation project(':capacitor-cordova-android-plugins')
+
+    // Firebase Crashlytics
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
-    implementation project(':capacitor-cordova-android-plugins')
 }
 
+// Mantén la configuración de Capacitor
 apply from: 'capacitor.build.gradle'
 
+// 🔥 Aplica el plugin de Google Services solo si existe google-services.json
 try {
     def servicesJSON = file('google-services.json')
     if (servicesJSON.text) {
         apply plugin: 'com.google.gms.google-services'
+        apply plugin: 'com.google.firebase.crashlytics'
     }
-} catch(Exception e) {
+} catch (Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
