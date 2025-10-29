@@ -2,21 +2,24 @@ import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.dreamjournal.app",
-  appName: "Dream Journal",
+  appName: "Dreameo",
   webDir: "dist",
   server: {
     androidScheme: "https",
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 3000,
-      backgroundColor: "#030014",
+      launchShowDuration: 2000,
+      launchAutoHide: true,
+      launchFadeOutDuration: 2000,
+      backgroundColor: "#000000ff",
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
       showSpinner: false,
-      androidSplashResourceName: "splash_simple",
       splashFullScreen: true,
       splashImmersive: true,
-      launchAutoHide: true,
-      androidScaleType: "CENTER_CROP",
+      layoutName: "launch_screen",
+      useDialog: true,
     },
     StatusBar: {
       style: "dark",

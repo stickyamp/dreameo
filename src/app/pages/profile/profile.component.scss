@@ -20,9 +20,9 @@ ion-toggle {
   align-items: center;
   padding: var(--spacing-lg) var(--spacing-sm);
   margin: var(--spacing-xs);
-  background: var(--color-bg-content);
+  background: var(--color-surface);
   gap: var(--spacing-sm);
-  --background: var(--color-bg-content);
+  --background: var(--color-surface);
   --border-radius: 12px;
   --padding-start: var(--spacing-sm);
   --padding-end: var(--spacing-sm);
@@ -60,7 +60,7 @@ ion-toggle {
   padding: 0 var(--spacing-xs);
 
   ion-item {
-    --background: var(--color-bg-content);
+    --background: var(--color-surface);
     --inner-border-width: 0 !important;
     --border-radius: 12px;
     --padding-start: var(--spacing-sm);
@@ -135,7 +135,7 @@ ion-toggle {
   // Usar el mismo margen y padding que user-profile
   padding: var(--spacing-lg) var(--spacing-sm);
   margin: var(--spacing-xs);
-  background: var(--color-bg-content);
+  background: var(--color-surface);
   border-radius: 12px;
 
   .section-title {

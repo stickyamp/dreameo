@@ -216,17 +216,13 @@ ion-content {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
-// Dream Journal specific classes
 .dream-container {
   background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
   min-height: 100vh;
 }
 
 .dream-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
   border-radius: 16px;
-  margin: 8px;
   padding: 16px;
 }
 
