@@ -1,4 +1,10 @@
-import { Component, ElementRef, inject, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController, NavController } from "@ionic/angular";
 import { Dream } from "../../../models/dream.model";
@@ -261,21 +267,22 @@ export class CalendarComponent implements OnInit {
       Array.isArray(months) && months.length === 12
         ? months
         : [
-          "Enero",
-          "Febrero",
-          "Marzo",
-          "Abril",
-          "Mayo",
-          "Junio",
-          "Julio",
-          "Agosto",
-          "Septiembre",
-          "Octubre",
-          "Noviembre",
-          "Diciembre",
-        ];
-    return `${monthNames[this.currentDate.getMonth()]
-      } ${this.currentDate.getFullYear()}`;
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+          ];
+    return `${
+      monthNames[this.currentDate.getMonth()]
+    } ${this.currentDate.getFullYear()}`;
   }
 
   previousMonth() {
@@ -370,8 +377,36 @@ export class CalendarComponent implements OnInit {
   }
 
   getPercentageChange(): number {
-    // Mock percentage change - you can implement real logic here
-    return 12;
+    // Calcular diferencia porcentual real entre este mes y el anterior
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+    // Conteo actual
+    const dreamsCurrent = this.getMonthlyDreamCount();
+    // Conteo mes anterior
+    let prevMonth = month - 1;
+    let prevYear = year;
+    if (prevMonth < 0) {
+      prevMonth = 11;
+      prevYear -= 1;
+    }
+    // Mover la fecha para calcular el mes anterior
+    const prevStart = new Date(prevYear, prevMonth, 1);
+    const prevEnd = new Date(prevYear, prevMonth + 1, 0);
+    let prevCount = 0;
+    for (
+      let d = new Date(prevStart);
+      d <= prevEnd;
+      d.setDate(d.getDate() + 1)
+    ) {
+      prevCount += this.getDreamCount(this.formatDate(d));
+    }
+    if (prevCount === 0 && dreamsCurrent > 0) {
+      return 100; // de 0 a algo, 100%
+    }
+    if (prevCount === 0 && dreamsCurrent === 0) {
+      return 0;
+    }
+    return Math.round(((dreamsCurrent - prevCount) / prevCount) * 100);
   }
 
   generateWeeklyData() {
@@ -380,31 +415,38 @@ export class CalendarComponent implements OnInit {
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0);
 
-    // Genera exactamente 6 barras por mes, agregando por semanas del calendario (domingo a sábado)
+    // Construir las semanas del mes basadas en domingo a sábado
+    let weeks: { start: number; end: number; count: number }[] = [];
+    let day = 1;
     const daysInMonth = endDate.getDate();
-    const firstDayWeekIndex = startDate.getDay(); // 0=Domingo ... 6=Sábado
-    const weekBuckets: number[] = new Array(6).fill(0);
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const weekIndex = Math.min(
-        5,
-        Math.floor((day - 1 + firstDayWeekIndex) / 7)
-      );
-      const date = new Date(year, month, day);
-      const dateStr = this.formatDate(date);
-      weekBuckets[weekIndex] += this.getDreamCount(dateStr);
+    while (day <= daysInMonth) {
+      const weekStartDate = new Date(year, month, day);
+      // La semana empieza en el día actual
+      let startDay = weekStartDate.getDate();
+      // La semana termina en el sábado o el último día del mes
+      let daysLeft = 7 - weekStartDate.getDay();
+      let endDay = Math.min(day + daysLeft - 1, daysInMonth);
+      let weekCount = 0;
+      for (let d = startDay; d <= endDay; d++) {
+        let date = new Date(year, month, d);
+        weekCount += this.getDreamCount(this.formatDate(date));
+      }
+      weeks.push({ start: startDay, end: endDay, count: weekCount });
+      day = endDay + 1;
     }
 
-    this.weeklyData = weekBuckets.map((count, idx) => ({
-      week: (idx + 1).toString(),
-      count,
-      height: 0, // normalizado más abajo
+    // Como máximo 6 barras (rellenar si hay menos con barras vacías)
+    while (weeks.length < 6) {
+      weeks.push({ start: 0, end: 0, count: 0 });
+    }
+    this.weeklyData = weeks.map((w, idx) => ({
+      week: w.start > 0 ? `${w.start}-${w.end}` : "",
+      count: w.count,
+      height: 0, // se ajusta abajo
       isHighest: false,
     }));
-
-    // Normaliza alturas (0–100%) según el máximo del mes y aplica altura mínima
     const maxCount = Math.max(...this.weeklyData.map((w) => w.count));
-    const minPercent = 10; // altura mínima visible para semanas con conteo > 0
+    const minPercent = 10;
     this.weeklyData.forEach((week) => {
       const pct = maxCount > 0 ? Math.round((week.count / maxCount) * 100) : 0;
       const clamped = Math.min(
