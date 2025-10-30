@@ -1,26 +1,28 @@
 <div class="onboarding-container">
   <!-- Skip Button (Fixed Top) -->
-   <div class="skip-zone">
-    <button 
-        class="skip-btn" 
-        (click)="skip()" 
-        *ngIf="currentSlideIndex < onboardingSlides.length - 1">
-        Skip
-    </button>
-   </div>
+  <div class="skip-zone">
+    <button class="skip-btn" (click)="skip()">Skip</button>
+  </div>
 
   <!-- Swiper Slides (Middle) -->
-  <swiper-container 
-    #swiper>
-    
+  <swiper-container #swiper>
     <swiper-slide *ngFor="let slide of onboardingSlides">
       <div class="slide-content">
         <!-- Icon Container -->
+        @if(slide.icon){
         <div class="icon-container">
           <div class="icon-wrapper">
             <ion-icon [name]="slide.icon"></ion-icon>
           </div>
         </div>
+        }@else {
+        <img
+          src="assets/images/logo_no_bg.png"
+          width="400"
+          height="350"
+          alt=""
+        />
+        }
 
         <!-- Content -->
         <div class="text-content">
@@ -35,28 +37,31 @@
   <div class="bottom-controls">
     <!-- Pagination Dots -->
     <div class="pagination-dots">
-      <span 
-        *ngFor="let slide of onboardingSlides; let i = index" 
-        class="dot" 
-        [class.active]="i === currentSlideIndex">
+      <span
+        *ngFor="let slide of onboardingSlides; let i = index"
+        class="dot"
+        [class.active]="i === currentSlideIndex"
+      >
       </span>
     </div>
 
     <!-- Action Button (Mutates from Next to Sign In) -->
     <div class="action-container">
-      <button 
-        *ngIf="currentSlideIndex < onboardingSlides.length - 1" 
-        class="next-btn" 
-        (click)="nextSlide()">
+      <button
+        *ngIf="currentSlideIndex < onboardingSlides.length - 1"
+        class="next-btn"
+        (click)="nextSlide()"
+      >
         Next
       </button>
-      
-      <button 
-        *ngIf="currentSlideIndex === onboardingSlides.length - 1" 
-        class="signin-btn" 
-        (click)="completeOnboarding()">
-        <ion-icon name="logo-google" class="google-icon"></ion-icon>
-        Sign In with Account
+
+      <button
+        *ngIf="currentSlideIndex === onboardingSlides.length - 1"
+        class="signin-btn"
+        (click)="completeOnboarding()"
+      >
+        <img src="assets/svgs/google.svg" width="32" height="32" alt="" />
+        Sign In with Google
       </button>
     </div>
   </div>
