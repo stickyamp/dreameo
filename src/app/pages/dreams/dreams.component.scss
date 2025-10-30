@@ -404,19 +404,20 @@ ion-searchbar {
 .dream-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xxs)
+  gap: var(--spacing-xxs);
+  margin-top: var(--spacing-xs);
 }
 
 // Colorful tags (see tagColor pipe/classes)
 .dream-tag {
   font-size: var(--font-size-xxs) !important;
   font-weight: var(--font-weight-medium);
-  padding: var(--spacing-xxhs);
+  padding: var(--spacing-xxxs);
   padding-left: var(--spacing-xxs);
   padding-right: var(--spacing-xxs);
   margin: 0;
   min-height: calc(var(--spacing-xxs));
-  border-radius: calc(var(--spacing-xs)) !important;
+  border-radius: calc(var(--spacing-xxs)) !important;
   color: var(--color-text-primary, #fff) !important;
   background: var(--color-surface, #444a6d) !important;
   --background: var(--color-surface, #444a6d) !important;

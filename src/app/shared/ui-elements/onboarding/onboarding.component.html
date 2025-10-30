@@ -1,0 +1,63 @@
+<div class="onboarding-container">
+  <!-- Skip Button (Fixed Top) -->
+   <div class="skip-zone">
+    <button 
+        class="skip-btn" 
+        (click)="skip()" 
+        *ngIf="currentSlideIndex < onboardingSlides.length - 1">
+        Skip
+    </button>
+   </div>
+
+  <!-- Swiper Slides (Middle) -->
+  <swiper-container 
+    #swiper>
+    
+    <swiper-slide *ngFor="let slide of onboardingSlides">
+      <div class="slide-content">
+        <!-- Icon Container -->
+        <div class="icon-container">
+          <div class="icon-wrapper">
+            <ion-icon [name]="slide.icon"></ion-icon>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="text-content">
+          <h1>{{ slide.title }}</h1>
+          <p>{{ slide.description }}</p>
+        </div>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+
+  <!-- Bottom Controls (Fixed Bottom) -->
+  <div class="bottom-controls">
+    <!-- Pagination Dots -->
+    <div class="pagination-dots">
+      <span 
+        *ngFor="let slide of onboardingSlides; let i = index" 
+        class="dot" 
+        [class.active]="i === currentSlideIndex">
+      </span>
+    </div>
+
+    <!-- Action Button (Mutates from Next to Sign In) -->
+    <div class="action-container">
+      <button 
+        *ngIf="currentSlideIndex < onboardingSlides.length - 1" 
+        class="next-btn" 
+        (click)="nextSlide()">
+        Next
+      </button>
+      
+      <button 
+        *ngIf="currentSlideIndex === onboardingSlides.length - 1" 
+        class="signin-btn" 
+        (click)="completeOnboarding()">
+        <ion-icon name="logo-google" class="google-icon"></ion-icon>
+        Sign In with Account
+      </button>
+    </div>
+  </div>
+</div>

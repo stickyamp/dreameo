@@ -19,6 +19,10 @@ export const routes: Routes = [
     path: 'splash',
     loadComponent: () => import('./pages/splash/splash.component').then(m => m.SplashComponent)
   },
+    {
+    path: 'test3',
+    loadComponent: () => import('../app/shared/ui-elements/onboarding/onboarding.component').then(m => m.OnboardingComponent)
+  },
   {
     path: 'tabs',
     loadComponent: () => import('./tabs/tabs.component').then(m => m.TabsComponent),

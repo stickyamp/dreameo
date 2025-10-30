@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit {
   darkMode: boolean = false;
   selectedLanguage: string = "en";
   isUserLogged: boolean = true;
-  isGoogleUserLogged: boolean = false;
+  isGoogleUserLogged?: boolean;
   isConnectingGoogle: boolean = false;
 
   constructor(
@@ -510,6 +510,10 @@ export class ProfileComponent implements OnInit {
 
   goToDebug2() {
     this.router.navigate(["/tabs/test2"]);
+  }
+
+   goToDebug3() {
+    this.router.navigate(["/test3"]);
   }
 
 }

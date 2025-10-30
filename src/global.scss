@@ -37,6 +37,7 @@
   --spacing-sm: 16px;
   --spacing-md: 24px;
   --spacing-lg: 32px;
+  --spacing-xlg: 52px;
   --spacing-xl: 64px;
   --spacing-xxl: 84px;
 
@@ -103,14 +104,14 @@ html.ion-palette-dark {
 
 
   //DREAM LIST
-  --dream-list-tag-lucid-color: var(--color-text-primary);
-  --dream-list-tag-lucid-background: #20c7c7;
+  --dream-list-tag-lucid-color: #49c0ba;
+  --dream-list-tag-lucid-background: #102d2b;
 
-  --dream-list-tag-nightmare-color: var(--color-text-primary);
-  --dream-list-tag-nightmare-background: #bb2b2b;
+  --dream-list-tag-nightmare-color: #d53030;
+  --dream-list-tag-nightmare-background: #220606;
 
-  --dream-list-tag-regular-color: var(--color-text-primary);
-  --dream-list-tag-regular-background: #c8fad4;
+  --dream-list-tag-regular-color: #c783c7;
+  --dream-list-tag-regular-background: #2c1e2c;
 }
 
 // Enable light mode

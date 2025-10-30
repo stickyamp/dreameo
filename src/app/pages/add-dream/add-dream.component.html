@@ -29,7 +29,7 @@
               " class="tag-check-icon" aria-hidden="true"></ion-icon>
             {{ tag.name }}
             @if(tag.canBeRemoved){
-            <ion-icon name="close-outline" (click)="deleteTag(tag.name)"></ion-icon>
+            <ion-icon name="close-outline" class="remove-tag-icon" (click)="deleteTag(tag.name)"></ion-icon>
             }
           </ion-chip>
           @if(!isAddingTag){

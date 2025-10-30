@@ -1,0 +1,163 @@
+.onboarding-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+
+
+
+  swiper-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.skip-zone{
+    display: flex;
+    align-items: right;
+    justify-content: end;
+}
+
+.skip-btn{
+    font-size: var(--font-size-md);
+}
+
+.slide-content{
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.icon-wrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  
+  ion-icon {
+    font-size: 100px;
+    color: #4a5568;
+  }
+}
+
+.text-content {
+  text-align: center;
+  padding-top: var(--spacing-md);  
+  padding-bottom: var(--spacing-md);  
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a202c;
+    line-height: 1.3;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.pagination-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cbd5e0;
+  transition: all 0.3s ease;
+  
+  &.active {
+    background: #7c3aed;
+    width: 24px;
+    border-radius: 4px;
+  }
+}
+
+.next-btn,
+.signin-btn {
+  width: 100%;
+  height: var(--spacing-xlg);
+  border: none;
+  border-radius: 26px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.next-btn {
+  background: var(--color-bg-content);
+  color: var(--color-primary-text);
+  min-width: 360px;
+  
+  &:active {
+    transform: scale(0.98);
+    background: #6d28d9;
+  }
+}
+
+.signin-btn {
+  background: white;
+  color: #1a202c;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-in;
+  min-width: 360px;
+  
+  .google-icon {
+    font-size: 20px;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.bottom-controls{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md)
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
