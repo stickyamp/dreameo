@@ -2,16 +2,28 @@
   <div class="content-wrapper">
     <!-- Period Selection -->
     <div class="period-buttons">
-      <ion-button [fill]="selectedPeriod === 'thisWeek' ? 'solid' : 'outline'" (click)="selectPeriod('thisWeek')"
-        size="small" class="period-btn">
+      <ion-button
+        [fill]="selectedPeriod === 'thisWeek' ? 'solid' : 'outline'"
+        (click)="selectPeriod('thisWeek')"
+        size="small"
+        class="period-btn"
+      >
         {{ "STATISTICS.PERIOD.THIS_WEEK" | translate }}
       </ion-button>
-      <ion-button [fill]="selectedPeriod === 'thisMonth' ? 'solid' : 'outline'" (click)="selectPeriod('thisMonth')"
-        size="small" class="period-btn">
+      <ion-button
+        [fill]="selectedPeriod === 'thisMonth' ? 'solid' : 'outline'"
+        (click)="selectPeriod('thisMonth')"
+        size="small"
+        class="period-btn"
+      >
         {{ "STATISTICS.PERIOD.THIS_MONTH" | translate }}
       </ion-button>
-      <ion-button [fill]="selectedPeriod === 'allTime' ? 'solid' : 'outline'" (click)="selectPeriod('allTime')"
-        size="small" class="period-btn">
+      <ion-button
+        [fill]="selectedPeriod === 'allTime' ? 'solid' : 'outline'"
+        (click)="selectPeriod('allTime')"
+        size="small"
+        class="period-btn"
+      >
         {{ "STATISTICS.PERIOD.ALL_TIME" | translate }}
       </ion-button>
     </div>
@@ -23,8 +35,11 @@
           <div class="stat-header">
             <span class="stat-label">{{
               "STATISTICS.TOTAL_DREAMS" | translate
-              }}</span>
-            <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+            }}</span>
+            <ion-icon
+              name="information-circle-outline"
+              class="info-icon"
+            ></ion-icon>
           </div>
           <div class="stat-value">{{ stats.totalDreams }}</div>
         </ion-card-content>
@@ -35,8 +50,11 @@
           <div class="stat-header">
             <span class="stat-label">{{
               "STATISTICS.SPECIAL_DREAMS" | translate
-              }}</span>
-            <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+            }}</span>
+            <ion-icon
+              name="information-circle-outline"
+              class="info-icon"
+            ></ion-icon>
           </div>
           <div class="stat-value special">
             {{ stats.lucidDreams + stats.nightmares }}
@@ -57,16 +75,19 @@
               <span class="frequency-number">{{ stats.dreamFrequency }}</span>
               <span class="frequency-label">
                 {{
-                selectedPeriod === "thisWeek"
-                ? ("STATISTICS.PERIOD.THIS_WEEK" | translate)
-                : selectedPeriod === "thisMonth"
-                ? ("STATISTICS.PERIOD.THIS_MONTH" | translate)
-                : ("STATISTICS.PERIOD.ALL_TIME" | translate)
+                  selectedPeriod === "thisWeek"
+                    ? ("STATISTICS.PERIOD.THIS_WEEK" | translate)
+                    : selectedPeriod === "thisMonth"
+                    ? ("STATISTICS.PERIOD.THIS_MONTH" | translate)
+                    : ("STATISTICS.PERIOD.ALL_TIME" | translate)
                 }}
               </span>
             </div>
           </div>
-          <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+          <ion-icon
+            name="information-circle-outline"
+            class="info-icon"
+          ></ion-icon>
         </div>
 
         <div class="chart-legend">
@@ -85,16 +106,38 @@
         </div>
 
         <div class="chart-container">
-          <svg class="frequency-chart" viewBox="0 0 240 100" preserveAspectRatio="none">
+          <svg
+            class="frequency-chart"
+            viewBox="0 0 240 100"
+            preserveAspectRatio="none"
+          >
             <!-- Lucid Dreams Line -->
-            <path *ngIf="chartPathLucid" [attr.d]="chartPathLucid" fill="none" stroke="#20c7c7" stroke-width="3"
-              vector-effect="non-scaling-stroke" />
+            <path
+              *ngIf="chartPathLucid"
+              [attr.d]="chartPathLucid"
+              fill="none"
+              stroke="#0397fa"
+              stroke-width="3"
+              vector-effect="non-scaling-stroke"
+            />
             <!-- Normal Dreams Line -->
-            <path *ngIf="chartPathNormal" [attr.d]="chartPathNormal" fill="none" stroke="#5B5FC7" stroke-width="3"
-              vector-effect="non-scaling-stroke" />
+            <path
+              *ngIf="chartPathNormal"
+              [attr.d]="chartPathNormal"
+              fill="none"
+              stroke="#fbb92a"
+              stroke-width="3"
+              vector-effect="non-scaling-stroke"
+            />
             <!-- Nightmare Dreams Line -->
-            <path *ngIf="chartPathNightmare" [attr.d]="chartPathNightmare" fill="none" stroke="#bb2b2b" stroke-width="3"
-              vector-effect="non-scaling-stroke" />
+            <path
+              *ngIf="chartPathNightmare"
+              [attr.d]="chartPathNightmare"
+              fill="none"
+              stroke="#e66363"
+              stroke-width="3"
+              vector-effect="non-scaling-stroke"
+            />
           </svg>
           <div class="chart-labels">
             <span *ngFor="let label of chartLabels">{{ label }}</span>
@@ -109,8 +152,11 @@
         <div class="section-header">
           <span class="section-title">{{
             "STATISTICS.MOST_REPEATED_KEYWORDS" | translate
-            }}</span>
-          <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+          }}</span>
+          <ion-icon
+            name="information-circle-outline"
+            class="info-icon"
+          ></ion-icon>
         </div>
 
         <div class="keywords-container">
@@ -127,17 +173,24 @@
         <div class="section-header">
           <span class="section-title">{{
             "STATISTICS.TYPES" | translate
-            }}</span>
-          <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+          }}</span>
+          <ion-icon
+            name="information-circle-outline"
+            class="info-icon"
+          ></ion-icon>
         </div>
 
         <div class="types-list">
           <div *ngFor="let type of dreamTypes" class="type-item">
             <span class="type-label">{{ type.type }}</span>
             <div class="type-bar-container">
-              <div class="type-bar" [style.width.%]="
+              <div
+                class="type-bar"
+                [style.width.%]="
                   stats.totalDreams ? (type.count / stats.totalDreams) * 100 : 0
-                " [class]="type.type.toLowerCase()"></div>
+                "
+                [class]="type.type.toLowerCase()"
+              ></div>
             </div>
             <span class="type-percentage">{{ type.count }}</span>
           </div>

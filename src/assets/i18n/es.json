@@ -55,23 +55,31 @@
     "BAD_DREAMS": "Sueños malos",
     "MONTHLY_DREAM_COUNT": "Conteo mensual de sueños",
     "DAYS_SHORT": ["D", "L", "M", "X", "J", "V", "S"],
-    "DAYS_FULL": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+    "DAYS_FULL": [
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Sábado"
+    ],
     "MONTHS": [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre"
-  ],
-  "TODAY": "Hoy",
-  "YESTERDAY": "Ayer"
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre"
+    ],
+    "TODAY": "Hoy",
+    "YESTERDAY": "Ayer"
   },
   "DREAMS": {
     "TITLE": "Sueños",
@@ -147,7 +155,7 @@
     "PERIOD": {
       "THIS_WEEK": "Esta Semana",
       "THIS_MONTH": "Este Mes",
-      "ALL_TIME": "Todo el tiempo"
+      "ALL_TIME": "Este año"
     },
     "TOTAL_DREAMS": "Total de sueños",
     "SPECIAL_DREAMS": "Sueños distintos",

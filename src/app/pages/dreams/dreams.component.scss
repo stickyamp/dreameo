@@ -265,9 +265,11 @@ ion-content {
 }
 
 .fab-dream {
-  --background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
   width: 56px;
   height: 56px;
@@ -411,7 +413,7 @@ ion-searchbar {
 // Colorful tags (see tagColor pipe/classes)
 .dream-tag {
   font-size: var(--font-size-xxs) !important;
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-bold);
   padding: var(--spacing-xxxs);
   padding-left: var(--spacing-xxs);
   padding-right: var(--spacing-xxs);
@@ -680,7 +682,7 @@ ion-searchbar.dream-searchbar {
 .topbar.ion-toolbar,
 .dream-toolbar.ion-toolbar,
 .dream-toolbar-row,
-.dream-toolbar-row>*,
+.dream-toolbar-row > *,
 ion-searchbar.dream-searchbar,
 ion-searchbar.dream-searchbar::part(container),
 ion-searchbar.dream-searchbar::part(input),
@@ -717,12 +719,16 @@ html.ion-palette-light ion-searchbar.dream-searchbar {
   --background: #2b3040 !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  .searchbar-input-container.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
   background: #2b3040 !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
   background: transparent !important;
   color: #fff !important;
@@ -739,12 +745,16 @@ html.ion-palette-light ion-searchbar.dream-searchbar {
   --icon-color: var(--color-text-primary) !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  .searchbar-input-container.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
   background: #2b3040 !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
   background: transparent !important;
   color: #fff !important;
@@ -758,7 +768,9 @@ html.ion-palette-light ion-searchbar.dream-searchbar {
   --icon-color: #1a1a1f !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
   background: transparent !important;
   color: #1a1a1f !important;

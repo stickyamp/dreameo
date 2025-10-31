@@ -97,21 +97,20 @@ html.ion-palette-dark {
   --menu-background-color: #2b3040;
 
   //STATISTICS
-  --statistics-lucid-color: #20c7c7;
-  --statistics-nightmare-color: #bb2b2b;
-  --statistics-normal-color: #5B5FC7;
-  --statistics-special-color: #c8fad4;
-
+  --statistics-lucid-color: #0397fa;
+  --statistics-nightmare-color: #e66363;
+  --statistics-normal-color: #fbb92a;
+  --statistics-special-color: var(--color-accent);
 
   //DREAM LIST
-  --dream-list-tag-lucid-color: #49c0ba;
-  --dream-list-tag-lucid-background: #102d2b;
+  --dream-list-tag-lucid-color: #0397fa;
+  --dream-list-tag-lucid-background: #02253c3c;
 
-  --dream-list-tag-nightmare-color: #d53030;
-  --dream-list-tag-nightmare-background: #220606;
+  --dream-list-tag-nightmare-color: #e66363;
+  --dream-list-tag-nightmare-background: #fd3b3b10;
 
-  --dream-list-tag-regular-color: #c783c7;
-  --dream-list-tag-regular-background: #2c1e2c;
+  --dream-list-tag-regular-color: #fbb92a;
+  --dream-list-tag-regular-background: #513d1229;
 }
 
 // Enable light mode
@@ -121,9 +120,9 @@ html.ion-palette-light {
   --ion-text-color: #1a1a1a;
   --ion-text-color-rgb: 26, 26, 26;
 
-  --color-bg: #f3f2f2;
-  --color-bg-content: #f0f1f6;
-  --color-surface: #ffffff;
+  --color-bg: #e3e2e2;
+  --color-bg-content: #dddde1;
+  --color-surface: #eeecec;
 
   --color-text-primary: #1a1a1a;
   --color-text-secondary: #555b6b;
@@ -151,20 +150,20 @@ html.ion-palette-light {
   --menu-background-color: #fafafa;
 
   //STATISTICS
-  --statistics-lucid-color: #20c7c7;
-  --statistics-nightmare-color: #bb2b2b;
-  --statistics-normal-color: #5B5FC7;
-  --statistics-special-color: #c8fad4;
+  --statistics-lucid-color: #0397fa;
+  --statistics-nightmare-color: #e66363;
+  --statistics-normal-color: #fbb92a;
+  --statistics-special-color: var(--color-accent);
 
   //DREAM LIST
-  --dream-list-tag-lucid-color: var(--color-text-primary);
-  --dream-list-tag-lucid-background: #20c7c7;
+  --dream-list-tag-lucid-color: #0397fa;
+  --dream-list-tag-lucid-background: #02253c11;
 
-  --dream-list-tag-nightmare-color: var(--color-text-primary);
-  --dream-list-tag-nightmare-background: #bb2b2b;
+  --dream-list-tag-nightmare-color: #e66363;
+  --dream-list-tag-nightmare-background: #fd3b3b10;
 
-  --dream-list-tag-regular-color: var(--color-text-primary);
-  --dream-list-tag-regular-background: #c8fad4;
+  --dream-list-tag-regular-color: #fbb92a;
+  --dream-list-tag-regular-background: #513d120f;
 }
 
 :root {
@@ -260,9 +259,11 @@ ion-content {
 }
 
 .dream-container .calendar-day.has-dreams {
-  background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   color: white;
 }
 
@@ -337,9 +338,11 @@ ion-content {
 
 // Button styles
 .dream-button {
-  --background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --border-radius: 25px;
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
   --color: white;
@@ -349,9 +352,11 @@ ion-content {
 }
 
 .fab-dream {
-  --background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
 }
 

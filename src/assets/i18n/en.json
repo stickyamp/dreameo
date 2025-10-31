@@ -55,23 +55,31 @@
     "BAD_DREAMS": "Bad Dreams",
     "MONTHLY_DREAM_COUNT": "Monthly Dream Count",
     "DAYS_SHORT": ["S", "M", "T", "W", "T", "F", "S"],
-    "DAYS_FULL": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "DAYS_FULL": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
     "MONTHS": [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ],
-  "TODAY": "Today",
-  "YESTERDAY": "Yesterday"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "TODAY": "Today",
+    "YESTERDAY": "Yesterday"
   },
   "DREAMS": {
     "TITLE": "Dreams",
@@ -147,7 +155,7 @@
     "PERIOD": {
       "THIS_WEEK": "This Week",
       "THIS_MONTH": "This Month",
-      "ALL_TIME": "All Time"
+      "ALL_TIME": "This Year"
     },
     "TOTAL_DREAMS": "Total Dreams",
     "SPECIAL_DREAMS": "Different dreams",

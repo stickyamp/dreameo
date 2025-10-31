@@ -42,7 +42,7 @@ export class DreamStatisticsPage implements OnInit {
 
   private allDreams: DreamForStatistics[] = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.loadDreams();
@@ -62,7 +62,7 @@ export class DreamStatisticsPage implements OnInit {
         date: new Date(d.date),
         isLucid: d.isLucid ?? false,
         isNightmare: d.isNightmare ?? false,
-        tags: (d.tags ?? []).map(t => t.name),
+        tags: (d.tags ?? []).map((t) => t.name),
       } as unknown as DreamForStatistics;
     });
 
@@ -227,9 +227,9 @@ export class DreamStatisticsPage implements OnInit {
 
   private generateChartPath() {
     this.chartPath = this.createPath(this.chartData);
-    this.chartPathLucid = this.createPath(this.chartDataLucid, -2);
+    this.chartPathLucid = this.createPath(this.chartDataLucid, -4);
     this.chartPathNormal = this.createPath(this.chartDataNormal, 0);
-    this.chartPathNightmare = this.createPath(this.chartDataNightmare, 2);
+    this.chartPathNightmare = this.createPath(this.chartDataNightmare, 4);
   }
 
   private createPath(data: number[], offset: number = 0): string {

@@ -19,7 +19,7 @@
         <img
           src="assets/images/logo_no_bg.png"
           width="400"
-          height="350"
+          height="320"
           alt=""
         />
         }
@@ -58,7 +58,7 @@
       <button
         *ngIf="currentSlideIndex === onboardingSlides.length - 1"
         class="signin-btn"
-        (click)="completeOnboarding()"
+        (click)="loginGoogle()"
       >
         <img src="assets/svgs/google.svg" width="32" height="32" alt="" />
         Sign In with Google

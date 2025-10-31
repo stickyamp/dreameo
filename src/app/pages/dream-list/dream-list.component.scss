@@ -265,9 +265,11 @@ ion-content {
 }
 
 .fab-dream {
-  --background: linear-gradient(135deg,
-      var(--ion-color-primary),
-      var(--ion-color-secondary));
+  --background: linear-gradient(
+    135deg,
+    var(--ion-color-primary),
+    var(--ion-color-secondary)
+  );
   --box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4);
   width: 56px;
   height: 56px;
@@ -284,9 +286,9 @@ ion-content {
 
 .dream-searchbar.purple {
   //--background: linear-gradient(90deg, rgba(67, 56, 202, 0.35), rgba(126, 34, 206, 0.35));
-  --color: #eee;
-  --placeholder-color: #d5c9ff;
-  --icon-color: #d5c9ff;
+  --color: var(--color-text-primary);
+  --placeholder-color: var(--color-text-secondary);
+  --icon-color: #var(--color-text-primary);
   border-radius: 32px;
   --border-radius: 32px;
   --searchbar-input-padding-start: 44px;
@@ -318,27 +320,6 @@ ion-searchbar {
   padding: 12px 16px;
 }
 
-// /* Ajustar el input interno */
-// ion-searchbar .searchbar-input-container {
-//   height: 80px;
-// }
-
-// ion-searchbar .searchbar-input {
-//   padding-inline-start: 40px !important;
-//   padding-inline-end: 12px !important;
-//   font-size: 15px;
-//   font-weight: 400;
-// }
-
-// /* Icono de búsqueda */
-// ion-searchbar .searchbar-search-icon {
-//   left: 12px;
-//   width: 18px;
-//   height: 18px;
-//   opacity: 0.6;
-// }
-
-// DREAM CARD MODERN LAYOUT
 .dream-row {
   display: flex;
   flex-direction: row;
@@ -425,29 +406,26 @@ ion-searchbar {
 .dream-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xxs)
+  gap: var(--spacing-xxs);
+  margin-top: var(--spacing-xs);
 }
 
 // Colorful tags (see tagColor pipe/classes)
 .dream-tag {
   font-size: var(--font-size-xxs) !important;
-  font-weight: var(--font-weight-medium);
-  padding: var(--spacing-xxhs);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-xxxs);
   padding-left: var(--spacing-xxs);
   padding-right: var(--spacing-xxs);
   margin: 0;
   min-height: calc(var(--spacing-xxs));
-  border-radius: calc(var(--spacing-xs)) !important;
+  border-radius: calc(var(--spacing-xxs)) !important;
   color: var(--color-text-primary, #fff) !important;
+  background: var(--color-surface, #444a6d) !important;
+  --background: var(--color-surface, #444a6d) !important;
   --color: var(--color-text-primary, #fff) !important;
 }
 
-// // Fallback
-// .dream-tag {
-//   background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%) !important;
-// }
-
-// Hide fav/star btn in cards
 .fav-btn {
   display: none !important;
 }
@@ -704,7 +682,7 @@ ion-searchbar.dream-searchbar {
 .topbar.ion-toolbar,
 .dream-toolbar.ion-toolbar,
 .dream-toolbar-row,
-.dream-toolbar-row>*,
+.dream-toolbar-row > *,
 ion-searchbar.dream-searchbar,
 ion-searchbar.dream-searchbar::part(container),
 ion-searchbar.dream-searchbar::part(input),
@@ -741,12 +719,16 @@ html.ion-palette-light ion-searchbar.dream-searchbar {
   --background: #2b3040 !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  .searchbar-input-container.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
   background: #2b3040 !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
   background: transparent !important;
   color: #fff !important;
@@ -763,12 +745,16 @@ html.ion-palette-light ion-searchbar.dream-searchbar {
   --icon-color: var(--color-text-primary) !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  .searchbar-input-container.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
   background: #2b3040 !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
   background: transparent !important;
   color: #fff !important;
@@ -782,7 +768,9 @@ html.ion-palette-light ion-searchbar.dream-searchbar {
   --icon-color: #1a1a1f !important;
 }
 
-html.ion-palette-light ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md,
+html.ion-palette-light
+  ion-searchbar.dream-searchbar
+  input.searchbar-input.sc-ion-searchbar-md,
 html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
   background: transparent !important;
   color: #1a1a1f !important;
@@ -804,20 +792,25 @@ html.ion-palette-light .dream-toolbar-row ion-icon[name="search-outline"] {
   color: var(--color-text-primary) !important;
 }
 
-
 .tag-regular {
-  --background: var(--dream-list-tag-regular-background);
-  --color: var(--dream-list-tag-regular-color);
+  --background: var(--dream-list-tag-regular-background) !important;
+  --color: var(--dream-list-tag-regular-color) !important;
+  background: var(--dream-list-tag-regular-background) !important;
+  color: var(--dream-list-tag-regular-color) !important;
 }
 
 .tag-nightmare {
-  --background: var(--dream-list-tag-nightmare-background);
-  --color: var(--dream-list-tag-nightmare-color);
+  --background: var(--dream-list-tag-nightmare-background) !important;
+  --color: var(--dream-list-tag-nightmare-color) !important;
+  background: var(--dream-list-tag-nightmare-background) !important;
+  color: var(--dream-list-tag-nightmare-color) !important;
 }
 
 .tag-lucid {
-  --background: var(--dream-list-tag-lucid-background);
-  --color: var(--dream-list-tag-lucid-color);
+  --background: var(--dream-list-tag-lucid-background) !important;
+  --color: var(--dream-list-tag-lucid-color) !important;
+  background: var(--dream-list-tag-lucid-background) !important;
+  color: var(--dream-list-tag-lucid-color) !important;
 }
 
 .menu-add {

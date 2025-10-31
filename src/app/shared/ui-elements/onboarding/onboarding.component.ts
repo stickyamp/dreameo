@@ -5,10 +5,12 @@ import {
   Output,
   ViewChild,
   ElementRef,
+  inject,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 import { register } from "swiper/element/bundle";
+import { Router } from "@angular/router";
 
 // Register Swiper custom elements
 register();
@@ -32,6 +34,7 @@ export class OnboardingComponent {
   @ViewChild("swiper", { static: false }) swiperRef?: ElementRef<any>;
   @Output() completed = new EventEmitter<void>();
 
+  private readonly router = inject(Router);
   currentSlideIndex = 0;
 
   onboardingSlides: OnboardingSlide[] = [
@@ -95,6 +98,9 @@ export class OnboardingComponent {
   }
 
   completeOnboarding(): void {
+    this.router.navigate(["/tabs/history"]);
     this.completed.emit();
   }
+
+  loginGoogle() {}
 }
