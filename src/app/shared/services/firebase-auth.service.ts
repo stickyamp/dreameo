@@ -369,7 +369,6 @@ export class FirebaseAuthService {
   async logout(): Promise<void> {
     try {
       await signOut(this.auth);
-      this.router.navigate(["/login"]);
       console.log("User logged out successfully");
     } catch (error) {
       console.error("Logout error:", error);

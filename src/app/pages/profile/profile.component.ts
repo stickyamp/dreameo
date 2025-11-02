@@ -16,6 +16,10 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule } from "@angular/forms";
 import { LoggerService } from "@/app/shared/services/log.service";
 import { FirebaseBackupService } from "@/app/shared/services/firebase-backup-2.service";
+import {
+  ToastLevelEnum,
+  ToastNotifierService,
+} from "@/app/shared/services/toast-notifier";
 
 interface User {
   name: string;
@@ -149,7 +153,8 @@ export class ProfileComponent implements OnInit {
     private translate: TranslateService,
     private popoverController: PopoverController,
     private cdr: ChangeDetectorRef,
-    private logService: LoggerService
+    private logService: LoggerService,
+    private toastNotifierService: ToastNotifierService
   ) {}
 
   async ngOnInit() {
@@ -378,11 +383,8 @@ export class ProfileComponent implements OnInit {
       }
 
       // Navegar a login
-      this.router.navigate(["/login"]);
     } catch (error) {
       console.error("Error during logout:", error);
-      // Fallback: intentar navegar a login de todas formas
-      this.router.navigate(["/login"]);
     }
   }
 
@@ -485,6 +487,16 @@ export class ProfileComponent implements OnInit {
 
   goToDebug3() {
     this.router.navigate(["/test3"]);
+  }
+
+  async goToDebug4() {
+    const confirmation = await this.toastNotifierService.presentToast(
+      "Testing toast",
+      ToastLevelEnum.INFO,
+      "bottom",
+      600000,
+      "arrow-back"
+    );
   }
 
   async getCachedUserPhoto(): Promise<string | null> {

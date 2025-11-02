@@ -502,3 +502,12 @@ ion-alert {
   --ion-color-step-550: var(--color-text-secondary);
   --ion-color-primary: var(--color-text-secondary);
 }
+
+ion-toast.custom-bottom-toast {
+  --ion-safe-area-bottom: 70px;
+  border-radius: var(--spacing-xxs);
+  --background: var(--color-bg-content);
+  --color: var(--color-text-primary);
+  --button-color: var(--color-accent);
+  /* account for iPhone safe area if you want: */
+}

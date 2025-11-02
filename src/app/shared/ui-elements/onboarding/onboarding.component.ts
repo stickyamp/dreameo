@@ -12,6 +12,10 @@ import { IonicModule } from "@ionic/angular";
 import { register } from "swiper/element/bundle";
 import { Router } from "@angular/router";
 import { FirebaseAuthService } from "../../services/firebase-auth.service";
+import {
+  ToastLevelEnum,
+  ToastNotifierService,
+} from "../../services/toast-notifier";
 
 // Register Swiper custom elements
 register();
@@ -40,6 +44,7 @@ export class OnboardingComponent {
 
   private readonly router = inject(Router);
   private readonly firebaseAuthService = inject(FirebaseAuthService);
+  private readonly toastNotifierService = inject(ToastNotifierService);
   currentSlideIndex = 0;
 
   onboardingSlides: OnboardingSlide[] = [
@@ -150,6 +155,7 @@ export class OnboardingComponent {
       const currentUser = this.firebaseAuthService.getCurrentUser();
       if (currentUser) {
         this.isUserLoggedIn = true;
+        this.notifyToastSuccededLogin();
       } else {
         console.warn("No user found after Google sign in");
       }
@@ -166,5 +172,15 @@ export class OnboardingComponent {
       this.isConnectingGoogle = false;
       this.router.navigate([""]);
     }
+  }
+
+  async notifyToastSuccededLogin() {
+    const confirmation = await this.toastNotifierService.presentToast(
+      "All set up, ready to go",
+      ToastLevelEnum.INFO,
+      "bottom",
+      4000,
+      "checkmark-outline"
+    );
   }
 }
