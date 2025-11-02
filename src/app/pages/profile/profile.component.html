@@ -60,6 +60,21 @@
         </ion-toggle>
       </ion-item>
     </ion-list>
+    <!-- Notificación diaria -->
+    <ion-list class="settings-list">
+      <ion-item>
+        <ion-icon name="notifications-outline" slot="start"></ion-icon>
+        <ion-label>{{ "PROFILE.NOTIF_REMINDER_LABEL" | translate }}</ion-label>
+        <ion-toggle
+          slot="end"
+          [checked]="notificationsEnabled"
+          [disabled]="notificationsLoading"
+          (ionChange)="toggleNotificationPermission()"
+        >
+        </ion-toggle>
+        <ion-note slot="end" *ngIf="notificationsLoading">Cargando...</ion-note>
+      </ion-item>
+    </ion-list>
 
     <!-- Danger Zone -->
     <ion-list class="danger-zone">

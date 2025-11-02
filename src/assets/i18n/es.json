@@ -103,7 +103,8 @@
     "GOOGLE_CONNECTED": "Éxito",
     "GOOGLE_CONNECTED_MESSAGE": "Tu cuenta de Google se ha conectado exitosamente",
     "GOOGLE_ERROR": "Error de Conexión",
-    "GOOGLE_ERROR_MESSAGE": "No se pudo conectar con la cuenta de Google"
+    "GOOGLE_ERROR_MESSAGE": "No se pudo conectar con la cuenta de Google",
+    "NOTIF_REMINDER_LABEL": "Recordatorio diario de sueños"
   },
   "DREAM_DETAIL": {
     "TITLE": "Sueño",

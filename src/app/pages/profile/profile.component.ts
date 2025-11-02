@@ -6,6 +6,7 @@ import {
   IonicModule,
   PopoverController,
 } from "@ionic/angular";
+import { Capacitor } from "@capacitor/core";
 import { ConfigService } from "src/app/shared/services/config.service";
 import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
 import { AuthService } from "src/app/shared/services/auth.service";
@@ -133,6 +134,9 @@ export class ProfileComponent implements OnInit {
   isUserLogged: boolean = true;
   isGoogleUserLogged?: boolean;
   isConnectingGoogle: boolean = false;
+  notificationsEnabled: boolean = false;
+  notificationsLoading: boolean = false;
+  private localNotifications: any = null;
 
   constructor(
     private router: Router,
@@ -153,6 +157,9 @@ export class ProfileComponent implements OnInit {
     const savedLang = localStorage.getItem("lang") || "en";
     this.selectedLanguage = savedLang; // Sin traducción aquí: se hará en template
     this.setLanguage(savedLang);
+    if (Capacitor.isNativePlatform()) {
+      this.notificationsEnabled = await this.checkNotificationPermission();
+    }
 
     // Suscribirse a cambios en el estado de autenticación de Firebase
     this.firebaseAuthService.currentUser$.subscribe(async (user) => {
@@ -519,6 +526,82 @@ export class ProfileComponent implements OnInit {
       reader.onerror = reject;
       reader.onload = () => resolve(reader.result);
       reader.readAsDataURL(blob);
+    });
+  }
+
+  private async getLocalNotifications() {
+    if (!this.localNotifications) {
+      // dynamic import solo en runtime
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const mod = await import("@capacitor/local-notifications");
+        this.localNotifications = mod.LocalNotifications;
+      } catch {
+        this.localNotifications = null;
+      }
+    }
+    return this.localNotifications;
+  }
+
+  async checkNotificationPermission(): Promise<boolean> {
+    const LN = await this.getLocalNotifications();
+    if (!LN) return false;
+    const perm = await LN.checkPermissions();
+    return perm.display === "granted";
+  }
+
+  async toggleNotificationPermission() {
+    if (this.notificationsLoading) return;
+    this.notificationsLoading = true;
+    const LN = await this.getLocalNotifications();
+    if (!LN) {
+      this.notificationsEnabled = false;
+      this.notificationsLoading = false;
+      return;
+    }
+    if (this.notificationsEnabled) {
+      await LN.cancel({ notifications: [{ id: 1 }] });
+      this.notificationsEnabled = false;
+      this.notificationsLoading = false;
+      return;
+    }
+    const permResult = await LN.requestPermissions();
+    if (permResult.display === "granted") {
+      await this.scheduleDailyNotificationByLang();
+      this.notificationsEnabled = true;
+    } else {
+      this.notificationsEnabled = false;
+    }
+    this.notificationsLoading = false;
+  }
+
+  async scheduleDailyNotificationByLang() {
+    const LN = await this.getLocalNotifications();
+    if (!LN) return;
+    const lang = this.selectedLanguage;
+    let title = "";
+    let body = "";
+    if (lang === "es") {
+      title = "No olvides registrar tu sueño";
+      body = "¡Abre la app y escribe tu sueño de hoy! 💤";
+    } else {
+      title = "Don't forget to log your dream";
+      body = "Open the app and write down your dream! 💤";
+    }
+    await LN.schedule({
+      notifications: [
+        {
+          id: 1,
+          title,
+          body,
+          schedule: { repeats: true, on: { hour: 10, minute: 0 } },
+          sound: null,
+          smallIcon: "ic_stat_iconconfig",
+          actionTypeId: "",
+          extra: null,
+        },
+      ],
     });
   }
 }
