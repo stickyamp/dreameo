@@ -11,6 +11,7 @@ import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 import { register } from "swiper/element/bundle";
 import { Router } from "@angular/router";
+import { FirebaseAuthService } from "../../services/firebase-auth.service";
 
 // Register Swiper custom elements
 register();
@@ -35,6 +36,7 @@ export class OnboardingComponent {
   @Output() completed = new EventEmitter<void>();
 
   private readonly router = inject(Router);
+  private readonly firebaseAuthService = inject(FirebaseAuthService);
   currentSlideIndex = 0;
 
   onboardingSlides: OnboardingSlide[] = [
@@ -72,6 +74,17 @@ export class OnboardingComponent {
     },
   ];
 
+  isUserLoggedIn = false;
+  isConnectingGoogle = false;
+
+  ngOnInit() {
+    // Suscribirse a cambios en el estado de autenticación de Firebase
+    this.firebaseAuthService.currentUser$.subscribe(async (user) => {
+      console.log("Firebase user state changed asaasasassasa:", user);
+      this.isUserLoggedIn = (user && user.email.length > 0) || false;
+    });
+  }
+
   ngAfterViewInit() {
     const swiperEl = this.swiperRef?.nativeElement as HTMLElement;
     if (swiperEl) {
@@ -102,5 +115,36 @@ export class OnboardingComponent {
     this.completed.emit();
   }
 
-  loginGoogle() {}
+  loginGoogle() {
+    if (this.isUserLoggedIn) return;
+    this.connectGoogleAccount();
+  }
+
+  async connectGoogleAccount(): Promise<void> {
+    if (this.isConnectingGoogle) return;
+
+    this.isConnectingGoogle = true;
+
+    try {
+      await this.firebaseAuthService.signInWithGoogle();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const currentUser = this.firebaseAuthService.getCurrentUser();
+      if (currentUser) {
+        this.isUserLoggedIn = true;
+      } else {
+        console.warn("No user found after Google sign in");
+      }
+    } catch (error: any) {
+      console.error("Google connection error:", error);
+      if (
+        error.message?.includes("cancelado") ||
+        error.message?.includes("cancelled")
+      ) {
+        console.log("User cancelled Google connection");
+        return;
+      }
+    } finally {
+      this.isConnectingGoogle = false;
+    }
+  }
 }

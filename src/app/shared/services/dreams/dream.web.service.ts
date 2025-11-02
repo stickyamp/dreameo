@@ -1,28 +1,44 @@
-import { inject, Injectable } from '@angular/core';
-import { Preferences } from '@capacitor/preferences';
-import { Dream, DreamsByDate, UserProfile, DreamStatistics, OfficialTags, TagElement, TagModel } from '../../../models/dream.model';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ToastLevelEnum, ToastNotifierService } from '../toast-notifier';
-import { DreamService } from './dream.base.service';
-import { LoggerService } from '../log.service';
+import { inject, Injectable } from "@angular/core";
+import { Preferences } from "@capacitor/preferences";
+import {
+  Dream,
+  DreamsByDate,
+  UserProfile,
+  DreamStatistics,
+  OfficialTags,
+  TagElement,
+  TagModel,
+} from "../../../models/dream.model";
+import { BehaviorSubject, Observable } from "rxjs";
+import { ToastLevelEnum, ToastNotifierService } from "../toast-notifier";
+import { DreamService } from "./dream.base.service";
+import { LoggerService } from "../log.service";
+import { FirebaseBackupService } from "../firebase-backup-2.service";
 
 @Injectable()
 export class DreamWebService extends DreamService {
-  private toastNotifierService: ToastNotifierService = inject(ToastNotifierService);
+  private toastNotifierService: ToastNotifierService =
+    inject(ToastNotifierService);
   private loggerService = inject(LoggerService);
 
-  private readonly DREAMS_KEY = 'dreams';
-  private readonly TAGS_KEY = 'tags';
-  private readonly USER_PROFILE_KEY = 'user_profile';
+  private readonly DREAMS_KEY = "dreams";
+  private readonly TAGS_KEY = "tags";
+  private readonly USER_PROFILE_KEY = "user_profile";
   private readonly MAX_ALLOWED_TAGS = 10;
-
+  private firebaseBackUpService: FirebaseBackupService = inject(
+    FirebaseBackupService
+  );
   constructor() {
     console.log("manuXX initting dream web");
     super();
     this.loggerService.log(`Initting web dream service`);
-    this.loadDreams().catch(err => console.error('Error loading dreams:', err));
-    this.loadTags().catch(err => console.error('Error loading tags:', err));
-    this.loadUserProfile().catch(err => console.error('Error loading profile:', err));
+    this.loadDreams().catch((err) =>
+      console.error("Error loading dreams:", err)
+    );
+    this.loadTags().catch((err) => console.error("Error loading tags:", err));
+    this.loadUserProfile().catch((err) =>
+      console.error("Error loading profile:", err)
+    );
   }
 
   private async loadDreams(): Promise<void> {
@@ -34,7 +50,7 @@ export class DreamWebService extends DreamService {
         this.dreamsSubject.next(dreams);
       }
     } catch (error) {
-      console.error('Error loading dreams:', error);
+      console.error("Error loading dreams:", error);
     }
   }
 
@@ -42,11 +58,11 @@ export class DreamWebService extends DreamService {
     try {
       await Preferences.set({
         key: this.DREAMS_KEY,
-        value: JSON.stringify(dreams)
+        value: JSON.stringify(dreams),
       });
       this.dreamsSubject.next(dreams);
     } catch (error) {
-      console.error('Error saving dreams:', error);
+      console.error("Error saving dreams:", error);
     }
   }
 
@@ -58,7 +74,7 @@ export class DreamWebService extends DreamService {
         this.userProfileSubject.next(profile);
       }
     } catch (error) {
-      console.error('Error loading user profile:', error);
+      console.error("Error loading user profile:", error);
     }
   }
 
@@ -66,19 +82,19 @@ export class DreamWebService extends DreamService {
     try {
       await Preferences.set({
         key: this.USER_PROFILE_KEY,
-        value: JSON.stringify(profile)
+        value: JSON.stringify(profile),
       });
       this.userProfileSubject.next(profile);
     } catch (error) {
-      console.error('Error updating user profile:', error);
+      console.error("Error updating user profile:", error);
     }
   }
 
-  async addDream(dream: Omit<Dream, 'id' | 'createdAt'>): Promise<Dream> {
+  async addDream(dream: Omit<Dream, "id" | "createdAt">): Promise<Dream> {
     const newDream: Dream = {
       ...dream,
       id: this.generateId(),
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     const currentDreams = this.dreamsSubject.value;
@@ -94,16 +110,19 @@ export class DreamWebService extends DreamService {
     return newDream;
   }
 
-  async updateDream(dreamId: string, updates: Partial<Dream>): Promise<Dream | null> {
+  async updateDream(
+    dreamId: string,
+    updates: Partial<Dream>
+  ): Promise<Dream | null> {
     const currentDreams = this.dreamsSubject.value;
 
     for (const date in currentDreams) {
-      const dreamIndex = currentDreams[date].findIndex(d => d.id === dreamId);
+      const dreamIndex = currentDreams[date].findIndex((d) => d.id === dreamId);
       if (dreamIndex !== -1) {
         currentDreams[date][dreamIndex] = {
           ...currentDreams[date][dreamIndex],
           ...updates,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         };
         await this.saveDreams(currentDreams);
         return currentDreams[date][dreamIndex];
@@ -113,11 +132,31 @@ export class DreamWebService extends DreamService {
     return null;
   }
 
+  async setAllDreamsOverwrite(dreams: Dream[]): Promise<void> {
+    const parsedDreams: DreamsByDate = this.mapDreamsByDate(dreams);
+    await this.saveDreams(parsedDreams);
+  }
+
+  async setAllTagsOverwrite(tags: TagModel[]): Promise<void> {
+    await this.saveTags(tags);
+  }
+
+  mapDreamsByDate(dreams: Dream[]): DreamsByDate {
+    return dreams.reduce((acc: DreamsByDate, dream: Dream) => {
+      const date = dream.date;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(dream);
+      return acc;
+    }, {});
+  }
+
   async deleteDream(dreamId: string): Promise<boolean> {
     const currentDreams = this.dreamsSubject.value;
 
     for (const date in currentDreams) {
-      const dreamIndex = currentDreams[date].findIndex(d => d.id === dreamId);
+      const dreamIndex = currentDreams[date].findIndex((d) => d.id === dreamId);
       if (dreamIndex !== -1) {
         currentDreams[date].splice(dreamIndex, 1);
 
@@ -143,7 +182,7 @@ export class DreamWebService extends DreamService {
     const dreams = this.dreamsSubject.value;
 
     for (const date in dreams) {
-      const dream = dreams[date].find(d => d.id === dreamId);
+      const dream = dreams[date].find((d) => d.id === dreamId);
       if (dream) {
         return dream;
       }
@@ -160,7 +199,10 @@ export class DreamWebService extends DreamService {
       allDreams.push(...dreams[date]);
     }
 
-    return allDreams.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return allDreams.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
   }
 
   async exportDreams(): Promise<string> {
@@ -173,7 +215,7 @@ export class DreamWebService extends DreamService {
       await Preferences.remove({ key: this.DREAMS_KEY });
       this.dreamsSubject.next({});
     } catch (error) {
-      console.error('Error clearing dreams:', error);
+      console.error("Error clearing dreams:", error);
     }
   }
 
@@ -184,22 +226,30 @@ export class DreamWebService extends DreamService {
 
   getDreamStatistics(): DreamStatistics {
     const allDreams = this.getAllDreams();
-    const goodDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag.type === OfficialTags.REGULAR)).length;
-    const badDreams = allDreams.filter(dream => dream.tags && dream.tags.some(tag => tag.type === OfficialTags.NIGHTMARE)).length;
+    const goodDreams = allDreams.filter(
+      (dream) =>
+        dream.tags &&
+        dream.tags.some((tag) => tag.type === OfficialTags.REGULAR)
+    ).length;
+    const badDreams = allDreams.filter(
+      (dream) =>
+        dream.tags &&
+        dream.tags.some((tag) => tag.type === OfficialTags.NIGHTMARE)
+    ).length;
     const streakDays = this.calculateStreakDays();
 
     return {
       streakDays,
       totalDreams: allDreams.length,
       goodDreams,
-      badDreams
+      badDreams,
     };
   }
 
   private calculateStreakDays(): number {
     const dreams = this.dreamsSubject.value;
     const dates = Object.keys(dreams)
-      .filter(date => dreams[date].length > 0)
+      .filter((date) => dreams[date].length > 0)
       .sort()
       .reverse(); // Más reciente primero
 
@@ -233,7 +283,7 @@ export class DreamWebService extends DreamService {
   }
 
   private formatDateToString(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   }
 
   private getDaysDifference(date1: string, date2: string): number {
@@ -253,23 +303,30 @@ export class DreamWebService extends DreamService {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
   }
 
-
   public async addTag(tagName: string, type: OfficialTags) {
     const newTag: TagModel = {
       id: this.generateId(),
       type: type,
-      name: tagName
+      name: tagName,
     };
 
     const currentTags = this.tagsSubject.value;
 
     if (currentTags.length > this.MAX_ALLOWED_TAGS) {
-      this.toastNotifierService.presentToast("Max number of tags reached.", ToastLevelEnum.ERROR, "bottom");
+      this.toastNotifierService.presentToast(
+        "Max number of tags reached.",
+        ToastLevelEnum.ERROR,
+        "bottom"
+      );
       return;
     }
 
-    if (currentTags.some(t => t.name == newTag.name)) {
-      this.toastNotifierService.presentToast("Tag already exist", ToastLevelEnum.ERROR, "bottom");
+    if (currentTags.some((t) => t.name == newTag.name)) {
+      this.toastNotifierService.presentToast(
+        "Tag already exist",
+        ToastLevelEnum.ERROR,
+        "bottom"
+      );
       return;
     }
 
@@ -283,11 +340,11 @@ export class DreamWebService extends DreamService {
     try {
       await Preferences.set({
         key: this.TAGS_KEY,
-        value: JSON.stringify(tags)
+        value: JSON.stringify(tags),
       });
       this.tagsSubject.next(tags);
     } catch (error) {
-      console.error('Error saving tags:', error);
+      console.error("Error saving tags:", error);
     }
   }
 
@@ -300,7 +357,7 @@ export class DreamWebService extends DreamService {
         this.tagsSubject.next(tags);
       }
     } catch (error) {
-      console.error('Error loading tags:', error);
+      console.error("Error loading tags:", error);
     }
   }
 
@@ -312,11 +369,11 @@ export class DreamWebService extends DreamService {
   async deleteTag(tagName: string): Promise<boolean> {
     const currentTags = this.tagsSubject.value;
 
-    if (!currentTags.find(ct => ct.name == tagName)) {
+    if (!currentTags.find((ct) => ct.name == tagName)) {
       return false;
     }
 
-    const filteredTags = currentTags.filter(ct => ct.name != tagName);
+    const filteredTags = currentTags.filter((ct) => ct.name != tagName);
 
     await this.saveTags(filteredTags);
     return true;

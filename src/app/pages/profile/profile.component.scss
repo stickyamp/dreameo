@@ -153,24 +153,19 @@ ion-toggle {
   }
 
   .google-connect-button {
-    --background: #4285f4;
-    --background-hover: #357ae8;
-    --background-activated: #2a63c7;
-    --color: #ffffff;
+    --background: var(--color-accent);
+    --background-hover: var(--color-accent-hover);
+    --color: var(--color-text-primary);
     --border-radius: 8px;
     --padding-top: 12px;
     --padding-bottom: 12px;
-    font-weight: 500;
-    font-size: 15px;
+    font-size: var(--font-size-lg);
     text-transform: none;
-    letter-spacing: 0.25px;
     margin: var(--spacing-sm) 0 0 0;
 
-    ion-icon {
-      font-size: 20px;
-      margin-right: 8px;
+    & img {
+      margin-right: var(--spacing-xs);
     }
-
     &:disabled {
       opacity: 0.6;
     }

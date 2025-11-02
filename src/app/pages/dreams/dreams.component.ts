@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController } from "@ionic/angular";
 import { Dream, OfficialTags } from "../../models/dream.model";
@@ -14,7 +19,7 @@ import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
   templateUrl: "./dreams.component.html",
   styleUrls: ["./dreams.component.scss"],
   standalone: true,
-  imports: [CommonModule, IonicModule, NoDreamsComponent, TranslateModule]
+  imports: [CommonModule, IonicModule, NoDreamsComponent, TranslateModule],
 })
 export class DreamsComponent implements OnInit {
   recentDreams: Dream[] = [];
@@ -25,12 +30,11 @@ export class DreamsComponent implements OnInit {
   showSearch: boolean = false;
   public OfficialTags = OfficialTags;
 
-  previousMonthText = '';
-  currentMonthText = '';
-  nextMonthText = '';
+  previousMonthText = "";
+  currentMonthText = "";
+  nextMonthText = "";
 
   private dreamService: DreamService = inject(DreamService);
-
 
   showSearchbar() {
     this.showSearch = true;
@@ -41,7 +45,7 @@ export class DreamsComponent implements OnInit {
   }
   hideSearch() {
     this.showSearch = false;
-    this.searchQuery = '';
+    this.searchQuery = "";
     this.applyFilterAndGroup();
   }
 
@@ -97,7 +101,9 @@ export class DreamsComponent implements OnInit {
 
   loadRecentDreams() {
     this.allDreams = this.dreamService.getAllDreams();
+    console.log("manuXX allDreams [1]", { ...this.allDreams });
     this.applyFilterAndGroup();
+    console.log("manuXX allDreams [2]", { ...this.allDreams });
   }
 
   private applyFilterAndGroup() {
@@ -106,10 +112,10 @@ export class DreamsComponent implements OnInit {
 
     const filteredByQuery = normalizedQuery
       ? source.filter(
-        (d) =>
-          (d.title || "").toLowerCase().includes(normalizedQuery) ||
-          (d.description || "").toLowerCase().includes(normalizedQuery)
-      )
+          (d) =>
+            (d.title || "").toLowerCase().includes(normalizedQuery) ||
+            (d.description || "").toLowerCase().includes(normalizedQuery)
+        )
       : source;
 
     // Filter by selected month/year
@@ -300,7 +306,6 @@ export class DreamsComponent implements OnInit {
 
     return this.monthNames.length === 12 ? this.monthNames[monthIndex] : "";
   }
-
 
   refreshData() {
     this.previousMonthText = this.getAdjacentMonthLabel(-1);

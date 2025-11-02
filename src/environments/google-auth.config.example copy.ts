@@ -18,9 +18,8 @@ export const googleAuthConfig = {
   iosClientId: "", // Si tienes uno específico para iOS
 
   // Scopes necesarios
-  scopes: ["profile", "email"],
+  scopes: ["profile", "email", "https://www.googleapis.com/auth/drive.appdata"],
 
   // Opciones adicionales
   grantOfflineAccess: true,
 };
-

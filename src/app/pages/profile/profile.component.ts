@@ -14,6 +14,7 @@ import { Preferences } from "@capacitor/preferences";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule } from "@angular/forms";
 import { LoggerService } from "@/app/shared/services/log.service";
+import { FirebaseBackupService } from "@/app/shared/services/firebase-backup-2.service";
 
 interface User {
   name: string;
@@ -124,7 +125,7 @@ export class ProfileComponent implements OnInit {
   user: User = {
     name: "John Doe",
     email: "john.doe@example.com",
-    avatar: "assets/avatar.jpg",
+    avatar: "",
   };
 
   darkMode: boolean = false;
@@ -140,6 +141,7 @@ export class ProfileComponent implements OnInit {
     private dreamService: DreamService,
     private authService: AuthService,
     private firebaseAuthService: FirebaseAuthService,
+    private firebaseBackupService: FirebaseBackupService,
     private translate: TranslateService,
     private popoverController: PopoverController,
     private cdr: ChangeDetectorRef,
@@ -152,41 +154,18 @@ export class ProfileComponent implements OnInit {
     this.selectedLanguage = savedLang; // Sin traducción aquí: se hará en template
     this.setLanguage(savedLang);
 
-    // Verificar si hay usuario de Google logeado
-    const googleUser = this.firebaseAuthService.getCurrentUser();
-    if (googleUser) {
-      this.user = {
-        name: googleUser.displayName || googleUser.email.split("@")[0],
-        email: googleUser.email,
-        avatar: "assets/avatar.jpg",
-      };
-      this.isGoogleUserLogged = true;
-      this.isUserLogged = true;
-    } else {
-      // Si no hay usuario de Google, verificar usuario básico
-      const currentUser = this.authService.getCurrentUser();
-      if (currentUser) {
-        this.user = {
-          name: currentUser.username,
-          email: currentUser.email,
-          avatar: "assets/avatar.jpg",
-        };
-        this.isUserLogged = true;
-        this.isGoogleUserLogged = false;
-      } else {
-        this.isUserLogged = false;
-        this.isGoogleUserLogged = false;
-      }
-    }
-
     // Suscribirse a cambios en el estado de autenticación de Firebase
-    this.firebaseAuthService.currentUser$.subscribe((user) => {
+    this.firebaseAuthService.currentUser$.subscribe(async (user) => {
       console.log("Firebase user state changed:", user);
       if (user) {
+        let avatarBase64 = await this.getCachedUserPhoto();
+        if (!avatarBase64) {
+          avatarBase64 = await this.cacheUserPhoto(user.profileImage ?? "");
+        }
         this.user = {
           name: user.displayName || user.email.split("@")[0],
           email: user.email,
-          avatar: "assets/avatar.jpg",
+          avatar: avatarBase64 ?? "",
         };
         this.isGoogleUserLogged = true;
         this.isUserLogged = true;
@@ -201,7 +180,7 @@ export class ProfileComponent implements OnInit {
           this.user = {
             name: basicUser.username,
             email: basicUser.email,
-            avatar: "assets/avatar.jpg",
+            avatar: "",
           };
           this.isUserLogged = true;
           this.isGoogleUserLogged = false;
@@ -266,29 +245,6 @@ export class ProfileComponent implements OnInit {
     this.selectedLanguage = lang;
   }
 
-  // async closeSession(): Promise<void> {
-  //   const alert = await this.alertController.create({
-  //     header: "Close Session",
-  //     message: "Are you sure you want to close your session?",
-  //     buttons: [
-  //       {
-  //         text: "Cancel",
-  //         role: "cancel",
-  //         cssClass: "secondary",
-  //       },
-  //       {
-  //         text: "Close",
-  //         cssClass: "danger",
-  //         handler: () => {
-  //           this.performCloseSession();
-  //         },
-  //       },
-  //     ],
-  //   });
-
-  //   await alert.present();
-  // }
-
   async connectGoogleAccount(): Promise<void> {
     if (this.isConnectingGoogle) return;
 
@@ -307,10 +263,16 @@ export class ProfileComponent implements OnInit {
       console.log("Current user after sign in:", currentUser);
       this.logService.log(`4- Starting google auth flow ${currentUser}`);
       if (currentUser) {
+        let avatarBase64 = await this.getCachedUserPhoto();
+        if (!avatarBase64) {
+          avatarBase64 = await this.cacheUserPhoto(
+            currentUser.profileImage ?? ""
+          );
+        }
         this.user = {
           name: currentUser.displayName || currentUser.email.split("@")[0],
           email: currentUser.email,
-          avatar: "assets/avatar.jpg",
+          avatar: avatarBase64 ?? "",
         };
         this.isGoogleUserLogged = true;
         this.isUserLogged = true;
@@ -322,13 +284,6 @@ export class ProfileComponent implements OnInit {
 
         // Forzar detección de cambios
         this.cdr.detectChanges();
-
-        await this.showSuccessAlert(
-          this.translate.instant("profile.googleConnected") ||
-            "Google Account Connected",
-          this.translate.instant("profile.googleConnectedMessage") ||
-            "Your Google account has been connected successfully."
-        );
       } else {
         console.warn("No user found after Google sign in");
       }
@@ -504,6 +459,15 @@ export class ProfileComponent implements OnInit {
     await alert.present();
   }
 
+  async loadBackUp() {
+    const backedUpDreams = await this.firebaseBackupService.getAllDreams();
+    const backedUpTags = await this.firebaseBackupService.getAllTags();
+    console.log("manuXX assassa", backedUpTags);
+    console.log("manuXX ddddsdsassassa", backedUpDreams);
+    this.dreamService.setAllDreamsOverwrite(backedUpDreams);
+    this.dreamService.setAllTagsOverwrite(backedUpTags);
+  }
+
   goToDebug() {
     this.router.navigate(["/tabs/test"]);
   }
@@ -512,8 +476,49 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(["/tabs/test2"]);
   }
 
-   goToDebug3() {
+  goToDebug3() {
     this.router.navigate(["/test3"]);
   }
 
+  async getCachedUserPhoto(): Promise<string | null> {
+    const { value } = await Preferences.get({ key: "userPhoto" });
+    return value;
+  }
+
+  async cacheUserPhoto(photoUrl: string): Promise<string> {
+    try {
+      const response = await fetch(photoUrl);
+
+      // Check if the response is OK and of image type
+      const contentType = response.headers.get("content-type") || "";
+      if (!response.ok || !contentType.startsWith("image/")) {
+        console.warn("Invalid photo response:", response.status, contentType);
+        return "";
+      }
+
+      const blob = await response.blob();
+      const base64 = (await this.convertBlobToBase64(blob)) as string;
+
+      await Preferences.set({
+        key: "userPhoto",
+        value: base64,
+      });
+
+      return base64;
+    } catch (err) {
+      console.error("Error caching user photo:", err);
+      return "";
+    }
+  }
+
+  private convertBlobToBase64(
+    blob: Blob
+  ): Promise<string | ArrayBuffer | null> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }
 }

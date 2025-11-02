@@ -13,17 +13,29 @@ import {
 import { BehaviorSubject, Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { Preferences } from "@capacitor/preferences";
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+import {
+  Authentication,
+  GoogleAuth,
+} from "@codetrix-studio/capacitor-google-auth";
 import { googleAuthConfig } from "../../../environments/google-auth.config";
 import { Capacitor } from "@capacitor/core";
 import { CrashlyticsService } from "./crashlytics.service";
 import { LoggerService } from "./log.service";
+import {
+  Firestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+} from "@angular/fire/firestore";
 
 export interface UserProfile {
   uid: string;
   email: string;
   displayName?: string;
   createdAt: string;
+  profileImage?: string;
+  authToken: string | undefined;
 }
 
 @Injectable({
@@ -40,7 +52,8 @@ export class FirebaseAuthService {
     private auth: Auth,
     private router: Router,
     private crashlytics: CrashlyticsService,
-    private logService: LoggerService
+    private logService: LoggerService,
+    private firestore: Firestore
   ) {
     this.initializeAuth();
     this.initializeGoogleAuth();
@@ -88,6 +101,8 @@ export class FirebaseAuthService {
             email: user.email || "",
             displayName: user.displayName || undefined,
             createdAt: user.metadata.creationTime || new Date().toISOString(),
+            profileImage: user.photoURL ?? "",
+            authToken: await user.getIdToken(true),
           };
 
           this.currentUserSubject.next(userProfile);
@@ -133,6 +148,8 @@ export class FirebaseAuthService {
         email: user.email || "",
         displayName: displayName || user.displayName || undefined,
         createdAt: user.metadata.creationTime || new Date().toISOString(),
+        profileImage: user.photoURL ?? "",
+        authToken: await userCredential.user.getIdToken(),
       };
 
       console.log("User registered successfully:", userProfile);
@@ -161,6 +178,8 @@ export class FirebaseAuthService {
         email: user.email || "",
         displayName: user.displayName || undefined,
         createdAt: user.metadata.creationTime || new Date().toISOString(),
+        profileImage: user.photoURL ?? "",
+        authToken: await user.getIdToken(),
       };
 
       console.log("User logged in successfully:", userProfile);
@@ -192,6 +211,7 @@ export class FirebaseAuthService {
         const provider = new GoogleAuthProvider();
         provider.addScope("profile");
         provider.addScope("email");
+        provider.addScope("https://www.googleapis.com/auth/drive.appdata");
 
         this.logService.log(`1.2- Starting google auth flow`);
         const userCredential = await signInWithPopup(this.auth, provider);
@@ -203,6 +223,8 @@ export class FirebaseAuthService {
           email: user.email || "",
           displayName: user.displayName || undefined,
           createdAt: user.metadata.creationTime || new Date().toISOString(),
+          profileImage: user.photoURL ?? "",
+          authToken: await user.getIdToken(),
         };
 
         console.log("✅ Google sign-in successful (web):", userProfile.email);
@@ -274,6 +296,8 @@ export class FirebaseAuthService {
               googleUser.givenName ||
               undefined,
             createdAt: user.metadata.creationTime || new Date().toISOString(),
+            profileImage: user.photoURL ?? "",
+            authToken: googleUser.authentication.accessToken,
           };
 
           console.log(

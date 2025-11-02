@@ -38,6 +38,9 @@
 .slide-content {
   padding-left: var(--spacing-md);
   padding-right: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .icon-container {
   display: flex;
@@ -162,4 +165,8 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.isDisabled {
+  opacity: 0.5;
 }

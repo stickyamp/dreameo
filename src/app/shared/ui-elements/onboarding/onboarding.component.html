@@ -59,9 +59,15 @@
         *ngIf="currentSlideIndex === onboardingSlides.length - 1"
         class="signin-btn"
         (click)="loginGoogle()"
+        [disabled]="isUserLoggedIn"
+        [ngClass]="{ isDisabled: isUserLoggedIn }"
       >
         <img src="assets/svgs/google.svg" width="32" height="32" alt="" />
-        Sign In with Google
+        @if(!isUserLoggedIn && !isConnectingGoogle){ Sign In with Google }
+        @if(!isUserLoggedIn && isConnectingGoogle){
+        <ion-spinner name="crescent"></ion-spinner>
+
+        }@if(isUserLoggedIn && !isConnectingGoogle){ You are already logged in }
       </button>
     </div>
   </div>

@@ -10,6 +10,9 @@ import { provideDreamService } from "./shared/services/providers";
 import { VersionService } from "./shared/services/version-checker.service";
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+import { filter, firstValueFrom, of } from "rxjs";
+import { FirebaseBackupService } from "./shared/services/firebase-backup-2.service";
+import { Preferences } from "@capacitor/preferences";
 
 @Component({
   selector: "app-root",
@@ -30,12 +33,16 @@ import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
   providers: [provideDreamService()],
 })
 export class AppComponent implements OnInit {
+  BACKUP_INTERVAL_HOURS = 12;
+  BACKUP_KEY = "LAST_BACKUP_DATE";
+
   constructor(
     private platform: Platform,
     private dreamService: DreamService,
     private configService: ConfigService,
     private versionService: VersionService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private firebaseBackupService: FirebaseBackupService
   ) {}
 
   async ngOnInit() {
@@ -53,6 +60,10 @@ export class AppComponent implements OnInit {
     } else {
       GoogleAuth.initialize();
     }
+
+    setTimeout(() => {
+      this.backUpDreamsIfNeeded();
+    }, 5000);
   }
 
   private async checkVersionAndLaunchPopup() {
@@ -90,6 +101,48 @@ export class AppComponent implements OnInit {
       });
 
       await alert.present();
+    }
+  }
+
+  private async backUpDreamsIfNeeded() {
+    try {
+      const currentLocalDreams = this.dreamService.getAllDreams();
+      const currentLocalTags = this.dreamService.getAllTags();
+
+      if (currentLocalDreams.length <= 0) return;
+
+      const lastBackup = await Preferences.get({ key: this.BACKUP_KEY });
+      const now = new Date();
+      let shouldBackup = false;
+
+      if (!lastBackup.value) {
+        // Never backed up before
+        shouldBackup = true;
+      } else {
+        const lastBackupDate = new Date(lastBackup.value);
+        const diffHours =
+          (now.getTime() - lastBackupDate.getTime()) / (1000 * 60 * 60);
+        if (diffHours >= this.BACKUP_INTERVAL_HOURS) {
+          shouldBackup = true;
+        }
+      }
+
+      if (shouldBackup) {
+        console.log("⏫ Backing up dreams to Firebase...");
+        await this.firebaseBackupService.saveAllDreams(currentLocalDreams);
+        await this.firebaseBackupService.saveAllTags(currentLocalTags);
+
+        // Save new backup time
+        await Preferences.set({
+          key: this.BACKUP_KEY,
+          value: now.toISOString(),
+        });
+        console.log("✅ Dreams backup completed.");
+      } else {
+        console.log("⏸ Dreams backup skipped (less than 12 hours).");
+      }
+    } catch (err) {
+      console.error("Error checking or performing dream backup:", err);
     }
   }
 }
