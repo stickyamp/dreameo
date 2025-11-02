@@ -105,7 +105,8 @@
 }
 
 .next-btn,
-.signin-btn {
+.signin-btn,
+.notifications-btn {
   width: 100%;
   height: var(--spacing-xlg);
   border: none;
@@ -121,6 +122,17 @@
 }
 
 .next-btn {
+  background: var(--color-accent);
+  color: var(--color-text-primary);
+  min-width: 360px;
+
+  &:active {
+    transform: scale(0.98);
+    background: var(--color-accent);
+  }
+}
+
+.notifications-btn {
   background: var(--color-accent);
   color: var(--color-text-primary);
   min-width: 360px;
@@ -169,4 +181,18 @@
 
 .isDisabled {
   opacity: 0.5;
+}
+
+.onboarding-dreams {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  border-radius: 10px;
+}
+
+.glowing-image {
+  margin-top: 50px;
+  box-shadow: -40px 0 60px
+      color-mix(in srgb, var(--color-accent) 40%, transparent),
+    40px 0 60px rgba(81, 38, 90, 0.4);
 }

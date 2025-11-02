@@ -18,6 +18,9 @@ register();
 
 interface OnboardingSlide {
   icon: string;
+  width?: number;
+  height?: number;
+  class?: string;
   title: string;
   description: string;
   background: string;
@@ -41,7 +44,9 @@ export class OnboardingComponent {
 
   onboardingSlides: OnboardingSlide[] = [
     {
-      icon: "",
+      icon: "assets/images/logo_no_bg.png",
+      width: 400,
+      height: 320,
       title: "Welcome to Dreamt",
       description:
         "Your personal space to record, analyze, and understand your dreams. Let's begin your journey of self-discovery.",
@@ -49,7 +54,10 @@ export class OnboardingComponent {
         "linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(173, 216, 230, 0.3) 100%)",
     },
     {
-      icon: "journal-outline",
+      icon: "assets/images/onboarding/onboarding_dreams.png",
+      width: 230,
+      height: 430,
+      class: "onboarding-dreams glowing-image",
       title: "Your Dream Journal",
       description:
         "All your dreams in one place. Easily add new dreams and revisit your past adventures anytime.",
@@ -57,12 +65,23 @@ export class OnboardingComponent {
         "linear-gradient(135deg, rgba(216, 191, 216, 0.3) 0%, rgba(230, 230, 250, 0.3) 100%)",
     },
     {
-      icon: "stats-chart-outline",
+      icon: "assets/images/onboarding/onboarding_statistics.png",
+      width: 230,
+      height: 430,
+      class: "onboarding-dreams glowing-image",
       title: "Track Your Progress",
       description:
         "Discover patterns in your dreams with our advanced statistics. Understand your sleep quality, common themes, and emotional trends over time.",
       background:
         "linear-gradient(135deg, rgba(176, 224, 230, 0.3) 0%, rgba(152, 251, 152, 0.3) 100%)",
+    },
+    {
+      icon: "notifications-outline",
+      title: "Never miss an insight",
+      description:
+        "Get gentle reminders to journal your dreams and unlock patterns in your sleep.",
+      background:
+        "linear-gradient(135deg, rgba(173, 216, 230, 0.3) 0%, rgba(135, 206, 235, 0.3) 100%)",
     },
     {
       icon: "cloud-upload-outline",
@@ -145,6 +164,7 @@ export class OnboardingComponent {
       }
     } finally {
       this.isConnectingGoogle = false;
+      this.router.navigate([""]);
     }
   }
 }

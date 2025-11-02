@@ -9,17 +9,18 @@
     <swiper-slide *ngFor="let slide of onboardingSlides">
       <div class="slide-content">
         <!-- Icon Container -->
-        @if(slide.icon){
+        @if(!slide.icon.includes("assets")){
         <div class="icon-container">
-          <div class="icon-wrapper">
+          <div class="icon-wrapper glowing-image">
             <ion-icon [name]="slide.icon"></ion-icon>
           </div>
         </div>
         }@else {
         <img
-          src="assets/images/logo_no_bg.png"
-          width="400"
-          height="320"
+          [src]="slide.icon"
+          [width]="slide.width"
+          [height]="slide.height"
+          [class]="slide.class"
           alt=""
         />
         }
@@ -48,11 +49,19 @@
     <!-- Action Button (Mutates from Next to Sign In) -->
     <div class="action-container">
       <button
-        *ngIf="currentSlideIndex < onboardingSlides.length - 1"
+        *ngIf="currentSlideIndex < onboardingSlides.length - 2"
         class="next-btn"
         (click)="nextSlide()"
       >
         Next
+      </button>
+
+      <button
+        *ngIf="currentSlideIndex === onboardingSlides.length - 2"
+        class="notifications-btn"
+        (click)="(1)"
+      >
+        Activate notifications
       </button>
 
       <button
