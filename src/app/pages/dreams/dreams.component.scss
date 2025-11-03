@@ -3,10 +3,30 @@ ion-content {
   --background: var(--color-bg);
 }
 
+// Swiper container with performance optimizations
+.dreams-swiper {
+  width: 100%;
+  height: 100%;
+
+  swiper-slide {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    // GPU acceleration for smoother scrolling
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.swiper-slide-content {
+  min-height: 100%;
+  padding-bottom: 150px;
+}
+
 .dreams-container {
   max-width: 600px;
   margin: 0 auto;
-  margin-bottom: 150px;
   margin-top: 20px;
 }
 
@@ -33,6 +53,7 @@ ion-content {
 .dreams-list {
   display: flex;
   flex-direction: column;
+  margin-bottom: var(--spacing-xs);
 }
 
 .month-nav {
@@ -50,6 +71,13 @@ ion-content {
   color: var(--color-text-secondary);
   background: transparent;
   justify-self: start;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .nav-side:last-child {
@@ -78,8 +106,6 @@ ion-content {
   gap: 12px;
   padding: 12px 14px;
   border-radius: 12px;
-  //background: rgba(255, 255, 255, 0.06);
-  //border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .dream-date {
@@ -88,9 +114,7 @@ ion-content {
   align-items: center;
   justify-content: center;
   color: var(--color-text-primary);
-  //background: #151515;
   border-radius: 10px;
-  //border: 1px solid rgba(255, 255, 255, 0.08);
   width: 56px;
   height: 56px;
 }
@@ -264,6 +288,45 @@ ion-content {
   font-size: 16px;
 }
 
+// Loading overlay styles
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  gap: 16px;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.loading-overlay ion-spinner {
+  --color: var(--ion-color-primary);
+  transform: scale(1.8);
+}
+
+.loader-text {
+  color: #fff;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
 .fab-dream {
   --background: linear-gradient(
     135deg,
@@ -285,17 +348,13 @@ ion-content {
 }
 
 .dream-searchbar.purple {
-  //--background: linear-gradient(90deg, rgba(67, 56, 202, 0.35), rgba(126, 34, 206, 0.35));
   --color: var(--color-text-primary);
   --placeholder-color: var(--color-text-secondary);
-  --icon-color: #var(--color-text-primary);
+  --icon-color: var(--color-text-primary);
   border-radius: 32px;
   --border-radius: 32px;
   --searchbar-input-padding-start: 44px;
-  /* More space for icon */
   --icon-padding-start: 20px;
-  /* Move icon away from edge */
-  //inset-inline-start: 20px !important;
 }
 
 .dream-searchbar.purple::part(input) {
@@ -313,10 +372,8 @@ ion-searchbar {
   --placeholder-color: var(--color-text-primary);
   --icon-color: var(--color-text-primary);
   --clear-button-color: var(--color-text-primary);
-
   --border-radius: 8px;
   --box-shadow: none;
-
   padding: 12px 16px;
 }
 
@@ -334,7 +391,6 @@ ion-searchbar {
   align-items: center;
   justify-content: center;
   margin-right: 0px;
-  /* Pull left visually, away from card */
   padding-top: 0;
   margin-left: 10px;
 }
@@ -347,8 +403,7 @@ ion-searchbar {
   box-shadow: var(--shadow-elevation);
   margin-bottom: 22px;
   margin-right: 10px;
-  /* restored margin */
-  transition: background 0.2s;
+  transition: transform 0.15s ease; // Reduced transition time
   cursor: pointer;
   background: var(--color-surface);
   margin-left: 0;
@@ -356,6 +411,13 @@ ion-searchbar {
   flex-direction: column;
   align-items: stretch;
   overflow: visible;
+  // Performance optimizations
+  will-change: transform;
+  contain: layout style paint;
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
 .date-label {
@@ -379,6 +441,7 @@ ion-searchbar {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 16px;
 }
 
 .dream-title {
@@ -410,7 +473,6 @@ ion-searchbar {
   margin-top: var(--spacing-xs);
 }
 
-// Colorful tags (see tagColor pipe/classes)
 .dream-tag {
   font-size: var(--font-size-xxs) !important;
   font-weight: var(--font-weight-bold);
@@ -453,7 +515,6 @@ ion-searchbar {
     opacity: 0;
     transform: translateX(32px);
   }
-
   to {
     opacity: 1;
     transform: translateX(0);
@@ -465,7 +526,6 @@ ion-searchbar {
     opacity: 1;
     transform: translateX(0);
   }
-
   to {
     opacity: 0;
     transform: translateX(24px);
@@ -485,7 +545,6 @@ ion-searchbar {
     opacity: 0;
     transform: translateX(-28px);
   }
-
   to {
     opacity: 1;
     transform: translateX(0);
@@ -497,14 +556,12 @@ ion-searchbar {
     opacity: 1;
     transform: translateX(0);
   }
-
   to {
     opacity: 0;
     transform: translateX(-24px);
   }
 }
 
-// Apply transitions to ion-searchbar, ion-title, and buttons
 .dream-toolbar-row ion-searchbar,
 .dream-toolbar-row ion-title,
 .dream-toolbar-row ion-buttons[slot="end"] {
@@ -540,14 +597,12 @@ ion-button {
     opacity: 0;
     transform: translateX(20px);
   }
-
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-// Make toolbar not stretch vertically
 .topbar.ion-toolbar,
 .dream-toolbar.ion-toolbar {
   min-height: 52px !important;
@@ -581,7 +636,6 @@ ion-button {
   z-index: 2;
 }
 
-/* Remove searchbar inner padding/margin that forces input narrow */
 ion-searchbar.dream-searchbar::part(container),
 ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
   padding: 0 !important;
@@ -593,7 +647,6 @@ ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
   width: 100% !important;
 }
 
-/* Force input area to fit toolbar height */
 ion-searchbar.dream-searchbar::part(input) {
   min-height: 52px !important;
   height: 52px !important;
@@ -620,7 +673,6 @@ ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
   align-items: center;
 }
 
-/* --- FORCE HEADER HEIGHT TO FIX SEARCHBAR JUMP --- */
 .topbar.ion-toolbar,
 .dream-toolbar.ion-toolbar {
   height: 52px !important;
@@ -648,73 +700,10 @@ ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
   line-height: 52px !important;
 }
 
-ion-searchbar.dream-searchbar::part(container),
-ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
-  min-height: 52px !important;
-  height: 52px !important;
-  max-height: 52px !important;
-  line-height: 52px !important;
-  box-sizing: border-box !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-}
-
-ion-searchbar.dream-searchbar::part(input),
-ion-searchbar.dream-searchbar input.searchbar-input.sc-ion-searchbar-md {
-  min-height: 52px !important;
-  height: 52px !important;
-  max-height: 52px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  line-height: 52px !important;
-  border: none !important;
-  box-sizing: border-box !important;
-}
-
 ion-searchbar.dream-searchbar {
   --background: transparent !important;
 }
 
-/* END FORCE HEADER HEIGHT */
-
-/* --- HEADER AND SEARCHBAR HEIGHT FIX --- */
-.topbar.ion-toolbar,
-.dream-toolbar.ion-toolbar,
-.dream-toolbar-row,
-.dream-toolbar-row > *,
-ion-searchbar.dream-searchbar,
-ion-searchbar.dream-searchbar::part(container),
-ion-searchbar.dream-searchbar::part(input),
-.searchbar-input-container.sc-ion-searchbar-md,
-input.searchbar-input.sc-ion-searchbar-md {
-  height: 52px !important;
-  min-height: 52px !important;
-  max-height: 52px !important;
-  line-height: 52px !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-}
-
-.dream-toolbar-row {
-  align-items: center !important;
-}
-
-.dream-toolbar-row ion-title {
-  margin-right: auto !important;
-  text-align: left;
-}
-
-.dream-toolbar-row ion-buttons[slot="end"] {
-  margin-left: auto !important;
-  margin-right: 16px !important;
-}
-
-/* --- END HEADER AND SEARCHBAR HEIGHT FIX --- */
-
-// Modo claro: Estilo de barra superior del buscador y X para destacar con fondo oscuro
 html.ion-palette-light ion-searchbar.dream-searchbar {
   --background: #2b3040 !important;
 }
@@ -738,29 +727,12 @@ html.ion-palette-light ion-icon[name="close"] {
   color: #fff !important;
 }
 
-// SEARCHBAR EN MODO CLARO
 html.ion-palette-light ion-searchbar.dream-searchbar {
   --background: #2b3040 !important;
   --placeholder-color: #d1d5db !important;
   --icon-color: var(--color-text-primary) !important;
 }
 
-html.ion-palette-light
-  ion-searchbar.dream-searchbar
-  .searchbar-input-container.sc-ion-searchbar-md,
-html.ion-palette-light ion-searchbar.dream-searchbar::part(container) {
-  background: #2b3040 !important;
-}
-
-html.ion-palette-light
-  ion-searchbar.dream-searchbar
-  input.searchbar-input.sc-ion-searchbar-md,
-html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
-  background: transparent !important;
-  color: #fff !important;
-}
-
-// Ion Searchbar letras y lupa negras cuando está abierto en modo claro
 html.ion-palette-light ion-searchbar.dream-searchbar {
   --background: #2b3040 !important;
   --color: #1a1a1f !important;
@@ -776,7 +748,6 @@ html.ion-palette-light ion-searchbar.dream-searchbar::part(input) {
   color: #1a1a1f !important;
 }
 
-// BOTÓN X FONDO NEGRO EN MODO CLARO
 html.ion-palette-light ion-buttons[slot="end"] ion-button {
   background: #000 !important;
   border-radius: 50% !important;
@@ -787,7 +758,6 @@ html.ion-palette-light ion-buttons[slot="end"] ion-icon[name="close"] {
   color: #fff !important;
 }
 
-// Icono de buscar (search-outline) negro en modo claro
 html.ion-palette-light .dream-toolbar-row ion-icon[name="search-outline"] {
   color: var(--color-text-primary) !important;
 }

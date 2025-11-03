@@ -1,18 +1,32 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="topbar dream-toolbar">
     <div class="dream-toolbar-row">
-      <ion-title id="ion-title" class="page-title" *ngIf="!showSearch"
-        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }">{{ "DREAMS.TITLE" | translate
-        }}</ion-title>
-      <ion-buttons slot="end" *ngIf="!showSearch"
-        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }">
+      <ion-title
+        id="ion-title"
+        class="page-title"
+        *ngIf="!showSearch"
+        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }"
+      >
+        {{ "DREAMS.TITLE" | translate }}
+      </ion-title>
+      <ion-buttons
+        slot="end"
+        *ngIf="!showSearch"
+        [ngClass]="{ 'fade-in-left': !showSearch, 'fade-out-left': showSearch }"
+      >
         <ion-button (click)="showSearchbar()">
           <ion-icon name="search-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-searchbar *ngIf="showSearch" class="dream-searchbar purple fade-in-right"
-        [placeholder]="'DREAMS.SEARCH_PLACEHOLDER' | translate" debounce="250" show-clear-button="focus"
-        (ionInput)="onSearchChange($event)" [autofocus]="true">
+      <ion-searchbar
+        *ngIf="showSearch"
+        class="dream-searchbar purple fade-in-right"
+        [placeholder]="'DREAMS.SEARCH_PLACEHOLDER' | translate"
+        debounce="250"
+        show-clear-button="focus"
+        (ionInput)="onSearchChange($event)"
+        [autofocus]="true"
+      >
         <ion-buttons slot="end">
           <ion-button (click)="hideSearch()">
             <ion-icon name="chevron-forward-outline"></ion-icon>
@@ -36,42 +50,69 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [scrollEvents]="false" scrollY="true" [fullscreen]="true" class="dream-container">
-  <div class="dreams-container">
-    <div class="dreams-list" *ngIf="recentDreams.length > 0">
-      @for (dream of recentDreams; track dream.id) {
-      <div class="dream-row">
-        <div class="dream-date-col">
-          <div class="date-label">
-            {{ dream.date | date : "MMM" | uppercase }}
+<ion-content
+  [scrollEvents]="false"
+  scrollY="false"
+  [fullscreen]="true"
+  class="dream-container"
+>
+  <!-- Loading overlay -->
+  <div class="loading-overlay" *ngIf="isLoadingPrevious || isLoadingNext">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p class="loader-text">{{ "DREAMS.LOADING_MONTHS" | translate }}</p>
+  </div>
+
+  <swiper-container #swiper init="false" class="dreams-swiper">
+    <swiper-slide
+      *ngFor="let monthData of monthsData; trackBy: trackByMonthData"
+    >
+      <div class="swiper-slide-content">
+        <div class="dreams-container">
+          <div class="dreams-list" *ngIf="monthData.dreams.length > 0">
+            <div
+              class="dream-row"
+              *ngFor="let dream of monthData.dreams; trackBy: trackByDream"
+            >
+              <div class="dream-date-col">
+                <div class="date-label">
+                  {{ dream.date | date : "MMM" | uppercase }}
+                </div>
+                <div class="date-day">{{ dream.date | date : "dd" }}</div>
+              </div>
+              <div class="dream-card modern-card" (click)="viewDream(dream)">
+                <div class="dream-main">
+                  <div class="dream-title">{{ dream.title }}</div>
+                  <div class="dream-desc">
+                    {{ dream.description }}
+                  </div>
+                  <div class="dream-tags" *ngIf="dream.tags?.length">
+                    <ion-chip
+                      *ngFor="let tagChosen of dream.tags; trackBy: trackByTag"
+                      class="dream-tag"
+                      [ngClass]="{
+                        'tag-nightmare':
+                          tagChosen.type === OfficialTags.NIGHTMARE,
+                        'tag-lucid': tagChosen.type === OfficialTags.LUCID,
+                        'tag-regular': tagChosen.type === OfficialTags.REGULAR
+                      }"
+                    >
+                      {{ tagChosen.name }}
+                    </ion-chip>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="date-day">{{ dream.date | date : "dd" }}</div>
-        </div>
-        <div class="dream-card modern-card" (click)="viewDream(dream)">
-          <div class="dream-main">
-            <div class="dream-title">{{ dream.title }}</div>
-            <div class="dream-desc">
-              {{ dream.description }}
-            </div>
-            <div class="dream-tags" *ngIf="dream.tags?.length">
-              @for (tagChosen of dream.tags; track tagChosen.id) {
-              <ion-chip class="dream-tag" [ngClass]="{
-                'tag-nightmare': tagChosen.type === OfficialTags.NIGHTMARE,
-                'tag-lucid': tagChosen.type === OfficialTags.LUCID,
-                'tag-regular': tagChosen.type === OfficialTags.REGULAR
-              }">
-                {{tagChosen.name}}</ion-chip>
-              }
-            </div>
+
+          <!-- Empty State -->
+          <div
+            class="empty-state"
+            *ngIf="monthData.dreams.length === 0 && areDreamsLoaded"
+          >
+            <app-no-dreams></app-no-dreams>
           </div>
         </div>
       </div>
-      }
-    </div>
-
-    <!-- Empty State -->
-    <div class="empty-state" *ngIf="recentDreams.length === 0 && areDreamsLoaded">
-      <app-no-dreams></app-no-dreams>
-    </div>
-  </div>
+    </swiper-slide>
+  </swiper-container>
 </ion-content>
