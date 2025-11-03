@@ -25,6 +25,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: "onboarding",
+    loadComponent: () =>
+      import("../app/shared/ui-elements/onboarding/onboarding.component").then(
+        (m) => m.OnboardingComponent
+      ),
+  },
+  {
     path: "tabs",
     loadComponent: () =>
       import("./tabs/tabs.component").then((m) => m.TabsComponent),

@@ -16,6 +16,7 @@ import {
   ToastLevelEnum,
   ToastNotifierService,
 } from "../../services/toast-notifier";
+import { Preferences } from "@capacitor/preferences";
 
 // Register Swiper custom elements
 register();
@@ -41,6 +42,7 @@ interface OnboardingSlide {
 export class OnboardingComponent {
   @ViewChild("swiper", { static: false }) swiperRef?: ElementRef<any>;
   @Output() completed = new EventEmitter<void>();
+  ONBOARDING_DONE = "ONBOARDING_DONE";
 
   private readonly router = inject(Router);
   private readonly firebaseAuthService = inject(FirebaseAuthService);
@@ -136,6 +138,7 @@ export class OnboardingComponent {
 
   completeOnboarding(): void {
     this.router.navigate(["/tabs/history"]);
+    this.markOnboardingAsDone();
     this.completed.emit();
   }
 
@@ -182,5 +185,12 @@ export class OnboardingComponent {
       4000,
       "checkmark-outline"
     );
+  }
+
+  async markOnboardingAsDone() {
+    await Preferences.set({
+      key: this.ONBOARDING_DONE,
+      value: "true",
+    });
   }
 }

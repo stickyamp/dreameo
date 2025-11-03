@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterOutlet } from "@angular/router";
+import { Router, RouterOutlet } from "@angular/router";
 import { AlertController, IonicModule, Platform } from "@ionic/angular";
 // import { StatusBar, Style } from '@capacitor/status-bar';
 // import { SplashScreen } from '@capacitor/splash-screen';
@@ -35,6 +35,7 @@ import { Preferences } from "@capacitor/preferences";
 export class AppComponent implements OnInit {
   BACKUP_INTERVAL_HOURS = 12;
   BACKUP_KEY = "LAST_BACKUP_DATE";
+  ONBOARDING_DONE = "ONBOARDING_DONE";
 
   constructor(
     private platform: Platform,
@@ -42,13 +43,15 @@ export class AppComponent implements OnInit {
     private configService: ConfigService,
     private versionService: VersionService,
     private alertController: AlertController,
-    private firebaseBackupService: FirebaseBackupService
+    private firebaseBackupService: FirebaseBackupService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
     try {
       await this.platform.ready();
       await this.initializeApp();
+      this.launchOnboarding();
     } catch (error) {
       console.error("Error in ngOnInit:", error);
     }
@@ -144,5 +147,13 @@ export class AppComponent implements OnInit {
     } catch (err) {
       console.error("Error checking or performing dream backup:", err);
     }
+  }
+
+  private async launchOnboarding() {
+    const onboardingDone = await Preferences.get({ key: this.ONBOARDING_DONE });
+
+    if (onboardingDone && onboardingDone.value) return;
+
+    this.router.navigate(["/onboarding"]);
   }
 }
