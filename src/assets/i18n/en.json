@@ -79,7 +79,15 @@
       "December"
     ],
     "TODAY": "Today",
-    "YESTERDAY": "Yesterday"
+    "YESTERDAY": "Yesterday",
+    "DREAM_JOURNEY_MAP_TITLE": "Dream Journey Map",
+    "NO_DREAMS_THIS_MONTH": "No dreams registered this month.",
+    "KEEP_GOING": "Keep going!",
+    "RANK_ROOKIE": "Rookie",
+    "RANK_NOVICE": "Novice",
+    "RANK_ADVANCED": "Advanced",
+    "RANK_EXPERT": "Expert",
+    "DREAMS": "dreams"
   },
   "DREAMS": {
     "TITLE": "Dreams",
