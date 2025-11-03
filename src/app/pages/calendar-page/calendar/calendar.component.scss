@@ -364,3 +364,286 @@ ion-fab-button {
   color: var(--color-text-secondary);
   line-height: 1;
 }
+
+.dream-map-stats {
+  background: linear-gradient(115deg, #191929 55%, #1a1c2a 100%);
+  box-shadow: 0 2px 14px 0 #1b14333a;
+  border: 1px solid #322c52;
+  padding: 2rem 1.1rem 1.6rem 1.1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 20px;
+}
+.dream-constellation-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // margin-bottom: 1.2rem;
+}
+.dream-constellation-svg {
+  width: 100%;
+  max-width: 380px;
+  height: 140px;
+  background: transparent;
+  // border-radius: 16px;
+  box-shadow: none;
+  display: block;
+}
+.constellation-empty-hint {
+  color: #a494e5;
+  margin-top: 24px;
+  font-size: 0.98rem;
+  opacity: 0.82;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+.progress-section {
+  margin-top: 0.1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+}
+.progress-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+.progress-rank {
+  display: flex;
+  align-items: center;
+  gap: 0.38rem;
+}
+.progress-rank-icon {
+  color: #c7b8fb;
+  font-size: 1.8rem;
+}
+.rank-label {
+  color: #c1b4fa;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 10px #2e296c57;
+}
+.progress-count {
+  color: #c7b8fb;
+  font-size: 1.04rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.progress-count-label {
+  color: #9f97d6;
+  font-size: 0.93em;
+  margin-left: 0.17em;
+}
+.progress-bar-bg {
+  height: 10px;
+  background: #2e2358;
+  border-radius: 8px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ac95ff 0%, #6d59e9 100%);
+  border-radius: 8px;
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.progress-hint {
+  color: #b0a6e6;
+  font-size: 0.91rem;
+  margin-top: 0.14rem;
+  margin-left: 2px;
+  letter-spacing: 0.02em;
+  opacity: 0.82;
+}
+.dream-map-container {
+  background: var(--color-surface);
+  box-shadow: var(--shadow-elevation);
+  border: 1px solid var(--color-border);
+  border-radius: 19px; /* sin bordes redondos, según petición */
+  margin: 0 0 1.3rem 0;
+  padding: 2rem 0 1.8rem 0; /* más alto, sin padding lateral */
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+.dream-map-header {
+  font-size: 1.02rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.01rem;
+  padding-left: 0.14rem;
+  text-shadow: 0 3px 10px var(--color-bg-glow, #26265029);
+}
+.dream-constellation-background {
+  min-width: 0;
+  width: 100%;
+  height: 200px; /* altura fija para que el SVG pueda ocupar 100% */
+  padding: 0; /* sin padding lateral */
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.dream-constellation-svg {
+  width: 100% !important; /* cubrir todo el ancho */
+  height: 100% !important; /* cubrir toda la altura del contenedor */
+  min-height: 0;
+  background: transparent;
+  display: block;
+  margin: 0; /* sin márgenes */
+}
+.constellation-empty-hint {
+  color: var(--color-text-secondary);
+  margin-top: 13px;
+  font-size: 0.96rem;
+  opacity: 0.8;
+  letter-spacing: 0.25px;
+  text-align: center;
+}
+.dream-progress-container {
+  background: var(--color-surface);
+  box-shadow: var(--shadow-elevation);
+  border-radius: var(--radius-lg, 20px);
+  margin-bottom: 1.5rem;
+  padding: 1.05rem 1.08rem 1.05rem 1.09rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  transition: background 0.18s;
+}
+.dream-progress-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+.progress-rank-block {
+  display: flex;
+  align-items: center;
+  gap: 0.29rem;
+  min-width: 74px;
+  flex: 0 0 auto;
+}
+.progress-bar-block {
+  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0 0.6rem;
+  min-width: 0;
+}
+.progress-bar-bg {
+  height: 13px;
+  background: var(--color-bg, #2d205b);
+  border-radius: var(--radius, 9px);
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 2px;
+  box-shadow: 0 2px 8px var(--color-bg-glow, #130e3236) inset;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: var(--radius, 9px);
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-hover, #b496ff) 0%,
+    var(--color-accent) 93%,
+    #d9cfff 100%
+  );
+  filter: drop-shadow(0 4px 14px #cdb4f466) brightness(1.08);
+  transition: width 0.37s cubic-bezier(0.45, 0, 0.35, 1);
+}
+.progress-count-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 66px;
+  flex: 0 0 auto;
+}
+.progress-count {
+  color: var(--color-active, #d3c8ff);
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.progress-count-label {
+  color: var(--color-text-secondary, #aea4e3);
+  font-size: 0.93em;
+  margin-left: 2.5px;
+}
+.progress-hint {
+  color: var(--color-text-secondary, #b0bae6);
+  font-size: 0.93rem;
+  margin-left: 1px;
+  letter-spacing: 0.01em;
+  opacity: 0.81;
+  text-align: left;
+}
+.rank-label {
+  color: var(--color-accent-hover, #cabaff);
+  font-size: 1.01rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1.5px 10px #867dfb17;
+}
+.progress-rank-icon {
+  color: var(--color-accent-hover, #cabaff);
+  font-size: 2rem;
+  filter: drop-shadow(0 3px 16px #b8a9fd1d);
+}
+@media (max-width: 570px) {
+  .dream-map-container,
+  .dream-progress-container {
+    border-radius: var(--radius, 13px);
+    padding: 1.09rem 0.63rem 1.09rem 0.63rem;
+    margin-bottom: 1rem;
+  }
+  .dream-progress-content {
+    gap: 0.46rem;
+  }
+}
+.dream-map-container,
+.dream-progress-container {
+  max-width: 390px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.dream-map-container {
+  padding-top: 2.3rem;
+  padding-bottom: 2.3rem;
+  min-height: 225px;
+}
+.dream-constellation-svg {
+  min-height: 130px;
+  height: 137px;
+  width: 100%;
+  background: var(--color-surface);
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 480px) {
+  .dream-map-container,
+  .dream-progress-container {
+    max-width: 96vw;
+    min-width: 0;
+  }
+  .dream-map-container {
+    padding: 1.6rem 0 1.3rem 0;
+  }
+  .dream-constellation-background {
+    height: 162px;
+  }
+  .dream-constellation-svg {
+    height: 100%;
+  }
+}

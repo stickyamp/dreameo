@@ -79,7 +79,15 @@
       "Diciembre"
     ],
     "TODAY": "Hoy",
-    "YESTERDAY": "Ayer"
+    "YESTERDAY": "Ayer",
+    "DREAM_JOURNEY_MAP_TITLE": "Mapa de constelaciones",
+    "NO_DREAMS_THIS_MONTH": "No hay sueños registrados este mes.",
+    "KEEP_GOING": "¡Sigue así!",
+    "RANK_ROOKIE": "Principiante",
+    "RANK_NOVICE": "Novato",
+    "RANK_ADVANCED": "Avanzado",
+    "RANK_EXPERT": "Experto",
+    "DREAMS": "sueños"
   },
   "DREAMS": {
     "TITLE": "Sueños",

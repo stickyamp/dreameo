@@ -40,6 +40,15 @@ export class CalendarComponent implements OnInit {
   private decorateScheduled = false;
   private dreamService: DreamService = inject(DreamService);
 
+  // ------ NUEVAS VARIABLES PARA DREAM MAP Y PROGRESO ------
+  dreamDayPoints: { x: number; y: number; date: string }[] = [];
+  polylineString: string = "";
+  progressPercent: number = 0;
+  filledDays: number = 0;
+  totalMonthDays: number = 0;
+  userRankLabel: string = "CALENDAR.RANK_ROOKIE"; // placeholder
+  bgStars: { x: number; y: number; r: number }[] = [];
+
   constructor(
     private modalController: ModalController,
     private navController: NavController,
@@ -54,20 +63,103 @@ export class CalendarComponent implements OnInit {
     this.updateLocalizedLabels();
     this.generateCalendar();
     this.generateWeeklyData();
-
-    // Subscribe to dreams changes to update calendar and refresh moon badges
+    this.updateDreamJourneyMap();
+    // Suscripciones existentes:
     this.dreamService.dreams$.subscribe(() => {
       this.generateCalendar();
       this.generateWeeklyData();
+      this.updateDreamJourneyMap();
       this.decorateMoonBadges();
     });
-
-    // Subscribe to language changes to update labels
     this.translate.onLangChange.subscribe(() => {
       this.updateLocalizedLabels();
       this.generateCalendar();
       this.generateWeeklyData();
+      this.updateDreamJourneyMap();
     });
+  }
+
+  // Construye la lógica para calcular las posiciones de los sueños como estrellas
+  updateDreamJourneyMap() {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
+    const stars: { date: string; day: number }[] = [];
+    let daysWithDream: Set<number> = new Set();
+    for (let d = 1; d <= endDate.getDate(); d++) {
+      const dateStr = this.formatDate(new Date(year, month, d));
+      if (this.getDreamCount(dateStr) > 0) {
+        stars.push({ date: dateStr, day: d });
+        daysWithDream.add(d);
+      }
+    }
+    // Área de dibujo del SVG (coincide con el viewBox 0 0 350 120)
+    const width = 350;
+    const height = 120;
+    const marginX = 8;
+    const marginTop = 10; // margen superior mínimo para no cortar
+    const marginBottom = 10;
+    const minY = marginTop;
+    const maxY = height - marginBottom;
+
+    const count = stars.length;
+    this.dreamDayPoints = stars.map((s, idx) => {
+      const x =
+        marginX + ((width - marginX * 2) * idx) / Math.max(1, count - 1);
+      let y =
+        (minY + maxY) / 2 +
+        Math.sin((idx / Math.max(1, count)) * Math.PI * 2) * 20 +
+        (idx % 2 === 0 ? 8 : -7) +
+        ((s.day % 3) - 1) * 2.2;
+      // Clamp para que nunca se corten
+      if (y < minY) y = minY;
+      if (y > maxY) y = maxY;
+      return { x, y, date: s.date };
+    });
+    this.polylineString = this.dreamDayPoints
+      .map((pt) => `${pt.x},${pt.y}`)
+      .join(" ");
+
+    // Progreso barra
+    this.filledDays = daysWithDream.size;
+    this.totalMonthDays = endDate.getDate();
+    this.progressPercent =
+      this.totalMonthDays === 0
+        ? 0
+        : Math.round((this.filledDays / this.totalMonthDays) * 100);
+
+    // Nivel/rango temporal
+    if (this.filledDays >= 25) {
+      this.userRankLabel = "CALENDAR.RANK_EXPERT";
+    } else if (this.filledDays >= 18) {
+      this.userRankLabel = "CALENDAR.RANK_ADVANCED";
+    } else if (this.filledDays >= 10) {
+      this.userRankLabel = "CALENDAR.RANK_NOVICE";
+    } else {
+      this.userRankLabel = "CALENDAR.RANK_ROOKIE";
+    }
+
+    // Estrellas pequeñas de fondo: densidad alta proporcional al área del viewBox
+    const backgroundArea = width * height; // 42000
+    const numSmallStars = Math.round(backgroundArea / 80); // ~525
+    const takenZones = this.dreamDayPoints.map((p) => ({ x: p.x, y: p.y }));
+    this.bgStars = [];
+    for (let i = 0; i < numSmallStars; i++) {
+      let rx = Math.random() * (width - marginX * 2) + marginX;
+      let ry = Math.random() * (maxY - minY) + minY;
+      if (
+        takenZones.some(
+          (z) => Math.abs(z.x - rx) < 10 && Math.abs(z.y - ry) < 10
+        )
+      ) {
+        i--;
+        continue;
+      }
+      // Puntos pequeños con ligera variación
+      const r = 0.25 + Math.random() * 0.9;
+      this.bgStars.push({ x: rx, y: ry, r });
+    }
   }
 
   private updateLocalizedLabels() {
@@ -289,12 +381,14 @@ export class CalendarComponent implements OnInit {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.generateCalendar();
     this.generateWeeklyData();
+    this.updateDreamJourneyMap();
   }
 
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.generateCalendar();
     this.generateWeeklyData();
+    this.updateDreamJourneyMap();
   }
 
   selectDay(day: CalendarDay) {
