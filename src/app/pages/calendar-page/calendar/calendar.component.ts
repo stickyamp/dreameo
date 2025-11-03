@@ -49,6 +49,13 @@ export class CalendarComponent implements OnInit {
   userRankLabel: string = "CALENDAR.RANK_ROOKIE"; // placeholder
   bgStars: { x: number; y: number; r: number }[] = [];
 
+  // Variables para el sistema de progreso por niveles
+  currentRankName: string = "CALENDAR.RANK_ROOKIE";
+  nextRankName: string = "CALENDAR.RANK_NOVICE";
+  currentDreamsCount: number = 0;
+  dreamsNeededForNext: number = 10;
+  progressToNextPercent: number = 0;
+
   constructor(
     private modalController: ModalController,
     private navController: NavController,
@@ -64,11 +71,13 @@ export class CalendarComponent implements OnInit {
     this.generateCalendar();
     this.generateWeeklyData();
     this.updateDreamJourneyMap();
+    this.updateRankProgress(); // Calcular progreso inicial
     // Suscripciones existentes:
     this.dreamService.dreams$.subscribe(() => {
       this.generateCalendar();
       this.generateWeeklyData();
       this.updateDreamJourneyMap();
+      this.updateRankProgress(); // Recalcular cuando cambien los sueños
       this.decorateMoonBadges();
     });
     this.translate.onLangChange.subscribe(() => {
@@ -76,6 +85,7 @@ export class CalendarComponent implements OnInit {
       this.generateCalendar();
       this.generateWeeklyData();
       this.updateDreamJourneyMap();
+      this.updateRankProgress();
     });
   }
 
@@ -121,7 +131,7 @@ export class CalendarComponent implements OnInit {
       .map((pt) => `${pt.x},${pt.y}`)
       .join(" ");
 
-    // Progreso barra
+    // Progreso barra (para el mapa mensual)
     this.filledDays = daysWithDream.size;
     this.totalMonthDays = endDate.getDate();
     this.progressPercent =
@@ -129,16 +139,8 @@ export class CalendarComponent implements OnInit {
         ? 0
         : Math.round((this.filledDays / this.totalMonthDays) * 100);
 
-    // Nivel/rango temporal
-    if (this.filledDays >= 25) {
-      this.userRankLabel = "CALENDAR.RANK_EXPERT";
-    } else if (this.filledDays >= 18) {
-      this.userRankLabel = "CALENDAR.RANK_ADVANCED";
-    } else if (this.filledDays >= 10) {
-      this.userRankLabel = "CALENDAR.RANK_NOVICE";
-    } else {
-      this.userRankLabel = "CALENDAR.RANK_ROOKIE";
-    }
+    // Actualizar progreso del sistema de niveles basado en total de sueños
+    this.updateRankProgress();
 
     // Estrellas pequeñas de fondo: densidad alta proporcional al área del viewBox
     const backgroundArea = width * height; // 42000
@@ -159,6 +161,97 @@ export class CalendarComponent implements OnInit {
       // Puntos pequeños con ligera variación
       const r = 0.25 + Math.random() * 0.9;
       this.bgStars.push({ x: rx, y: ry, r });
+    }
+  }
+
+  updateRankProgress() {
+    // Obtener el total de sueños guardados en toda la aplicación
+    const allDreams = this.dreamService.getAllDreams();
+    this.currentDreamsCount = allDreams.length;
+
+    // Definir niveles con más opciones: Rookie (0-4), Beginner (5-9), Novice (10-14),
+    // Intermediate (15-19), Advanced (20-29), Expert (30-39), Master (40+)
+    let currentRank: string;
+    let nextRank: string;
+    let dreamsNeeded: number;
+    let progressInCurrentLevel: number;
+    let rankStart: number;
+
+    if (this.currentDreamsCount < 5) {
+      // Rookie: 0-4 sueños, necesita 5 para Beginner
+      currentRank = "CALENDAR.RANK_ROOKIE";
+      nextRank = "CALENDAR.RANK_BEGINNER";
+      dreamsNeeded = 5;
+      rankStart = 0;
+      progressInCurrentLevel = this.currentDreamsCount;
+    } else if (this.currentDreamsCount < 10) {
+      // Beginner: 5-9 sueños, necesita 10 para Novice
+      currentRank = "CALENDAR.RANK_BEGINNER";
+      nextRank = "CALENDAR.RANK_NOVICE";
+      dreamsNeeded = 10;
+      rankStart = 5;
+      progressInCurrentLevel = this.currentDreamsCount - 5;
+    } else if (this.currentDreamsCount < 15) {
+      // Novice: 10-14 sueños, necesita 15 para Intermediate
+      currentRank = "CALENDAR.RANK_NOVICE";
+      nextRank = "CALENDAR.RANK_INTERMEDIATE";
+      dreamsNeeded = 15;
+      rankStart = 10;
+      progressInCurrentLevel = this.currentDreamsCount - 10;
+    } else if (this.currentDreamsCount < 20) {
+      // Intermediate: 15-19 sueños, necesita 20 para Advanced
+      currentRank = "CALENDAR.RANK_INTERMEDIATE";
+      nextRank = "CALENDAR.RANK_ADVANCED";
+      dreamsNeeded = 20;
+      rankStart = 15;
+      progressInCurrentLevel = this.currentDreamsCount - 15;
+    } else if (this.currentDreamsCount < 30) {
+      // Advanced: 20-29 sueños, necesita 30 para Expert
+      currentRank = "CALENDAR.RANK_ADVANCED";
+      nextRank = "CALENDAR.RANK_EXPERT";
+      dreamsNeeded = 30;
+      rankStart = 20;
+      progressInCurrentLevel = this.currentDreamsCount - 20;
+    } else if (this.currentDreamsCount < 40) {
+      // Expert: 30-39 sueños, necesita 40 para Master
+      currentRank = "CALENDAR.RANK_EXPERT";
+      nextRank = "CALENDAR.RANK_MASTER";
+      dreamsNeeded = 40;
+      rankStart = 30;
+      progressInCurrentLevel = this.currentDreamsCount - 30;
+    } else {
+      // Master: 40+ sueños, es el nivel máximo
+      currentRank = "CALENDAR.RANK_MASTER";
+      nextRank = "CALENDAR.RANK_MASTER"; // No hay siguiente nivel
+      dreamsNeeded = 40; // Mantener el umbral para el cálculo
+      rankStart = 40;
+      progressInCurrentLevel = Math.min(this.currentDreamsCount - 40, 10); // Límite para mostrar progreso
+    }
+
+    this.currentRankName = currentRank;
+    this.nextRankName = nextRank;
+    // Mostrar el número total de sueños necesarios para el siguiente nivel
+    this.dreamsNeededForNext = dreamsNeeded;
+
+    // Calcular porcentaje de progreso hacia el siguiente nivel
+    if (
+      currentRank === "CALENDAR.RANK_MASTER" &&
+      nextRank === "CALENDAR.RANK_MASTER"
+    ) {
+      // Nivel máximo alcanzado
+      this.progressToNextPercent = 100;
+    } else {
+      // Calcular cuántos sueños se necesitan en total para llegar al siguiente nivel
+      const dreamsRequiredForNext = dreamsNeeded - rankStart;
+      // Calcular progreso: sueños en el nivel actual / sueños necesarios para el siguiente nivel
+      const progress =
+        dreamsRequiredForNext > 0
+          ? Math.min(
+              100,
+              Math.round((progressInCurrentLevel / dreamsRequiredForNext) * 100)
+            )
+          : 0;
+      this.progressToNextPercent = progress;
     }
   }
 

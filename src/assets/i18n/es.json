@@ -83,10 +83,15 @@
     "DREAM_JOURNEY_MAP_TITLE": "Mapa de constelaciones",
     "NO_DREAMS_THIS_MONTH": "No hay sueños registrados este mes.",
     "KEEP_GOING": "¡Sigue así!",
+    "PROGRESS_TO": "Progreso a",
+    "DREAMER": "Soñador",
     "RANK_ROOKIE": "Principiante",
+    "RANK_BEGINNER": "Principiante+",
     "RANK_NOVICE": "Novato",
+    "RANK_INTERMEDIATE": "Intermedio",
     "RANK_ADVANCED": "Avanzado",
     "RANK_EXPERT": "Experto",
+    "RANK_MASTER": "Maestro",
     "DREAMS": "sueños"
   },
   "DREAMS": {

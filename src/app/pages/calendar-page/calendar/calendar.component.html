@@ -153,33 +153,43 @@
   </div>
 
   <!-- Bloque: Progreso mensual/rango-nivel -->
-  <div class="dream-progress-container">
-    <div class="dream-progress-content">
-      <!-- Rank a la izquierda -->
-      <div class="progress-rank-block">
-        <ion-icon name="shield-outline" class="progress-rank-icon"></ion-icon>
-        <div class="rank-label">{{ userRankLabel | translate }}</div>
-      </div>
-      <!-- Barra de progreso -->
-      <div class="progress-bar-block">
-        <div class="progress-bar-bg">
-          <div
-            class="progress-bar-fill"
-            [style.width.%]="progressPercent"
-          ></div>
+  <div class="dream-progress-row">
+    <!-- Card pequeña (badge) -->
+    <div class="progress-badge-card">
+      <div class="progress-rank-badge">
+        <div class="rank-icon-container">
+          <ion-icon name="shield-outline" class="rank-icon-shield"></ion-icon>
+          <ion-icon name="moon-outline" class="rank-icon-moon"></ion-icon>
         </div>
-        <div class="progress-hint">
+        <div class="rank-name-main">{{ currentRankName | translate }}</div>
+        <div class="rank-name-sub">{{ "CALENDAR.DREAMER" | translate }}</div>
+      </div>
+    </div>
+
+    <!-- Card grande (progreso) -->
+    <div class="progress-main-card">
+      <div class="progress-section-right">
+        <div class="progress-title-row">
+          <span class="progress-title"
+            >{{ "CALENDAR.PROGRESS_TO" | translate }}
+            {{ nextRankName | translate }}</span
+          >
+          <span class="progress-count-text"
+            >{{ currentDreamsCount }}/{{ dreamsNeededForNext }}
+            {{ "CALENDAR.DREAMS" | translate }}</span
+          >
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-track">
+            <div
+              class="progress-bar-fill-glow"
+              [style.width.%]="progressToNextPercent"
+            ></div>
+          </div>
+        </div>
+        <div class="progress-encouragement">
           {{ "CALENDAR.KEEP_GOING" | translate }}
         </div>
-      </div>
-      <!-- Progreso/cantidad a la derecha -->
-      <div class="progress-count-block">
-        <span class="progress-count"
-          >{{ filledDays }}/{{ totalMonthDays }}</span
-        >
-        <span class="progress-count-label">{{
-          "CALENDAR.DREAMS" | translate
-        }}</span>
       </div>
     </div>
   </div>
