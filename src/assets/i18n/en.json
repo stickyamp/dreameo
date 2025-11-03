@@ -83,10 +83,15 @@
     "DREAM_JOURNEY_MAP_TITLE": "Dream Journey Map",
     "NO_DREAMS_THIS_MONTH": "No dreams registered this month.",
     "KEEP_GOING": "Keep going!",
+    "PROGRESS_TO": "Progress to",
+    "DREAMER": "Dreamer",
     "RANK_ROOKIE": "Rookie",
+    "RANK_BEGINNER": "Beginner",
     "RANK_NOVICE": "Novice",
+    "RANK_INTERMEDIATE": "Intermediate",
     "RANK_ADVANCED": "Advanced",
     "RANK_EXPERT": "Expert",
+    "RANK_MASTER": "Master",
     "DREAMS": "dreams"
   },
   "DREAMS": {
