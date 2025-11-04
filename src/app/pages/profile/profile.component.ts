@@ -20,6 +20,7 @@ import {
   ToastLevelEnum,
   ToastNotifierService,
 } from "@/app/shared/services/toast-notifier";
+import { LocalNotifications } from "@capacitor/local-notifications";
 
 interface User {
   name: string;
@@ -140,7 +141,6 @@ export class ProfileComponent implements OnInit {
   isConnectingGoogle: boolean = false;
   notificationsEnabled: boolean = false;
   notificationsLoading: boolean = false;
-  private localNotifications: any = null;
 
   constructor(
     private router: Router,
@@ -541,44 +541,32 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  private async getLocalNotifications() {
-    if (!this.localNotifications) {
-      // dynamic import solo en runtime
-      try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const mod = await import("@capacitor/local-notifications");
-        this.localNotifications = mod.LocalNotifications;
-      } catch {
-        this.localNotifications = null;
-      }
-    }
-    return this.localNotifications;
-  }
-
   async checkNotificationPermission(): Promise<boolean> {
-    const LN = await this.getLocalNotifications();
-    if (!LN) return false;
-    const perm = await LN.checkPermissions();
+    if (!LocalNotifications) {
+      return false;
+      console.error("No local notifications provider");
+    }
+    const perm = await LocalNotifications.checkPermissions();
     return perm.display === "granted";
   }
 
   async toggleNotificationPermission() {
     if (this.notificationsLoading) return;
     this.notificationsLoading = true;
-    const LN = await this.getLocalNotifications();
-    if (!LN) {
+    if (!LocalNotifications) {
+      console.error("Error no LN:");
       this.notificationsEnabled = false;
       this.notificationsLoading = false;
       return;
     }
     if (this.notificationsEnabled) {
-      await LN.cancel({ notifications: [{ id: 1 }] });
+      console.error("Error no LN 2:");
+      await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
       this.notificationsEnabled = false;
       this.notificationsLoading = false;
       return;
     }
-    const permResult = await LN.requestPermissions();
+    const permResult = await LocalNotifications.requestPermissions();
     if (permResult.display === "granted") {
       await this.scheduleDailyNotificationByLang();
       this.notificationsEnabled = true;
@@ -589,8 +577,7 @@ export class ProfileComponent implements OnInit {
   }
 
   async scheduleDailyNotificationByLang() {
-    const LN = await this.getLocalNotifications();
-    if (!LN) return;
+    if (!LocalNotifications) return;
     const lang = this.selectedLanguage;
     let title = "";
     let body = "";
@@ -601,19 +588,74 @@ export class ProfileComponent implements OnInit {
       title = "Don't forget to log your dream";
       body = "Open the app and write down your dream! 💤";
     }
-    await LN.schedule({
+    await LocalNotifications.schedule({
       notifications: [
         {
           id: 1,
           title,
           body,
           schedule: { repeats: true, on: { hour: 10, minute: 0 } },
-          sound: null,
           smallIcon: "ic_stat_iconconfig",
           actionTypeId: "",
           extra: null,
         },
       ],
     });
+  }
+
+  async sendTestNotification() {
+    if (!LocalNotifications) {
+      console.warn("LocalNotifications plugin not available");
+      await this.toastNotifierService.presentToast(
+        "LocalNotifications plugin not available",
+        ToastLevelEnum.ERROR,
+        "bottom"
+      );
+      return;
+    }
+
+    // Check or request permissions first
+    const perm = await LocalNotifications.checkPermissions();
+    if (perm.display !== "granted") {
+      const request = await LocalNotifications.requestPermissions();
+      if (request.display !== "granted") {
+        console.warn("Notification permission not granted");
+        await this.toastNotifierService.presentToast(
+          "Notification permission not granted",
+          ToastLevelEnum.WARNING,
+          "bottom"
+        );
+        return;
+      }
+    }
+
+    // Schedule for 1 minute from now
+    const triggerTime = new Date(Date.now() + 60 * 1000); // +1 minute
+
+    const notification = {
+      id: Math.floor(Date.now() / 1000) % 2147483647,
+      title: "🕐 Test Notification",
+      body: "This is your test notification — it was scheduled 1 minute ago!",
+      schedule: { at: triggerTime },
+      smallIcon: "ic_stat_iconconfig",
+      extra: { test: true, scheduledAt: triggerTime.toISOString() },
+    };
+
+    try {
+      await LocalNotifications.schedule({ notifications: [notification] });
+      console.log("Test notification scheduled for:", triggerTime);
+      await this.toastNotifierService.presentToast(
+        `Test notification scheduled for ${triggerTime.toLocaleTimeString()}`,
+        ToastLevelEnum.INFO,
+        "bottom"
+      );
+    } catch (err) {
+      console.error("Error scheduling test notification:", err);
+      await this.toastNotifierService.presentToast(
+        "Error scheduling test notification",
+        ToastLevelEnum.ERROR,
+        "bottom"
+      );
+    }
   }
 }
