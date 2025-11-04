@@ -467,24 +467,27 @@ ion-fab-button {
   border: 1px solid var(--color-border);
   border-radius: 19px; /* sin bordes redondos, según petición */
   margin: 0 0 1.3rem 0;
-  padding: 2rem 0 1.8rem 0; /* más alto, sin padding lateral */
+  min-height: unset;
   min-width: 0;
   position: relative;
   overflow: hidden;
 }
+
 .dream-map-header {
   font-size: 1.02rem;
   color: var(--color-text-primary);
   font-weight: 600;
   letter-spacing: 0.02em;
-  margin-bottom: 1.01rem;
-  padding-left: 0.14rem;
-  text-shadow: 0 3px 10px var(--color-bg-glow, #26265029);
+  padding-top: 5px;
+  padding-bottom: 7px;
+  padding-left: 7px;
+  // text-shadow: 0 3px 10px var(--color-bg-glow, #26265029);
+  text-shadow: 0 1px 6px var(--color-bg-glow, #26265029);
 }
 .dream-constellation-background {
   min-width: 0;
   width: 100%;
-  height: 200px; /* altura fija para que el SVG pueda ocupar 100% */
+  height: 130px !important; /* altura fija para que el SVG pueda ocupar 100% */
   padding: 0; /* sin padding lateral */
   border-radius: 0;
   display: flex;
@@ -492,14 +495,16 @@ ion-fab-button {
   align-items: center;
   overflow: hidden;
 }
+
 .dream-constellation-svg {
-  width: 100% !important; /* cubrir todo el ancho */
-  height: 100% !important; /* cubrir toda la altura del contenedor */
+  height: 100px !important; /* reduce la altura del svg */
+  max-height: 130px !important; /* cubrir toda la altura del contenedor */
   min-height: 0;
   background: transparent;
   display: block;
   margin: 0; /* sin márgenes */
 }
+
 .constellation-empty-hint {
   color: var(--color-text-secondary);
   margin-top: 13px;
@@ -682,7 +687,7 @@ ion-fab-button {
   .dream-map-container,
   .dream-progress-container {
     border-radius: var(--radius, 13px);
-    padding: 1.09rem 0.63rem 1.09rem 0.63rem;
+
     margin-bottom: 1rem;
   }
   .dream-progress-content {
@@ -697,9 +702,7 @@ ion-fab-button {
   width: 100%;
 }
 .dream-map-container {
-  padding-top: 2.3rem;
-  padding-bottom: 2.3rem;
-  min-height: 225px;
+  min-height: 210px;
 }
 .dream-constellation-svg {
   min-height: 130px;
@@ -715,14 +718,12 @@ ion-fab-button {
     max-width: 96vw;
     min-width: 0;
   }
-  .dream-map-container {
-    padding: 1.6rem 0 1.3rem 0;
-  }
+
   .dream-constellation-background {
-    height: 162px;
+    height: 130px !important;
   }
   .dream-constellation-svg {
-    height: 100%;
+    height: 100px !important;
   }
 }
 

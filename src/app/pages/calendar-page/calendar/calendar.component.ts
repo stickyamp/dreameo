@@ -428,24 +428,6 @@ export class CalendarComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  // getMonthYearLabel(): string {
-  //   const months = [
-  //     "Enero",
-  //     "Febrero",
-  //     "Marzo",
-  //     "Abril",
-  //     "Mayo",
-  //     "Junio",
-  //     "Julio",
-  //     "Agosto",
-  //     "Septiembre",
-  //     "Octubre",
-  //     "Noviembre",
-  //     "Diciembre",
-  //   ];
-  //   return `${months[this.currentDate.getMonth()]
-  //     } ${this.currentDate.getFullYear()}`;
-  // }
   getMonthYearLabel(): string {
     const months = this.translate.instant("CALENDAR.MONTHS") as string[];
     const monthNames =
