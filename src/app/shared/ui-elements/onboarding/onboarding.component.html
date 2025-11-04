@@ -59,9 +59,18 @@
       <button
         *ngIf="currentSlideIndex === onboardingSlides.length - 2"
         class="notifications-btn"
-        (click)="(1)"
+        (click)="toggleNotificationPermission()"
+        [ngClass]="{ isNotificationsDisabled: areNotificationsEnabled }"
       >
-        Activate notifications
+        @if(!isEnablingNotifications && !areNotificationsEnabled){ Activate
+        notifications } @if(!areNotificationsEnabled &&
+        isEnablingNotifications){
+        <ion-spinner name="crescent"></ion-spinner>
+
+        }@if(areNotificationsEnabled && !isEnablingNotifications){<ion-icon
+          name="checkmark-outline"
+        ></ion-icon>
+        Notifications activated }
       </button>
 
       <button

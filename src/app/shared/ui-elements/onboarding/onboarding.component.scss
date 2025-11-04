@@ -50,8 +50,8 @@
 }
 
 .icon-wrapper {
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -180,6 +180,10 @@
 }
 
 .isDisabled {
+  opacity: 0.5;
+}
+
+.isNotificationsDisabled {
   opacity: 0.5;
 }
 

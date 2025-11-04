@@ -7,7 +7,7 @@
   font-family: "Manrope", sans-serif;
   min-height: 100vh;
   padding: 0;
-  padding-bottom: 2rem; /* Espacio al final para scroll completo */
+  padding-bottom: 6rem; /* Espacio al final para scroll completo */
 }
 
 // Header Section
@@ -494,7 +494,11 @@ ion-fab-button {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--color-surface) 0%, rgba(var(--color-text-secondary), 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-surface) 0%,
+    rgba(var(--color-text-secondary), 0.05) 100%
+  );
 }
 
 .dream-constellation-svg {
@@ -645,7 +649,11 @@ ion-fab-button {
 
 .progress-bar-fill-glow {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-active) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    var(--color-active) 100%
+  );
   border-radius: var(--spacing-xxxs);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -735,6 +743,7 @@ ion-fab-button {
   gap: var(--spacing-xs);
   max-width: 390px;
   margin: 0 auto var(--spacing-sm) auto;
+  margin-bottom: var(--spacing-xl);
 }
 .progress-badge-card {
   background: var(--color-surface);
@@ -812,98 +821,101 @@ ion-fab-button {
 
 /* Estilos específicos para modo claro */
 html.ion-palette-light {
-  
   /* Mapa de estrellas en modo claro */
   .dream-map-container {
     background: #ffffff;
     border: 1px solid #e1e5e9;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   }
-  
+
   .dream-map-header {
     color: var(--color-text-primary);
   }
-  
+
   .dream-constellation-background {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   }
-  
+
   .constellation-empty-message {
     color: var(--color-text-secondary);
     opacity: 0.8;
   }
-  
+
   /* Estrellas de fondo en modo claro */
   .dream-constellation-svg circle {
     fill: var(--color-text-secondary) !important;
     fill-opacity: 0.3 !important;
   }
-  
+
   .dream-constellation-svg path[stroke="var(--color-text-secondary)"] {
     stroke: var(--color-text-secondary) !important;
     opacity: 0.4 !important;
   }
-  
+
   /* Líneas de conexión en modo claro */
   .dream-constellation-svg polyline {
     stroke: var(--color-accent) !important;
     opacity: 0.5 !important;
   }
-  
+
   /* Estrellas principales en modo claro */
   .dream-constellation-svg path[fill="var(--color-accent)"] {
     fill: var(--color-accent) !important;
     stroke: var(--color-text-primary) !important;
     opacity: 0.85 !important;
   }
-  
+
   /* Sección de progreso en modo claro */
   .progress-badge-card {
     background: #ffffff;
     border: 1px solid #e1e5e9;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
-  
+
   .progress-main-card {
     background: #ffffff;
     border: 1px solid #e1e5e9;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
-  
+
   .rank-icon-shield {
     color: var(--color-accent);
   }
-  
+
   .rank-icon-moon {
     color: var(--color-accent);
   }
-  
+
   .rank-name-main {
     color: var(--color-text-primary);
   }
-  
+
   .rank-name-sub {
     color: var(--color-text-secondary);
   }
-  
+
   .progress-title {
     color: var(--color-text-primary);
   }
-  
+
   .progress-count-text {
     color: var(--color-text-secondary);
   }
-  
+
   .progress-bar-track {
     background: #f1f3f4;
     border: 1px solid #e1e5e9;
   }
-  
+
   .progress-bar-fill-glow {
-    background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-active) 100%);
+    background: linear-gradient(
+      90deg,
+      var(--color-accent) 0%,
+      var(--color-active) 100%
+    );
     box-shadow: 0 0 8px rgba(152, 94, 252, 0.3);
   }
-  
+
   .progress-bar-fill-glow::before {
     background: linear-gradient(
       90deg,
@@ -912,7 +924,7 @@ html.ion-palette-light {
       transparent
     );
   }
-  
+
   .progress-encouragement {
     color: var(--color-text-secondary);
   }

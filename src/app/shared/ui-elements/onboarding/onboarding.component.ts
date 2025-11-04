@@ -17,6 +17,8 @@ import {
   ToastNotifierService,
 } from "../../services/toast-notifier";
 import { Preferences } from "@capacitor/preferences";
+import { LocalNotifications } from "@capacitor/local-notifications";
+import { ConfigService } from "../../services/config.service";
 
 // Register Swiper custom elements
 register();
@@ -47,6 +49,7 @@ export class OnboardingComponent {
   private readonly router = inject(Router);
   private readonly firebaseAuthService = inject(FirebaseAuthService);
   private readonly toastNotifierService = inject(ToastNotifierService);
+  private readonly configService = inject(ConfigService);
   currentSlideIndex = 0;
 
   onboardingSlides: OnboardingSlide[] = [
@@ -62,8 +65,8 @@ export class OnboardingComponent {
     },
     {
       icon: "assets/images/onboarding/onboarding_dreams.png",
-      width: 230,
-      height: 430,
+      width: 180,
+      height: 336,
       class: "onboarding-dreams glowing-image",
       title: "Your Dream Journal",
       description:
@@ -73,12 +76,12 @@ export class OnboardingComponent {
     },
     {
       icon: "assets/images/onboarding/onboarding_statistics.png",
-      width: 230,
-      height: 430,
+      width: 180,
+      height: 336,
       class: "onboarding-dreams glowing-image",
       title: "Track Your Progress",
       description:
-        "Discover patterns in your dreams with our advanced statistics. Understand your sleep quality, common themes, and emotional trends over time.",
+        "Discover patterns in your dreams with our advanced statistics. Understand your sleep common themes, and emotional trends over time.",
       background:
         "linear-gradient(135deg, rgba(176, 224, 230, 0.3) 0%, rgba(152, 251, 152, 0.3) 100%)",
     },
@@ -102,6 +105,9 @@ export class OnboardingComponent {
 
   isUserLoggedIn = false;
   isConnectingGoogle = false;
+
+  areNotificationsEnabled = false;
+  isEnablingNotifications = false;
 
   ngOnInit() {
     // Suscribirse a cambios en el estado de autenticación de Firebase
@@ -175,6 +181,33 @@ export class OnboardingComponent {
       this.isConnectingGoogle = false;
       this.router.navigate([""]);
     }
+  }
+
+  async toggleNotificationPermission() {
+    if (this.isEnablingNotifications) return;
+    if (this.areNotificationsEnabled) return;
+    this.isEnablingNotifications = true;
+    if (!LocalNotifications) {
+      console.error("Error no LN:");
+      this.areNotificationsEnabled = false;
+      this.isEnablingNotifications = false;
+      return;
+    }
+    if (this.areNotificationsEnabled) {
+      console.error("Error no LN 2:");
+      await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
+      this.areNotificationsEnabled = false;
+      this.isEnablingNotifications = false;
+      return;
+    }
+    const permResult = await LocalNotifications.requestPermissions();
+    if (permResult.display === "granted") {
+      await this.configService.scheduleDailyNotificationByLang();
+      this.areNotificationsEnabled = true;
+    } else {
+      this.areNotificationsEnabled = false;
+    }
+    this.isEnablingNotifications = false;
   }
 
   async notifyToastSuccededLogin() {
