@@ -31,6 +31,7 @@ interface OnboardingSlide {
   title: string;
   description: string;
   background: string;
+  isAsset: boolean;
 }
 
 @Component({
@@ -62,6 +63,7 @@ export class OnboardingComponent {
         "Your personal space to record, analyze, and understand your dreams. Let's begin your journey of self-discovery.",
       background:
         "linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(173, 216, 230, 0.3) 100%)",
+      isAsset: true,
     },
     {
       icon: "assets/images/onboarding/onboarding_dreams.png",
@@ -73,6 +75,7 @@ export class OnboardingComponent {
         "All your dreams in one place. Easily add new dreams and revisit your past adventures anytime.",
       background:
         "linear-gradient(135deg, rgba(216, 191, 216, 0.3) 0%, rgba(230, 230, 250, 0.3) 100%)",
+      isAsset: true,
     },
     {
       icon: "assets/images/onboarding/onboarding_statistics.png",
@@ -84,6 +87,7 @@ export class OnboardingComponent {
         "Discover patterns in your dreams with our advanced statistics. Understand your sleep common themes, and emotional trends over time.",
       background:
         "linear-gradient(135deg, rgba(176, 224, 230, 0.3) 0%, rgba(152, 251, 152, 0.3) 100%)",
+      isAsset: true,
     },
     {
       icon: "notifications-outline",
@@ -92,6 +96,7 @@ export class OnboardingComponent {
         "Get gentle reminders to journal your dreams and unlock patterns in your sleep.",
       background:
         "linear-gradient(135deg, rgba(173, 216, 230, 0.3) 0%, rgba(135, 206, 235, 0.3) 100%)",
+      isAsset: false,
     },
     {
       icon: "cloud-upload-outline",
@@ -100,6 +105,7 @@ export class OnboardingComponent {
         "Securely back up your dream journal to the cloud. Never lose your precious insights and access them from any device.",
       background:
         "linear-gradient(135deg, rgba(173, 216, 230, 0.3) 0%, rgba(135, 206, 235, 0.3) 100%)",
+      isAsset: false,
     },
   ];
 
@@ -225,5 +231,9 @@ export class OnboardingComponent {
       key: this.ONBOARDING_DONE,
       value: "true",
     });
+  }
+
+  trackBySlide(index: number, slide: OnboardingSlide): string | number {
+    return slide.title; // or any unique property
   }
 }
