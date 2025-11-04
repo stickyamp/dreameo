@@ -115,16 +115,34 @@ export class CalendarComponent implements OnInit {
 
     const count = stars.length;
     this.dreamDayPoints = stars.map((s, idx) => {
-      const x =
-        marginX + ((width - marginX * 2) * idx) / Math.max(1, count - 1);
-      let y =
-        (minY + maxY) / 2 +
-        Math.sin((idx / Math.max(1, count)) * Math.PI * 2) * 20 +
-        (idx % 2 === 0 ? 8 : -7) +
-        ((s.day % 3) - 1) * 2.2;
+      // Crear grupos/clusters aleatorios para formar figuras más distintas
+      const groupSize = Math.max(2, Math.floor(count / 3)); // Dividir en grupos
+      const groupIndex = Math.floor(idx / groupSize);
+      const positionInGroup = idx % groupSize;
+      
+      // Centros de grupos distribuidos a lo largo del ancho
+      const groupCenterX = marginX + ((width - marginX * 2) * groupIndex) / Math.max(1, Math.ceil(count / groupSize) - 1);
+      const groupCenterY = minY + (maxY - minY) * (0.3 + Math.random() * 0.4); // Centros Y aleatorios
+      
+      // Posición dentro del grupo con patrones más orgánicos
+      const angle = (positionInGroup / groupSize) * Math.PI * 2 + Math.random() * 0.8; // Ángulo con variación
+      const radius = 15 + Math.random() * 25; // Radio variable para cada estrella
+      
+      // Aplicar transformaciones adicionales para mayor variabilidad
+      const spiralFactor = Math.sin(idx * 0.7) * 10; // Factor espiral
+      const clusterVariation = (Math.random() - 0.5) * 40; // Variación adicional del cluster
+      
+      let x = groupCenterX + Math.cos(angle) * radius + spiralFactor + clusterVariation * 0.5;
+      let y = groupCenterY + Math.sin(angle) * radius * 0.8 + clusterVariation; // Y más comprimido
+      
+      // Agregar ruido adicional para romper patrones perfectos
+      x += (Math.random() - 0.5) * 20;
+      y += (Math.random() - 0.5) * 15;
+      
       // Clamp para que nunca se corten
-      if (y < minY) y = minY;
-      if (y > maxY) y = maxY;
+      x = Math.max(marginX, Math.min(width - marginX, x));
+      y = Math.max(minY, Math.min(maxY, y));
+      
       return { x, y, date: s.date };
     });
     this.polylineString = this.dreamDayPoints
@@ -142,9 +160,9 @@ export class CalendarComponent implements OnInit {
     // Actualizar progreso del sistema de niveles basado en total de sueños
     this.updateRankProgress();
 
-    // Estrellas pequeñas de fondo: densidad alta proporcional al área del viewBox
-    const backgroundArea = width * height; // 42000
-    const numSmallStars = Math.round(backgroundArea / 80); // ~525
+    // Estrellas pequeñas de fondo: más densas y aleatorias como en la imagen de referencia
+    const backgroundArea = width * height;
+    const numSmallStars = Math.round(backgroundArea / 60); // Más estrellas (~700)
     const takenZones = this.dreamDayPoints.map((p) => ({ x: p.x, y: p.y }));
     this.bgStars = [];
     for (let i = 0; i < numSmallStars; i++) {
@@ -152,14 +170,14 @@ export class CalendarComponent implements OnInit {
       let ry = Math.random() * (maxY - minY) + minY;
       if (
         takenZones.some(
-          (z) => Math.abs(z.x - rx) < 10 && Math.abs(z.y - ry) < 10
+          (z) => Math.abs(z.x - rx) < 8 && Math.abs(z.y - ry) < 8
         )
       ) {
         i--;
         continue;
       }
-      // Puntos pequeños con ligera variación
-      const r = 0.25 + Math.random() * 0.9;
+      // Puntos más pequeños y variados para mayor realismo
+      const r = 0.15 + Math.random() * 0.6;
       this.bgStars.push({ x: rx, y: ry, r });
     }
   }

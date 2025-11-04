@@ -60,18 +60,18 @@
         class="dream-constellation-svg"
         preserveAspectRatio="xMidYMid meet"
       >
-        <!-- Partículas de fondo: mezcla de puntos y pequeñas cruz -->
+        <!-- Partículas de fondo: estrellas pequeñas más realistas -->
         <ng-container *ngFor="let s of bgStars; let idx = index">
-          <ng-container *ngIf="idx % 3 !== 0">
+          <ng-container *ngIf="idx % 4 !== 0">
             <circle
               [attr.cx]="s.x"
               [attr.cy]="s.y"
               [attr.r]="s.r"
-              fill="var(--color-accent-hover)"
-              fill-opacity="0.16"
+              fill="var(--color-text-secondary)"
+              fill-opacity="0.4"
             />
           </ng-container>
-          <ng-container *ngIf="idx % 3 === 0">
+          <ng-container *ngIf="idx % 4 === 0">
             <g
               [attr.transform]="
                 'translate(' +
@@ -79,16 +79,16 @@
                 ',' +
                 s.y +
                 ') scale(' +
-                (s.r / 2 + 0.6) +
+                (s.r / 3 + 0.3) +
                 ')'
               "
             >
               <path
-                d="M0,-2 L0,2 M-2,0 L2,0"
-                stroke="var(--color-active)"
-                stroke-width="0.7"
+                d="M0,-1.5 L0,1.5 M-1.5,0 L1.5,0"
+                stroke="var(--color-text-secondary)"
+                stroke-width="0.5"
                 stroke-linecap="round"
-                opacity="0.28"
+                opacity="0.5"
               />
             </g>
           </ng-container>
@@ -99,56 +99,40 @@
           [attr.points]="polylineString"
           style="
             fill: none;
-            stroke: var(--color-accent);
-            stroke-width: 1;
-            opacity: 0.8;
-            filter: url(#glow2);
+            stroke: var(--color-text-secondary);
+            stroke-width: 0.8;
+            opacity: 0.6;
+            stroke-dasharray: 2,3;
           "
         ></polyline>
         <!-- Estrellas de constelación (svg path nuevo) solo si hay sueños -->
         <ng-container *ngIf="dreamDayPoints.length > 0">
           <ng-container *ngFor="let pt of dreamDayPoints">
-            <!-- Centramos el path original (viewBox ~12800x11810) con translate(-6400,-5905) y lo reducimos con scale -->
+            <!-- Estrellas principales más pequeñas y discretas -->
             <g
               [attr.transform]="
                 'translate(' +
                 pt.x +
                 ',' +
                 pt.y +
-                ') scale(0.0011) translate(-6400,-5905)'
+                ') scale(0.0006) translate(-6400,-5905)'
               "
             >
               <path
                 d="M6327 11292 c-60 -180 -161 -489 -227 -687 -65 -198 -233 -709 -373 -1135 -141 -426 -367 -1114 -503 -1527 l-248 -753 -2358 0 c-1297 0 -2358 -3 -2358 -7 0 -5 170 -130 378 -279 207 -149 1057 -758 1887 -1353 831 -596 1518 -1091 1528 -1100 20 -19 55 94 -420 -1346 -187 -570 -344 -1047 -628 -1910 -141 -429 -286 -869 -322 -978 -36 -109 -63 -201 -60 -204 7 -6 -236 -180 1912 1362 1012 726 1855 1331 1872 1343 l33 23 762 -548 c2447 -1758 3053 -2191 3056 -2188 2 2 -46 153 -106 337 -61 183 -216 655 -346 1048 -511 1556 -712 2168 -811 2470 -145 440 -185 563 -185 575 0 6 855 623 1900 1373 1045 750 1900 1368 1900 1373 0 5 -909 10 -2357 11 l-2356 3 -164 500 c-90 275 -272 826 -403 1225 -131 399 -383 1166 -560 1705 -177 539 -325 983 -329 987 -4 5 -55 -139 -114 -320z"
                 fill="var(--color-accent)"
-                stroke="#ffffff"
-                stroke-width="9"
-                opacity="0.96"
-                filter="url(#glow)"
+                stroke="var(--color-text-primary)"
+                stroke-width="12"
+                opacity="0.9"
               />
             </g>
           </ng-container>
         </ng-container>
-        <defs>
-          <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="4" result="glow" />
-            <feMerge>
-              <feMergeNode in="glow" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <filter id="glow2" x="-50%" y="-50%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="1.5" result="glow2" />
-            <feMerge>
-              <feMergeNode in="glow2" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
+
       </svg>
-      <div *ngIf="dreamDayPoints.length === 0" class="constellation-empty-hint">
-        <span>{{ "CALENDAR.NO_DREAMS_THIS_MONTH" | translate }}</span>
-      </div>
+    </div>
+    <div *ngIf="dreamDayPoints.length === 0" class="constellation-empty-message">
+      <span>{{ "CALENDAR.NO_DREAMS_THIS_MONTH" | translate }}</span>
     </div>
   </div>
 
