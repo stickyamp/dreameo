@@ -7,13 +7,9 @@
   font-family: "Manrope", sans-serif;
   min-height: 100vh;
   padding: 0;
-<<<<<<< HEAD
-  padding-bottom: 3rem; /* Más espacio al final para scroll completo */
   overflow-y: auto;
   overflow-x: hidden;
-=======
   padding-bottom: 6rem; /* Espacio al final para scroll completo */
->>>>>>> b24f13e146a58191af832565f2699ea2830a1dd5
 }
 
 // Header Section
@@ -731,7 +727,7 @@ ion-fab-button {
   .calendar-container {
     padding-bottom: 4rem; /* Más espacio en móviles pequeños */
   }
-  
+
   .dream-map-container,
   .dream-progress-container {
     max-width: 95vw;
@@ -746,15 +742,15 @@ ion-fab-button {
   .dream-constellation-svg {
     height: 90px !important; /* Reducir altura del SVG */
   }
-  
+
   .calendar-section {
     padding: var(--spacing-xs);
   }
-  
+
   .calendar-days {
     gap: 2px; /* Reducir gap entre días del calendario */
   }
-  
+
   .calendar-day {
     width: 38px;
     height: 38px;
@@ -854,34 +850,34 @@ ion-fab-button {
   .calendar-container {
     padding-bottom: 5rem;
   }
-  
+
   .calendar-section {
     padding: var(--spacing-xxs);
   }
-  
+
   .dream-map-container,
   .dream-progress-container {
     max-width: 98vw;
     margin: 0 auto var(--spacing-xs) auto;
   }
-  
+
   .dream-progress-row {
     max-width: 98vw;
     gap: var(--spacing-xxxs);
     flex-direction: column;
   }
-  
+
   .progress-badge-card {
     width: 100%;
     min-width: unset;
     max-width: 120px;
     margin: 0 auto;
   }
-  
+
   .progress-main-card {
     width: 100%;
   }
-  
+
   .calendar-day {
     width: 32px;
     height: 32px;
@@ -891,16 +887,16 @@ ion-fab-button {
     max-height: 32px;
     margin: 1px auto;
   }
-  
+
   .day-number {
     font-size: 0.75rem;
   }
-  
+
   .month-nav-btn {
     width: 44px;
     height: 44px;
   }
-  
+
   .month-nav-btn::part(native) {
     width: 44px;
     height: 44px;

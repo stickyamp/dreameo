@@ -610,7 +610,7 @@ export class ProfileComponent implements OnInit {
       title: "🕐 Test Notification",
       body: "This is your test notification — it was scheduled 1 minute ago!",
       schedule: { at: triggerTime },
-      smallIcon: "push_icon",
+      smallIcon: "res://drawable/push_icon",
       extra: { test: true, scheduledAt: triggerTime.toISOString() },
     };
 
