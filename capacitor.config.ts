@@ -27,6 +27,17 @@ const config: CapacitorConfig = {
         "998030673719-ns2js6lqoaac12aicev3ser2v3n0m8lo.apps.googleusercontent.com",
       forceCodeForRefreshToken: true,
     },
+    PushNotifications: {
+      presentationOptions: ["badge", "sound"],
+    },
+    LocalNotifications: {
+      smallIcon: "push_icon", // ← Add this! No .png extension
+      iconColor: "#8c30a0ff", // ← Optional: your brand color
+    },
+  },
+  android: {
+    // This is important for Android 12+
+    allowMixedContent: true,
   },
 };
 

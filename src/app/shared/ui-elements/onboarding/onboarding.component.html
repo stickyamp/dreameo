@@ -9,7 +9,7 @@
     <swiper-slide *ngFor="let slide of onboardingSlides">
       <div class="slide-content">
         <!-- Icon Container -->
-        @if(!slide.icon.includes("assets")){
+        @if(!slide.isAsset){
         <div class="icon-container">
           <div class="icon-wrapper glowing-image">
             <ion-icon [name]="slide.icon"></ion-icon>
@@ -39,7 +39,11 @@
     <!-- Pagination Dots -->
     <div class="pagination-dots">
       <span
-        *ngFor="let slide of onboardingSlides; let i = index"
+        *ngFor="
+          let slide of onboardingSlides;
+          trackBy: trackBySlide;
+          let i = index
+        "
         class="dot"
         [class.active]="i === currentSlideIndex"
       >
@@ -59,9 +63,18 @@
       <button
         *ngIf="currentSlideIndex === onboardingSlides.length - 2"
         class="notifications-btn"
-        (click)="(1)"
+        (click)="toggleNotificationPermission()"
+        [ngClass]="{ isNotificationsDisabled: areNotificationsEnabled }"
       >
-        Activate notifications
+        @if(!isEnablingNotifications && !areNotificationsEnabled){ Activate
+        notifications } @if(!areNotificationsEnabled &&
+        isEnablingNotifications){
+        <ion-spinner name="crescent"></ion-spinner>
+
+        }@if(areNotificationsEnabled && !isEnablingNotifications){<ion-icon
+          name="checkmark-outline"
+        ></ion-icon>
+        Notifications activated }
       </button>
 
       <button

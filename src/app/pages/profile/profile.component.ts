@@ -568,39 +568,12 @@ export class ProfileComponent implements OnInit {
     }
     const permResult = await LocalNotifications.requestPermissions();
     if (permResult.display === "granted") {
-      await this.scheduleDailyNotificationByLang();
+      await this.configService.scheduleDailyNotificationByLang();
       this.notificationsEnabled = true;
     } else {
       this.notificationsEnabled = false;
     }
     this.notificationsLoading = false;
-  }
-
-  async scheduleDailyNotificationByLang() {
-    if (!LocalNotifications) return;
-    const lang = this.selectedLanguage;
-    let title = "";
-    let body = "";
-    if (lang === "es") {
-      title = "No olvides registrar tu sueño";
-      body = "¡Abre la app y escribe tu sueño de hoy! 💤";
-    } else {
-      title = "Don't forget to log your dream";
-      body = "Open the app and write down your dream! 💤";
-    }
-    await LocalNotifications.schedule({
-      notifications: [
-        {
-          id: 1,
-          title,
-          body,
-          schedule: { repeats: true, on: { hour: 10, minute: 0 } },
-          smallIcon: "ic_stat_iconconfig",
-          actionTypeId: "",
-          extra: null,
-        },
-      ],
-    });
   }
 
   async sendTestNotification() {
@@ -637,7 +610,7 @@ export class ProfileComponent implements OnInit {
       title: "🕐 Test Notification",
       body: "This is your test notification — it was scheduled 1 minute ago!",
       schedule: { at: triggerTime },
-      smallIcon: "ic_stat_iconconfig",
+      smallIcon: "push_icon",
       extra: { test: true, scheduledAt: triggerTime.toISOString() },
     };
 

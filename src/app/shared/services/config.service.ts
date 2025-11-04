@@ -1,11 +1,16 @@
 import { Injectable } from "@angular/core";
+import { LocalNotifications } from "@capacitor/local-notifications";
 import { Preferences } from "@capacitor/preferences";
 
 @Injectable({
   providedIn: "root",
 })
 export class ConfigService {
+  selectedLanguage: string = "en";
+
   constructor() {
+    const savedLang = localStorage.getItem("lang") || "en";
+    this.selectedLanguage = savedLang; // Sin traducción aquí: se hará en template
     setTimeout(async () => {
       if (await this.isDarkMode()) {
         console.log("manuXX aa");
@@ -42,5 +47,32 @@ export class ConfigService {
       result.value === undefined ||
       result.value === null
     );
+  }
+
+  public async scheduleDailyNotificationByLang() {
+    if (!LocalNotifications) return;
+    const lang = this.selectedLanguage;
+    let title = "";
+    let body = "";
+    if (lang === "es") {
+      title = "🌙 No olvides registrar tu sueño";
+      body = "¡Abre la app y escribe tu sueño de hoy! 💤";
+    } else {
+      title = "🌙 Don't forget to log your dream";
+      body = "Open the app and write down your dream! 💤";
+    }
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 1,
+          title,
+          body,
+          schedule: { repeats: true, on: { hour: 10, minute: 0 } },
+          smallIcon: "ic_stat_iconconfig",
+          actionTypeId: "",
+          extra: null,
+        },
+      ],
+    });
   }
 }

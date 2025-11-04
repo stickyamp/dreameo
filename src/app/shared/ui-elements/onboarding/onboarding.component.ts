@@ -17,6 +17,8 @@ import {
   ToastNotifierService,
 } from "../../services/toast-notifier";
 import { Preferences } from "@capacitor/preferences";
+import { LocalNotifications } from "@capacitor/local-notifications";
+import { ConfigService } from "../../services/config.service";
 
 // Register Swiper custom elements
 register();
@@ -29,6 +31,7 @@ interface OnboardingSlide {
   title: string;
   description: string;
   background: string;
+  isAsset: boolean;
 }
 
 @Component({
@@ -47,6 +50,7 @@ export class OnboardingComponent {
   private readonly router = inject(Router);
   private readonly firebaseAuthService = inject(FirebaseAuthService);
   private readonly toastNotifierService = inject(ToastNotifierService);
+  private readonly configService = inject(ConfigService);
   currentSlideIndex = 0;
 
   onboardingSlides: OnboardingSlide[] = [
@@ -59,28 +63,31 @@ export class OnboardingComponent {
         "Your personal space to record, analyze, and understand your dreams. Let's begin your journey of self-discovery.",
       background:
         "linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(173, 216, 230, 0.3) 100%)",
+      isAsset: true,
     },
     {
       icon: "assets/images/onboarding/onboarding_dreams.png",
-      width: 230,
-      height: 430,
+      width: 180,
+      height: 336,
       class: "onboarding-dreams glowing-image",
       title: "Your Dream Journal",
       description:
         "All your dreams in one place. Easily add new dreams and revisit your past adventures anytime.",
       background:
         "linear-gradient(135deg, rgba(216, 191, 216, 0.3) 0%, rgba(230, 230, 250, 0.3) 100%)",
+      isAsset: true,
     },
     {
       icon: "assets/images/onboarding/onboarding_statistics.png",
-      width: 230,
-      height: 430,
+      width: 180,
+      height: 336,
       class: "onboarding-dreams glowing-image",
       title: "Track Your Progress",
       description:
-        "Discover patterns in your dreams with our advanced statistics. Understand your sleep quality, common themes, and emotional trends over time.",
+        "Discover patterns in your dreams with our advanced statistics. Understand your sleep common themes, and emotional trends over time.",
       background:
         "linear-gradient(135deg, rgba(176, 224, 230, 0.3) 0%, rgba(152, 251, 152, 0.3) 100%)",
+      isAsset: true,
     },
     {
       icon: "notifications-outline",
@@ -89,6 +96,7 @@ export class OnboardingComponent {
         "Get gentle reminders to journal your dreams and unlock patterns in your sleep.",
       background:
         "linear-gradient(135deg, rgba(173, 216, 230, 0.3) 0%, rgba(135, 206, 235, 0.3) 100%)",
+      isAsset: false,
     },
     {
       icon: "cloud-upload-outline",
@@ -97,11 +105,15 @@ export class OnboardingComponent {
         "Securely back up your dream journal to the cloud. Never lose your precious insights and access them from any device.",
       background:
         "linear-gradient(135deg, rgba(173, 216, 230, 0.3) 0%, rgba(135, 206, 235, 0.3) 100%)",
+      isAsset: false,
     },
   ];
 
   isUserLoggedIn = false;
   isConnectingGoogle = false;
+
+  areNotificationsEnabled = false;
+  isEnablingNotifications = false;
 
   ngOnInit() {
     // Suscribirse a cambios en el estado de autenticación de Firebase
@@ -177,6 +189,33 @@ export class OnboardingComponent {
     }
   }
 
+  async toggleNotificationPermission() {
+    if (this.isEnablingNotifications) return;
+    if (this.areNotificationsEnabled) return;
+    this.isEnablingNotifications = true;
+    if (!LocalNotifications) {
+      console.error("Error no LN:");
+      this.areNotificationsEnabled = false;
+      this.isEnablingNotifications = false;
+      return;
+    }
+    if (this.areNotificationsEnabled) {
+      console.error("Error no LN 2:");
+      await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
+      this.areNotificationsEnabled = false;
+      this.isEnablingNotifications = false;
+      return;
+    }
+    const permResult = await LocalNotifications.requestPermissions();
+    if (permResult.display === "granted") {
+      await this.configService.scheduleDailyNotificationByLang();
+      this.areNotificationsEnabled = true;
+    } else {
+      this.areNotificationsEnabled = false;
+    }
+    this.isEnablingNotifications = false;
+  }
+
   async notifyToastSuccededLogin() {
     const confirmation = await this.toastNotifierService.presentToast(
       "All set up, ready to go",
@@ -192,5 +231,9 @@ export class OnboardingComponent {
       key: this.ONBOARDING_DONE,
       value: "true",
     });
+  }
+
+  trackBySlide(index: number, slide: OnboardingSlide): string | number {
+    return slide.title; // or any unique property
   }
 }
