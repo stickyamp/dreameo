@@ -169,63 +169,56 @@ export class CalendarComponent implements OnInit {
     const allDreams = this.dreamService.getAllDreams();
     this.currentDreamsCount = allDreams.length;
 
-    // Definir niveles con más opciones: Rookie (0-4), Beginner (5-9), Novice (10-14),
-    // Intermediate (15-19), Advanced (20-29), Expert (30-39), Master (40+)
+    // Definir niveles con rangos más amplios: Rookie (0-19), Novice (20-49), Intermediate (50-99),
+    // Advanced (100-199), Expert (200-399), Master (400+)
     let currentRank: string;
     let nextRank: string;
     let dreamsNeeded: number;
     let progressInCurrentLevel: number;
     let rankStart: number;
 
-    if (this.currentDreamsCount < 5) {
-      // Rookie: 0-4 sueños, necesita 5 para Beginner
+    if (this.currentDreamsCount < 20) {
+      // Rookie: 0-19 sueños, necesita 20 para Novice
       currentRank = "CALENDAR.RANK_ROOKIE";
-      nextRank = "CALENDAR.RANK_BEGINNER";
-      dreamsNeeded = 5;
+      nextRank = "CALENDAR.RANK_NOVICE";
+      dreamsNeeded = 20;
       rankStart = 0;
       progressInCurrentLevel = this.currentDreamsCount;
-    } else if (this.currentDreamsCount < 10) {
-      // Beginner: 5-9 sueños, necesita 10 para Novice
-      currentRank = "CALENDAR.RANK_BEGINNER";
-      nextRank = "CALENDAR.RANK_NOVICE";
-      dreamsNeeded = 10;
-      rankStart = 5;
-      progressInCurrentLevel = this.currentDreamsCount - 5;
-    } else if (this.currentDreamsCount < 15) {
-      // Novice: 10-14 sueños, necesita 15 para Intermediate
+    } else if (this.currentDreamsCount < 50) {
+      // Novice: 20-49 sueños, necesita 50 para Intermediate
       currentRank = "CALENDAR.RANK_NOVICE";
       nextRank = "CALENDAR.RANK_INTERMEDIATE";
-      dreamsNeeded = 15;
-      rankStart = 10;
-      progressInCurrentLevel = this.currentDreamsCount - 10;
-    } else if (this.currentDreamsCount < 20) {
-      // Intermediate: 15-19 sueños, necesita 20 para Advanced
-      currentRank = "CALENDAR.RANK_INTERMEDIATE";
-      nextRank = "CALENDAR.RANK_ADVANCED";
-      dreamsNeeded = 20;
-      rankStart = 15;
-      progressInCurrentLevel = this.currentDreamsCount - 15;
-    } else if (this.currentDreamsCount < 30) {
-      // Advanced: 20-29 sueños, necesita 30 para Expert
-      currentRank = "CALENDAR.RANK_ADVANCED";
-      nextRank = "CALENDAR.RANK_EXPERT";
-      dreamsNeeded = 30;
+      dreamsNeeded = 50;
       rankStart = 20;
       progressInCurrentLevel = this.currentDreamsCount - 20;
-    } else if (this.currentDreamsCount < 40) {
-      // Expert: 30-39 sueños, necesita 40 para Master
+    } else if (this.currentDreamsCount < 100) {
+      // Intermediate: 50-99 sueños, necesita 100 para Advanced
+      currentRank = "CALENDAR.RANK_INTERMEDIATE";
+      nextRank = "CALENDAR.RANK_ADVANCED";
+      dreamsNeeded = 100;
+      rankStart = 50;
+      progressInCurrentLevel = this.currentDreamsCount - 50;
+    } else if (this.currentDreamsCount < 200) {
+      // Advanced: 100-199 sueños, necesita 200 para Expert
+      currentRank = "CALENDAR.RANK_ADVANCED";
+      nextRank = "CALENDAR.RANK_EXPERT";
+      dreamsNeeded = 200;
+      rankStart = 100;
+      progressInCurrentLevel = this.currentDreamsCount - 100;
+    } else if (this.currentDreamsCount < 400) {
+      // Expert: 200-399 sueños, necesita 400 para Master
       currentRank = "CALENDAR.RANK_EXPERT";
       nextRank = "CALENDAR.RANK_MASTER";
-      dreamsNeeded = 40;
-      rankStart = 30;
-      progressInCurrentLevel = this.currentDreamsCount - 30;
+      dreamsNeeded = 400;
+      rankStart = 200;
+      progressInCurrentLevel = this.currentDreamsCount - 200;
     } else {
-      // Master: 40+ sueños, es el nivel máximo
+      // Master: 400+ sueños, es el nivel máximo
       currentRank = "CALENDAR.RANK_MASTER";
       nextRank = "CALENDAR.RANK_MASTER"; // No hay siguiente nivel
-      dreamsNeeded = 40; // Mantener el umbral para el cálculo
-      rankStart = 40;
-      progressInCurrentLevel = Math.min(this.currentDreamsCount - 40, 10); // Límite para mostrar progreso
+      dreamsNeeded = 400; // Mantener el umbral para el cálculo
+      rankStart = 400;
+      progressInCurrentLevel = Math.min(this.currentDreamsCount - 400, 100); // Límite para mostrar progreso
     }
 
     this.currentRankName = currentRank;
