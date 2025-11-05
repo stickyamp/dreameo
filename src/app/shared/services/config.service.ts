@@ -68,7 +68,7 @@ export class ConfigService {
           title,
           body,
           schedule: { repeats: true, on: { hour: 10, minute: 0 } },
-          smallIcon: "ic_stat_iconconfig",
+          smallIcon: "@drawable/ic_stat_notification",
           actionTypeId: "",
           extra: null,
         },
