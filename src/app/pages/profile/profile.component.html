@@ -86,12 +86,18 @@
           "PROFILE.CLOSE_SESSION" | translate
         }}</ion-label>
       </ion-item>
-      }
 
       <ion-item button (click)="loadBackUp()" lines="none">
-        <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
-        <ion-label color="danger"> Load backup dreams </ion-label>
+        <ion-icon
+          name="cloud-download-outline"
+          slot="start"
+          color="danger"
+        ></ion-icon>
+        <ion-label color="danger">
+          {{ "PROFILE.LOAD_BACKUP" | translate }}
+        </ion-label>
       </ion-item>
+      }
 
       <!-- Clean Data -->
       <ion-item button (click)="cleanData()" lines="none">
@@ -100,6 +106,8 @@
           "PROFILE.CLEAN_DATA" | translate
         }}</ion-label>
       </ion-item>
+
+      @if(showDebugTools){
 
       <ion-item button (click)="goToDebug()" lines="none">
         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
@@ -125,6 +133,16 @@
         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
         <ion-label color="danger"> Send notification test </ion-label>
       </ion-item>
+      }
     </ion-list>
+
+    <div class="app-info-section">
+      <img
+        src="assets/images/onboarding/icon_no_bg.png"
+        width="100"
+        height="96"
+      />
+      <span class="app-version">1.0.0</span>
+    </div>
   </div>
 </ion-content>

@@ -108,6 +108,7 @@
     "DARK_MODE": "Modo oscuro",
     "CLOSE_SESSION": "Cerrar sesión",
     "CLEAN_DATA": "Limpiar datos",
+    "LOAD_BACKUP": "Importar datos de la nube",
     "ENGLISH": "Inglés",
     "SPANISH": "Español",
     "CANCEL": "Cancelar",
@@ -193,5 +194,20 @@
         "DESCRIPTION_DAY": "Comienza registrando tu primer sueño para este mes. Toca el botón '+' para añadir un sueño."
       }
     }
+  },
+  "BACKUP": {
+    "LOADED": {
+      "TITLE": "Copia de seguridad cargada",
+      "MESSAGE": "Tu copia de seguridad se ha cargado correctamente."
+    }
+  },
+
+  "CLEAN_DATA": {
+    "HEADER": "Limpiar Datos",
+    "MESSAGE": "Esto eliminará todos los datos locales incluyendo sueños, configuraciones y preferencias. ¿Estás seguro?",
+    "CANCEL": "Cancelar",
+    "CONFIRM": "Limpiar",
+    "SUCCESS_HEADER": "Éxito",
+    "SUCCESS_MESSAGE": "Todos los datos locales han sido eliminados exitosamente."
   }
 }

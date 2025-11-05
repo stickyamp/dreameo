@@ -108,6 +108,7 @@
     "DARK_MODE": "Dark Mode",
     "CLOSE_SESSION": "Close Session",
     "CLEAN_DATA": "Clean Data",
+    "LOAD_BACKUP": "Import data from cloud",
     "ENGLISH": "English",
     "SPANISH": "Spanish",
     "CANCEL": "Cancel",
@@ -193,5 +194,19 @@
         "DESCRIPTION_DAY": "Start recording your dreams for this day. Tap the '+' button to add a dream."
       }
     }
+  },
+  "BACKUP": {
+    "LOADED": {
+      "TITLE": "Backup Loaded",
+      "MESSAGE": "Your backup has been successfully loaded."
+    }
+  },
+  "CLEAN_DATA": {
+    "HEADER": "Clean Data",
+    "MESSAGE": "This will remove all local data including dreams, settings, and preferences. Are you sure?",
+    "CANCEL": "Cancel",
+    "CONFIRM": "Clean",
+    "SUCCESS_HEADER": "Success",
+    "SUCCESS_MESSAGE": "All local data has been cleared successfully."
   }
 }

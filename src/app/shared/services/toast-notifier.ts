@@ -1,6 +1,6 @@
-import { Component, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
-import { IonButton, ToastController } from "@ionic/angular/standalone";
+import { ToastController } from "@ionic/angular/standalone";
 
 export enum ToastLevelEnum {
   INFO,

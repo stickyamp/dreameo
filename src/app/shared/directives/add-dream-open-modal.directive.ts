@@ -1,34 +1,36 @@
-import { Directive, HostListener, Input, inject } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { AddDreamComponent } from 'src/app/pages/add-dream/add-dream.component';
-import { ConfigService } from '../services/config.service';
+import { Directive, inject } from "@angular/core";
+import { ModalController } from "@ionic/angular";
+import { AddDreamComponent } from "src/app/pages/add-dream/add-dream.component";
+import { ConfigService } from "../services/config.service";
 
 @Directive({
-  selector: '[appShowDreamsList]',
+  selector: "[appShowDreamsList]",
   standalone: true,
-  exportAs: 'appShowDreamsList'
+  exportAs: "appShowDreamsList",
 })
 export class ShowDreamsListDirective {
   private modalController = inject(ModalController);
 
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
 
   public async goToDayDreamList(date: string) {
     if (!date) {
-      console.warn('⚠️ No date provided to appShowDreamsList directive.');
+      console.warn("⚠️ No date provided to appShowDreamsList directive.");
       return;
     }
-    console.log(date, 'aaa');
+    console.log(date, "aaa");
 
     // Dynamically import DreamListComponent to avoid circular dependency
-    const { DreamListComponent } = await import('src/app/pages/dream-list/dream-list.component');
+    const { DreamListComponent } = await import(
+      "src/app/pages/dream-list/dream-list.component"
+    );
 
     const modal = await this.modalController.create({
       component: DreamListComponent,
       componentProps: {
-        selectedDate: date
+        selectedDate: date,
       },
-      presentingElement: await this.modalController.getTop()
+      presentingElement: await this.modalController.getTop(),
     });
 
     await modal.present();
@@ -37,10 +39,12 @@ export class ShowDreamsListDirective {
   public async addDream(selectedDate: string) {
     const modal = await this.modalController.create({
       component: AddDreamComponent,
-      cssClass: await this.configService.isDarkMode() ? 'ion-palette-dark' : 'ion-palette-light',
+      cssClass: (await this.configService.isDarkMode())
+        ? "ion-palette-dark"
+        : "ion-palette-light",
       componentProps: {
-        selectedDate: selectedDate
-      }
+        selectedDate: selectedDate,
+      },
     });
 
     // modal.onDidDismiss().then((result) => {

@@ -7,11 +7,8 @@
   font-family: "Manrope", sans-serif;
   min-height: 100vh;
   padding: 0;
-<<<<<<< HEAD
-=======
   overflow-y: auto;
   overflow-x: hidden;
->>>>>>> fb3343381ddbc6f974d301908b79421283fb7328
   padding-bottom: 6rem; /* Espacio al final para scroll completo */
 }
 
@@ -921,9 +918,9 @@ html.ion-palette-light {
 
   .dream-constellation-background {
     background: linear-gradient(
-      135deg, 
-      #f0f2f5 0%, 
-      #e8eaf0 50%, 
+      135deg,
+      #f0f2f5 0%,
+      #e8eaf0 50%,
       #f4f6f8 100%
     ) !important;
   }
@@ -1029,4 +1026,3 @@ html.ion-palette-light {
     color: var(--color-text-secondary);
   }
 }
-

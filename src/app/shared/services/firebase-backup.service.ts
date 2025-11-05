@@ -1,27 +1,11 @@
 import { Injectable } from "@angular/core";
-import {
-  Firestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  orderBy,
-  Timestamp,
-  writeBatch,
-} from "@angular/fire/firestore";
-import { BehaviorSubject, Observable, from, throwError } from "rxjs";
-import { map, catchError, switchMap } from "rxjs/operators";
+import { Firestore, doc, setDoc, getDoc } from "@angular/fire/firestore";
+import { BehaviorSubject } from "rxjs";
 import { FirebaseAuthService, UserProfile } from "./firebase-auth.service";
 import { CrashlyticsService } from "./crashlytics.service";
 import { LoggerService } from "./log.service";
-import { getApp } from "firebase/app";
-import { addDoc, arrayUnion, getFirestore } from "firebase/firestore";
 import { Dream, TagModel } from "@/app/models/dream.model";
+import { EncryptService } from "./encrypt.service";
 
 export interface BackupItem<T = any> {
   id: string;
@@ -55,7 +39,8 @@ export class FirebaseBackupService {
     private firestore: Firestore,
     private authService: FirebaseAuthService,
     private crashlytics: CrashlyticsService,
-    private logService: LoggerService
+    private logService: LoggerService,
+    private encryptService: EncryptService
   ) {
     this.initializeService();
   }
@@ -66,15 +51,6 @@ export class FirebaseBackupService {
       this.currentUser = user;
       if (user) {
         this.logService.log(`Backup service initialized for user: ${user.uid}`);
-        // Automatically load backups when user logs in
-        // this.loadAllBackups().subscribe({
-        //   next: (items) => {
-        //     this.logService.log(`Loaded ${items.length} backup items`);
-        //   },
-        //   error: (error) => {
-        //     this.logService.log(`Error loading backups: ${error.message}`);
-        //   },
-        // });
       } else {
         // Clear backups when user logs out
         this.backupItemsSubject.next([]);
@@ -134,35 +110,55 @@ export class FirebaseBackupService {
   async saveAllDreams(dreams: Dream[]) {
     try {
       if (!this.currentUser?.uid) return;
-      const ref = doc(this.firestore, "dreams", this.currentUser?.uid);
+
+      const encryptedDreams = dreams.map((d) => ({
+        ...d,
+        title: this.encryptService.encrypt(
+          d.title,
+          this.currentUser?.uid ?? ""
+        ),
+        description: this.encryptService.encrypt(
+          d.description ?? "",
+          this.currentUser?.uid ?? ""
+        ),
+      }));
+
+      const ref = doc(this.firestore, "dreams", this.currentUser.uid);
       await setDoc(
         ref,
-        { dreams: this.removeUndefined(dreams) },
+        { dreams: this.removeUndefined(encryptedDreams) },
         { merge: true }
-      ); // overwrites the whole array
+      );
     } catch (err) {
       console.error(err);
     }
   }
 
   async getAllDreams(): Promise<Dream[]> {
-    console.log("loading dreams currentUser", this.currentUser);
     try {
       if (!this.currentUser?.uid) return [];
 
       const ref = doc(this.firestore, "dreams", this.currentUser.uid);
-      console.log("loading dreams backup for user uid", this.currentUser.uid);
-
       const snapshot = await getDoc(ref);
 
       if (snapshot.exists()) {
         const data = snapshot.data();
-        console.log("manuXX Dreaaaaaaaams loaded backup", data);
-        return data["dreams"] || [];
-      } else {
-        console.log("No dreams found for this user.");
-        return [];
+        const dreams = data["dreams"] || [];
+
+        return dreams.map((d: Dream) => ({
+          ...d,
+          title: this.encryptService.decrypt(
+            d.title,
+            this.currentUser?.uid ?? ""
+          ),
+          description: this.encryptService.decrypt(
+            d.description ?? "",
+            this.currentUser?.uid ?? ""
+          ),
+        }));
       }
+
+      return [];
     } catch (err) {
       console.error("Error fetching dreams:", err);
       return [];

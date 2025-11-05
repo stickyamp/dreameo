@@ -10,24 +10,15 @@ import {
   signInWithCredential,
   signInWithPopup,
 } from "@angular/fire/auth";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { Router } from "@angular/router";
 import { Preferences } from "@capacitor/preferences";
-import {
-  Authentication,
-  GoogleAuth,
-} from "@codetrix-studio/capacitor-google-auth";
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { googleAuthConfig } from "../../../environments/google-auth.config";
 import { Capacitor } from "@capacitor/core";
 import { CrashlyticsService } from "./crashlytics.service";
 import { LoggerService } from "./log.service";
-import {
-  Firestore,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-} from "@angular/fire/firestore";
+import { Firestore } from "@angular/fire/firestore";
 
 export interface UserProfile {
   uid: string;

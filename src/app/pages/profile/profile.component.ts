@@ -15,12 +15,13 @@ import { Preferences } from "@capacitor/preferences";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { FormsModule } from "@angular/forms";
 import { LoggerService } from "@/app/shared/services/log.service";
-import { FirebaseBackupService } from "@/app/shared/services/firebase-backup-2.service";
+import { FirebaseBackupService } from "@/app/shared/services/firebase-backup.service";
 import {
   ToastLevelEnum,
   ToastNotifierService,
 } from "@/app/shared/services/toast-notifier";
 import { LocalNotifications } from "@capacitor/local-notifications";
+import { APP_CONSTANTS } from "@/app/app.constants";
 
 interface User {
   name: string;
@@ -142,6 +143,8 @@ export class ProfileComponent implements OnInit {
   notificationsEnabled: boolean = false;
   notificationsLoading: boolean = false;
 
+  showDebugTools: boolean = false;
+
   constructor(
     private router: Router,
     private alertController: AlertController,
@@ -155,7 +158,9 @@ export class ProfileComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private logService: LoggerService,
     private toastNotifierService: ToastNotifierService
-  ) {}
+  ) {
+    this.showDebugTools = APP_CONSTANTS.IS_DEBUG;
+  }
 
   async ngOnInit() {
     this.darkMode = await this.configService.isDarkMode();
@@ -194,9 +199,10 @@ export class ProfileComponent implements OnInit {
             email: basicUser.email,
             avatar: "",
           };
-          this.isUserLogged = true;
+          this.isUserLogged = false;
           this.isGoogleUserLogged = false;
         } else {
+          this.isUserLogged = false;
           this.isGoogleUserLogged = false;
         }
         console.log(
@@ -211,10 +217,6 @@ export class ProfileComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(["/home"]);
-  }
-
-  navigateToLanguage(): void {
-    this.router.navigate(["/language-selection"]);
   }
 
   toggleDarkMode(event: any): void {
@@ -244,11 +246,6 @@ export class ProfileComponent implements OnInit {
     });
 
     await popover.present();
-  }
-
-  changeLang(event: any): void {
-    const lang = event.detail ? event.detail.value : event;
-    this.setLanguage(lang);
   }
 
   setLanguage(lang: string): void {
@@ -345,17 +342,16 @@ export class ProfileComponent implements OnInit {
 
   async cleanData(): Promise<void> {
     const alert = await this.alertController.create({
-      header: "Clean Data",
-      message:
-        "This will remove all local data including dreams, settings, and preferences. Are you sure?",
+      header: this.translate.instant("CLEAN_DATA.HEADER"),
+      message: this.translate.instant("CLEAN_DATA.MESSAGE"),
       buttons: [
         {
-          text: "Cancel",
+          text: this.translate.instant("CLEAN_DATA.CANCEL"),
           role: "cancel",
           cssClass: "secondary",
         },
         {
-          text: "Clean",
+          text: this.translate.instant("CLEAN_DATA.CONFIRM"),
           cssClass: "danger",
           handler: async () => {
             await this.performCleanData();
@@ -382,6 +378,7 @@ export class ProfileComponent implements OnInit {
         await this.authService.logout();
       }
 
+      this.isUserLogged = false;
       // Navegar a login
     } catch (error) {
       console.error("Error during logout:", error);
@@ -410,8 +407,8 @@ export class ProfileComponent implements OnInit {
 
       // Show success message
       const successAlert = await this.alertController.create({
-        header: "Success",
-        message: "All local data has been cleared successfully.",
+        header: this.translate.instant("CLEAN_DATA.SUCCESS_HEADER"),
+        message: this.translate.instant("CLEAN_DATA.SUCCESS_MESSAGE"),
         buttons: ["OK"],
       });
       await successAlert.present();
@@ -455,26 +452,23 @@ export class ProfileComponent implements OnInit {
     await alert.present();
   }
 
-  private async showSuccessAlert(
-    header: string,
-    message: string
-  ): Promise<void> {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ["OK"],
-      cssClass: "success-alert",
-    });
-    await alert.present();
-  }
-
   async loadBackUp() {
-    const backedUpDreams = await this.firebaseBackupService.getAllDreams();
-    const backedUpTags = await this.firebaseBackupService.getAllTags();
-    console.log("manuXX assassa", backedUpTags);
-    console.log("manuXX ddddsdsassassa", backedUpDreams);
-    this.dreamService.setAllDreamsOverwrite(backedUpDreams);
-    this.dreamService.setAllTagsOverwrite(backedUpTags);
+    try {
+      const backedUpDreams = await this.firebaseBackupService.getAllDreams();
+      const backedUpTags = await this.firebaseBackupService.getAllTags();
+      console.log("manuXX assassa", backedUpTags);
+      console.log("manuXX ddddsdsassassa", backedUpDreams);
+      this.dreamService.setAllDreamsOverwrite(backedUpDreams);
+      this.dreamService.setAllTagsOverwrite(backedUpTags);
+
+      const alert = await this.alertController.create({
+        header: this.translate.instant("BACKUP.LOADED.TITLE"),
+        message: this.translate.instant("BACKUP.LOADED.MESSAGE"),
+        buttons: ["OK"],
+        cssClass: "success-alert",
+      });
+      await alert.present();
+    } catch (err) {}
   }
 
   goToDebug() {

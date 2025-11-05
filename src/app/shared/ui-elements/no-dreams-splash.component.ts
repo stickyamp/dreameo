@@ -4,18 +4,11 @@ import { IonicModule } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { TranslateDirective, TranslatePipe } from "@ngx-translate/core";
 import { HttpClientModule } from "@angular/common/http";
-import { LoggerService } from "../services/log.service";
 
 @Component({
   selector: "app-no-dreams",
   standalone: true,
-  imports: [
-    IonicModule,
-    CommonModule,
-    HttpClientModule,
-    TranslatePipe,
-    TranslateDirective,
-  ],
+  imports: [IonicModule, CommonModule, HttpClientModule, TranslatePipe],
   templateUrl: "./no-dreams-splash.component.html",
   styleUrls: ["./no-dreams-splash.component.scss"],
 })

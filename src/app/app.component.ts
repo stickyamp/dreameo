@@ -2,16 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router, RouterOutlet } from "@angular/router";
 import { AlertController, IonicModule, Platform } from "@ionic/angular";
-// import { StatusBar, Style } from '@capacitor/status-bar';
-// import { SplashScreen } from '@capacitor/splash-screen';
 import { DreamService } from "./shared/services/dreams/dream.base.service";
-import { ConfigService } from "./shared/services/config.service";
 import { provideDreamService } from "./shared/services/providers";
 import { VersionService } from "./shared/services/version-checker.service";
 import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
-import { filter, firstValueFrom, of } from "rxjs";
-import { FirebaseBackupService } from "./shared/services/firebase-backup-2.service";
+import { FirebaseBackupService } from "./shared/services/firebase-backup.service";
 import { Preferences } from "@capacitor/preferences";
 
 @Component({
@@ -40,7 +36,6 @@ export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
     private dreamService: DreamService,
-    private configService: ConfigService,
     private versionService: VersionService,
     private alertController: AlertController,
     private firebaseBackupService: FirebaseBackupService,

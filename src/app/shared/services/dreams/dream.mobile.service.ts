@@ -16,7 +16,7 @@ import {
 } from "@capacitor-community/sqlite";
 import { DreamService } from "./dream.base.service";
 import { LoggerService } from "../log.service";
-import { FirebaseBackupService } from "../firebase-backup-2.service";
+import { FirebaseBackupService } from "../firebase-backup.service";
 
 @Injectable()
 export class DreamMobileService extends DreamService {
