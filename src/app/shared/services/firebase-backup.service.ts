@@ -1,26 +1,9 @@
 import { Injectable } from "@angular/core";
-import {
-  Firestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  orderBy,
-  Timestamp,
-  writeBatch,
-} from "@angular/fire/firestore";
-import { BehaviorSubject, Observable, from, throwError } from "rxjs";
-import { map, catchError, switchMap } from "rxjs/operators";
+import { Firestore, doc, setDoc, getDoc } from "@angular/fire/firestore";
+import { BehaviorSubject } from "rxjs";
 import { FirebaseAuthService, UserProfile } from "./firebase-auth.service";
 import { CrashlyticsService } from "./crashlytics.service";
 import { LoggerService } from "./log.service";
-import { getApp } from "firebase/app";
-import { addDoc, arrayUnion, getFirestore } from "firebase/firestore";
 import { Dream, TagModel } from "@/app/models/dream.model";
 import { EncryptService } from "./encrypt.service";
 
@@ -68,15 +51,6 @@ export class FirebaseBackupService {
       this.currentUser = user;
       if (user) {
         this.logService.log(`Backup service initialized for user: ${user.uid}`);
-        // Automatically load backups when user logs in
-        // this.loadAllBackups().subscribe({
-        //   next: (items) => {
-        //     this.logService.log(`Loaded ${items.length} backup items`);
-        //   },
-        //   error: (error) => {
-        //     this.logService.log(`Error loading backups: ${error.message}`);
-        //   },
-        // });
       } else {
         // Clear backups when user logs out
         this.backupItemsSubject.next([]);

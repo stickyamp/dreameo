@@ -108,6 +108,7 @@
     "DARK_MODE": "Dark Mode",
     "CLOSE_SESSION": "Close Session",
     "CLEAN_DATA": "Clean Data",
+    "LOAD_BACKUP": "Import data from cloud",
     "ENGLISH": "English",
     "SPANISH": "Spanish",
     "CANCEL": "Cancel",
