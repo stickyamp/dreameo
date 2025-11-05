@@ -7,9 +7,7 @@ import {
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule, ModalController, NavController } from "@ionic/angular";
-import { Dream } from "../../../models/dream.model";
 import { AddDreamComponent } from "../../add-dream/add-dream.component";
-import { DreamListComponent } from "../../dream-list/dream-list.component";
 import { ShowDreamsListDirective } from "src/app/shared/directives/add-dream-open-modal.directive";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { ConfigService } from "@/app/shared/services/config.service";
@@ -47,7 +45,7 @@ export class CalendarComponent implements OnInit {
   filledDays: number = 0;
   totalMonthDays: number = 0;
   userRankLabel: string = "CALENDAR.RANK_ROOKIE"; // placeholder
-  bgStars: { x: number; y: number; r: number }[] = [];
+  bgStars: { x: number; y: number; r: number; sparkleOffsetX: number; sparkleOffsetY: number }[] = [];
 
   // Variables para el sistema de progreso por niveles
   currentRankName: string = "CALENDAR.RANK_ROOKIE";
@@ -104,42 +102,33 @@ export class CalendarComponent implements OnInit {
         daysWithDream.add(d);
       }
     }
-    // Área de dibujo del SVG (coincide con el viewBox 0 0 350 120)
+    // Área de dibujo del SVG (coincide con el viewBox 0 0 350 130)
     const width = 350;
-    const height = 120;
-    const marginX = 8;
-    const marginTop = 10; // margen superior mínimo para no cortar
-    const marginBottom = 10;
+    const height = 130;
+    const marginX = 20;
+    const marginTop = 15; // margen superior mínimo para no cortar
+    const marginBottom = 15;
     const minY = marginTop;
     const maxY = height - marginBottom;
 
     const count = stars.length;
     this.dreamDayPoints = stars.map((s, idx) => {
-      // Crear grupos/clusters aleatorios para formar figuras más distintas
-      const groupSize = Math.max(2, Math.floor(count / 3)); // Dividir en grupos
-      const groupIndex = Math.floor(idx / groupSize);
-      const positionInGroup = idx % groupSize;
+      // Distribución simple y orgánica como en la imagen de referencia
+      const progress = idx / Math.max(1, count - 1);
       
-      // Centros de grupos distribuidos a lo largo del ancho
-      const groupCenterX = marginX + ((width - marginX * 2) * groupIndex) / Math.max(1, Math.ceil(count / groupSize) - 1);
-      const groupCenterY = minY + (maxY - minY) * (0.3 + Math.random() * 0.4); // Centros Y aleatorios
+      // Posición base a lo largo del ancho
+      let x = marginX + (width - marginX * 2) * progress;
       
-      // Posición dentro del grupo con patrones más orgánicos
-      const angle = (positionInGroup / groupSize) * Math.PI * 2 + Math.random() * 0.8; // Ángulo con variación
-      const radius = 15 + Math.random() * 25; // Radio variable para cada estrella
+      // Altura variable con tendencia hacia el centro
+      const centerY = (minY + maxY) / 2;
+      const amplitude = (maxY - minY) * 0.3;
+      let y = centerY + Math.sin(progress * Math.PI * 2) * amplitude * (Math.random() - 0.5);
       
-      // Aplicar transformaciones adicionales para mayor variabilidad
-      const spiralFactor = Math.sin(idx * 0.7) * 10; // Factor espiral
-      const clusterVariation = (Math.random() - 0.5) * 40; // Variación adicional del cluster
+      // Agregar variación natural
+      x += (Math.random() - 0.5) * 30;
+      y += (Math.random() - 0.5) * 20;
       
-      let x = groupCenterX + Math.cos(angle) * radius + spiralFactor + clusterVariation * 0.5;
-      let y = groupCenterY + Math.sin(angle) * radius * 0.8 + clusterVariation; // Y más comprimido
-      
-      // Agregar ruido adicional para romper patrones perfectos
-      x += (Math.random() - 0.5) * 20;
-      y += (Math.random() - 0.5) * 15;
-      
-      // Clamp para que nunca se corten
+      // Clamp para mantener dentro del área
       x = Math.max(marginX, Math.min(width - marginX, x));
       y = Math.max(minY, Math.min(maxY, y));
       
@@ -160,25 +149,30 @@ export class CalendarComponent implements OnInit {
     // Actualizar progreso del sistema de niveles basado en total de sueños
     this.updateRankProgress();
 
-    // Estrellas pequeñas de fondo: más densas y aleatorias como en la imagen de referencia
-    const backgroundArea = width * height;
-    const numSmallStars = Math.round(backgroundArea / 60); // Más estrellas (~700)
+    // Estrellas pequeñas de fondo distribuidas aleatoriamente
+    const numSmallStars = 50; // Número fijo como en la imagen de referencia
     const takenZones = this.dreamDayPoints.map((p) => ({ x: p.x, y: p.y }));
     this.bgStars = [];
+    
     for (let i = 0; i < numSmallStars; i++) {
-      let rx = Math.random() * (width - marginX * 2) + marginX;
-      let ry = Math.random() * (maxY - minY) + minY;
+      let rx = marginX + Math.random() * (width - marginX * 2);
+      let ry = minY + Math.random() * (maxY - minY);
+      
+      // Evitar solapamiento con estrellas principales
       if (
         takenZones.some(
-          (z) => Math.abs(z.x - rx) < 8 && Math.abs(z.y - ry) < 8
+          (z) => Math.abs(z.x - rx) < 15 && Math.abs(z.y - ry) < 15
         )
       ) {
         i--;
         continue;
       }
-      // Puntos más pequeños y variados para mayor realismo
-      const r = 0.15 + Math.random() * 0.6;
-      this.bgStars.push({ x: rx, y: ry, r });
+      
+      // Tamaño pequeño y uniforme
+      const r = 0.5 + Math.random() * 0.5;
+      const sparkleOffsetX = 0;
+      const sparkleOffsetY = 0;
+      this.bgStars.push({ x: rx, y: ry, r, sparkleOffsetX, sparkleOffsetY });
     }
   }
 

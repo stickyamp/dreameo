@@ -9,17 +9,17 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 3000,
+      launchShowDuration: 500,
       launchAutoHide: true,
-      backgroundColor: "#ffffffff",
-      androidScaleType: "CENTER_CROP",
+      backgroundColor: "#000000",
+      androidScaleType: "CENTER_INSIDE",
       showSpinner: false,
-      splashFullScreen: true,
-      splashImmersive: true,
+      splashFullScreen: false,
+      splashImmersive: false,
     },
     StatusBar: {
-      style: "dark",
-      backgroundColor: "#030014",
+      style: "light",
+      backgroundColor: "#000000",
     },
     GoogleAuth: {
       scopes: ["profile", "email"],

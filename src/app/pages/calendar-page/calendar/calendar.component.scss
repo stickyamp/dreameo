@@ -7,13 +7,7 @@
   font-family: "Manrope", sans-serif;
   min-height: 100vh;
   padding: 0;
-<<<<<<< HEAD
-  padding-bottom: 3rem; /* Más espacio al final para scroll completo */
-  overflow-y: auto;
-  overflow-x: hidden;
-=======
   padding-bottom: 6rem; /* Espacio al final para scroll completo */
->>>>>>> b24f13e146a58191af832565f2699ea2830a1dd5
 }
 
 // Header Section
@@ -392,7 +386,6 @@ ion-fab-button {
   max-width: 380px;
   height: 140px;
   background: transparent;
-  // border-radius: 16px;
   box-shadow: none;
   display: block;
 }
@@ -471,49 +464,47 @@ ion-fab-button {
   background: var(--color-surface);
   box-shadow: var(--shadow-elevation);
   border: 1px solid var(--color-border);
-  border-radius: var(--spacing-sm);
-  margin: 0 0 var(--spacing-sm) 0;
-  min-height: unset;
-  min-width: 0;
+  border-radius: var(--radius-md);
+  margin: var(--spacing-md) 0 var(--spacing-sm) 0;
   position: relative;
   overflow: hidden;
 }
 
 .dream-map-header {
-  font-size: 1.02rem;
+  font-size: var(--font-size-md);
   color: var(--color-text-primary);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  padding-top: 5px;
-  padding-bottom: 7px;
-  padding-left: 7px;
-  // text-shadow: 0 3px 10px var(--color-bg-glow, #26265029);
-  text-shadow: 0 1px 6px var(--color-bg-glow, #26265029);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-xs) var(--spacing-sm);
 }
 .dream-constellation-background {
-  min-width: 0;
   width: 100%;
-  height: 130px !important;
+  height: 130px;
   padding: 0;
+  margin: 0;
+  border: none;
   border-radius: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
   overflow: hidden;
+  box-sizing: border-box;
   background: linear-gradient(
     135deg,
-    var(--color-surface) 0%,
-    rgba(var(--color-text-secondary), 0.05) 100%
+    #0f1419 0%,
+    #1a1f2e 25%,
+    #252a3a 50%,
+    #1e2332 75%,
+    #141824 100%
   );
 }
 
 .dream-constellation-svg {
-  height: 100px !important;
-  max-height: 130px !important;
-  min-height: 0;
+  width: 100%;
+  height: 130px;
   background: transparent;
   display: block;
   margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
 }
 
 .constellation-empty-message {
@@ -717,7 +708,7 @@ ion-fab-button {
   width: 100%;
 }
 .dream-map-container {
-  min-height: 210px;
+  min-height: 180px;
 }
 .dream-constellation-svg {
   min-height: 130px;
@@ -725,7 +716,6 @@ ion-fab-button {
   width: 100%;
   background: var(--color-surface);
   display: block;
-  margin: 0 auto;
 }
 @media (max-width: 480px) {
   .calendar-container {
@@ -741,10 +731,10 @@ ion-fab-button {
   }
 
   .dream-constellation-background {
-    height: 120px !important; /* Reducir altura en móviles pequeños */
+    height: 130px !important;
   }
   .dream-constellation-svg {
-    height: 90px !important; /* Reducir altura del SVG */
+    height: 100px !important;
   }
   
   .calendar-section {
@@ -925,7 +915,12 @@ html.ion-palette-light {
   }
 
   .dream-constellation-background {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(
+      135deg, 
+      #f0f2f5 0%, 
+      #e8eaf0 50%, 
+      #f4f6f8 100%
+    ) !important;
   }
 
   .constellation-empty-message {
@@ -935,13 +930,21 @@ html.ion-palette-light {
 
   /* Estrellas de fondo en modo claro */
   .dream-constellation-svg circle {
-    fill: var(--color-text-secondary) !important;
-    fill-opacity: 0.3 !important;
+    fill: var(--color-accent) !important;
+    opacity: 0.3 !important;
   }
 
-  .dream-constellation-svg path[stroke="var(--color-text-secondary)"] {
-    stroke: var(--color-text-secondary) !important;
-    opacity: 0.4 !important;
+  /* Líneas de conexión en modo claro */
+  .dream-constellation-svg polyline {
+    stroke: var(--color-accent) !important;
+    opacity: 0.5 !important;
+  }
+
+  /* Estrellas principales en modo claro */
+  .dream-constellation-svg path {
+    fill: var(--color-accent) !important;
+    stroke: var(--color-accent) !important;
+    opacity: 0.8 !important;
   }
 
   /* Líneas de conexión en modo claro */
@@ -1021,3 +1024,4 @@ html.ion-palette-light {
     color: var(--color-text-secondary);
   }
 }
+

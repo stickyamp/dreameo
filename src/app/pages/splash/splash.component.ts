@@ -18,12 +18,10 @@ export class SplashComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Enable dark mode
-    document.documentElement.classList.add("ion-palette-dark");
-    
-    // Set default language
-    const lang = localStorage.getItem("lang") || "es";
-    this.translate.use(lang);
+    // Simple initialization without potential error sources
+    setTimeout(() => {
+      this.goToCalendar();
+    }, 1500);
   }
 
   goToCalendar() {
