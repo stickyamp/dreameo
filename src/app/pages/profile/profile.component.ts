@@ -345,17 +345,16 @@ export class ProfileComponent implements OnInit {
 
   async cleanData(): Promise<void> {
     const alert = await this.alertController.create({
-      header: "Clean Data",
-      message:
-        "This will remove all local data including dreams, settings, and preferences. Are you sure?",
+      header: this.translate.instant("CLEAN_DATA.HEADER"),
+      message: this.translate.instant("CLEAN_DATA.MESSAGE"),
       buttons: [
         {
-          text: "Cancel",
+          text: this.translate.instant("CLEAN_DATA.CANCEL"),
           role: "cancel",
           cssClass: "secondary",
         },
         {
-          text: "Clean",
+          text: this.translate.instant("CLEAN_DATA.CONFIRM"),
           cssClass: "danger",
           handler: async () => {
             await this.performCleanData();
@@ -410,8 +409,8 @@ export class ProfileComponent implements OnInit {
 
       // Show success message
       const successAlert = await this.alertController.create({
-        header: "Success",
-        message: "All local data has been cleared successfully.",
+        header: this.translate.instant("CLEAN_DATA.SUCCESS_HEADER"),
+        message: this.translate.instant("CLEAN_DATA.SUCCESS_MESSAGE"),
         buttons: ["OK"],
       });
       await successAlert.present();
@@ -469,12 +468,22 @@ export class ProfileComponent implements OnInit {
   }
 
   async loadBackUp() {
-    const backedUpDreams = await this.firebaseBackupService.getAllDreams();
-    const backedUpTags = await this.firebaseBackupService.getAllTags();
-    console.log("manuXX assassa", backedUpTags);
-    console.log("manuXX ddddsdsassassa", backedUpDreams);
-    this.dreamService.setAllDreamsOverwrite(backedUpDreams);
-    this.dreamService.setAllTagsOverwrite(backedUpTags);
+    try {
+      const backedUpDreams = await this.firebaseBackupService.getAllDreams();
+      const backedUpTags = await this.firebaseBackupService.getAllTags();
+      console.log("manuXX assassa", backedUpTags);
+      console.log("manuXX ddddsdsassassa", backedUpDreams);
+      this.dreamService.setAllDreamsOverwrite(backedUpDreams);
+      this.dreamService.setAllTagsOverwrite(backedUpTags);
+
+      const alert = await this.alertController.create({
+        header: this.translate.instant("BACKUP.LOADED.TITLE"),
+        message: this.translate.instant("BACKUP.LOADED.MESSAGE"),
+        buttons: ["OK"],
+        cssClass: "success-alert",
+      });
+      await alert.present();
+    } catch (err) {}
   }
 
   goToDebug() {

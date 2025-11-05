@@ -22,6 +22,7 @@ import { LoggerService } from "./log.service";
 import { getApp } from "firebase/app";
 import { addDoc, arrayUnion, getFirestore } from "firebase/firestore";
 import { Dream, TagModel } from "@/app/models/dream.model";
+import { EncryptService } from "./encrypt.service";
 
 export interface BackupItem<T = any> {
   id: string;
@@ -55,7 +56,8 @@ export class FirebaseBackupService {
     private firestore: Firestore,
     private authService: FirebaseAuthService,
     private crashlytics: CrashlyticsService,
-    private logService: LoggerService
+    private logService: LoggerService,
+    private encryptService: EncryptService
   ) {
     this.initializeService();
   }
@@ -134,35 +136,55 @@ export class FirebaseBackupService {
   async saveAllDreams(dreams: Dream[]) {
     try {
       if (!this.currentUser?.uid) return;
-      const ref = doc(this.firestore, "dreams", this.currentUser?.uid);
+
+      const encryptedDreams = dreams.map((d) => ({
+        ...d,
+        title: this.encryptService.encrypt(
+          d.title,
+          this.currentUser?.uid ?? ""
+        ),
+        description: this.encryptService.encrypt(
+          d.description ?? "",
+          this.currentUser?.uid ?? ""
+        ),
+      }));
+
+      const ref = doc(this.firestore, "dreams", this.currentUser.uid);
       await setDoc(
         ref,
-        { dreams: this.removeUndefined(dreams) },
+        { dreams: this.removeUndefined(encryptedDreams) },
         { merge: true }
-      ); // overwrites the whole array
+      );
     } catch (err) {
       console.error(err);
     }
   }
 
   async getAllDreams(): Promise<Dream[]> {
-    console.log("loading dreams currentUser", this.currentUser);
     try {
       if (!this.currentUser?.uid) return [];
 
       const ref = doc(this.firestore, "dreams", this.currentUser.uid);
-      console.log("loading dreams backup for user uid", this.currentUser.uid);
-
       const snapshot = await getDoc(ref);
 
       if (snapshot.exists()) {
         const data = snapshot.data();
-        console.log("manuXX Dreaaaaaaaams loaded backup", data);
-        return data["dreams"] || [];
-      } else {
-        console.log("No dreams found for this user.");
-        return [];
+        const dreams = data["dreams"] || [];
+
+        return dreams.map((d: Dream) => ({
+          ...d,
+          title: this.encryptService.decrypt(
+            d.title,
+            this.currentUser?.uid ?? ""
+          ),
+          description: this.encryptService.decrypt(
+            d.description ?? "",
+            this.currentUser?.uid ?? ""
+          ),
+        }));
       }
+
+      return [];
     } catch (err) {
       console.error("Error fetching dreams:", err);
       return [];
