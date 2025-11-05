@@ -325,16 +325,16 @@ export class ProfileComponent implements OnInit {
 
   async closeSession(): Promise<void> {
     const alert = await this.alertController.create({
-      header: this.translate.instant("profile.logoutHeader"),
-      message: this.translate.instant("profile.logoutMessage"),
+      header: this.translate.instant("PROFILE.LOGOUT_HEADER"),
+      message: this.translate.instant("PROFILE.LOGOUT_MESSAGE"),
       buttons: [
         {
-          text: this.translate.instant("profile.cancel"),
+          text: this.translate.instant("PROFILE.CANCEL"),
           role: "cancel",
           cssClass: "secondary",
         },
         {
-          text: this.translate.instant("profile.confirmLogout"),
+          text: this.translate.instant("PROFILE.CONFIRM_LOGOUT"),
           cssClass: "danger",
           handler: () => this.performCloseSession(),
         },
@@ -610,7 +610,7 @@ export class ProfileComponent implements OnInit {
       title: "🕐 Test Notification",
       body: "This is your test notification — it was scheduled 1 minute ago!",
       schedule: { at: triggerTime },
-      smallIcon: "push_icon",
+      smallIcon: "res://drawable/push_icon",
       extra: { test: true, scheduledAt: triggerTime.toISOString() },
     };
 

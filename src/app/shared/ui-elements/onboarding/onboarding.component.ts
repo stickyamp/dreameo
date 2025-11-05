@@ -67,8 +67,8 @@ export class OnboardingComponent {
     },
     {
       icon: "assets/images/onboarding/onboarding_dreams.png",
-      width: 180,
-      height: 336,
+      width: 240,
+      height: 287,
       class: "onboarding-dreams glowing-image",
       title: "Your Dream Journal",
       description:
@@ -79,8 +79,8 @@ export class OnboardingComponent {
     },
     {
       icon: "assets/images/onboarding/onboarding_statistics.png",
-      width: 180,
-      height: 336,
+      width: 286,
+      height: 230,
       class: "onboarding-dreams glowing-image",
       title: "Track Your Progress",
       description:

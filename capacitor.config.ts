@@ -31,7 +31,7 @@ const config: CapacitorConfig = {
       presentationOptions: ["badge", "sound"],
     },
     LocalNotifications: {
-      smallIcon: "push_icon", // ← Add this! No .png extension
+      smallIcon: "res://drawable/push_icon", // ← Add this! No .png extension
       iconColor: "#8c30a0ff", // ← Optional: your brand color
     },
   },

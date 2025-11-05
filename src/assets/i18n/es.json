@@ -99,7 +99,8 @@
     "NO_DREAMS": "No hay sueños registrados",
     "NO_DREAMS_DESCRIPTION": "Comienza registrando tu primer sueño",
     "ADD_DREAM": "Añadir Sueño",
-    "SEARCH_PLACEHOLDER": "Buscar sueños..."
+    "SEARCH_PLACEHOLDER": "Buscar sueños...",
+    "LOADING_MONTHS": "Cargando..."
   },
   "PROFILE": {
     "TITLE": "Configuración",
@@ -117,7 +118,10 @@
     "GOOGLE_CONNECTED_MESSAGE": "Tu cuenta de Google se ha conectado exitosamente",
     "GOOGLE_ERROR": "Error de Conexión",
     "GOOGLE_ERROR_MESSAGE": "No se pudo conectar con la cuenta de Google",
-    "NOTIF_REMINDER_LABEL": "Recordatorio diario de sueños"
+    "NOTIF_REMINDER_LABEL": "Recordatorio diario de sueños",
+    "LOGOUT_HEADER": "Cerrar sesión",
+    "LOGOUT_MESSAGE": "¿Estás seguro de que deseas cerrar la sesión actual?",
+    "CONFIRM_LOGOUT": "Cerrar sesión"
   },
   "DREAM_DETAIL": {
     "TITLE": "Sueño",
@@ -185,7 +189,8 @@
     "SHARED": {
       "NO_DREAM_MESSAGE": {
         "TITLE": "No hay sueños registrados",
-        "DESCRIPTION": "Comienza registrando tu primer sueño para este día. Toca el botón '+' para añadir tu primer sueño."
+        "DESCRIPTION": "Comienza registrando tu primer sueño para este día. Toca el botón '+' para añadir un sueño.",
+        "DESCRIPTION_DAY": "Comienza registrando tu primer sueño para este mes. Toca el botón '+' para añadir un sueño."
       }
     }
   }
