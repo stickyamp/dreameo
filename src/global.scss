@@ -201,24 +201,6 @@ ion-content {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Material symbols setup */
-.material-symbols-outlined {
-  font-family: "Material Symbols Outlined";
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  /* Default size */
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  direction: ltr;
-  font-feature-settings: "liga";
-  -webkit-font-smoothing: antialiased;
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-}
-
 .dream-container {
   background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
   min-height: 100vh;
@@ -289,52 +271,6 @@ ion-content {
   transform: scale(1.05);
 }
 
-// Calendar specific styles
-// .calendar-day {
-//   position: relative;
-//   width: 40px;
-//   height: 40px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 50%;
-//   margin: 2px;
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-
-//   &.has-dreams {
-//     background: linear-gradient(
-//       135deg,
-//       var(--ion-color-primary),
-//       var(--ion-color-secondary)
-//     );
-//     color: white;
-
-//     &::after {
-//       content: "🌙";
-//       position: absolute;
-//       bottom: -2px;
-//       right: -2px;
-//       font-size: 12px;
-//     }
-//   }
-
-//   &.selected {
-//     background: var(--ion-color-primary);
-//     color: white;
-//     transform: scale(1.1);
-//   }
-
-//   &.today {
-//     border: 2px solid var(--ion-color-primary);
-//   }
-
-//   &:hover {
-//     background: rgba(138, 43, 226, 0.3);
-//     transform: scale(1.05);
-//   }
-// }
-
 // Button styles
 .dream-button {
   --background: linear-gradient(
@@ -369,28 +305,6 @@ ion-content {
   display: block;
 }
 
-// Recording animation
-.recording-pulse {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: scale(1.1);
-    opacity: 0.7;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 // Modal styles
 .dream-modal {
   --background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
@@ -423,12 +337,6 @@ ion-content {
   }
 }
 
-// Toolbar styles
-// .dream-toolbar {
-//   //--background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
-//   //--color: white;
-// }
-
 // Tab bar styles
 .dream-tabs {
   --background: #2d1b69;
@@ -436,64 +344,7 @@ ion-content {
   --color-selected: white;
 }
 
-/* Ionic Datetime header layout globally to match design */
-ion-datetime::part(header) {
-  position: relative;
-}
-
-ion-datetime::part(title) {
-  justify-content: center;
-}
-
-ion-datetime::part(calendar-month-year) {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-ion-datetime::part(prev-button) {
-  position: absolute;
-  left: 8px;
-  color: var(--color-text-primary);
-}
-
-ion-datetime::part(next-button) {
-  position: absolute;
-  right: 8px;
-  color: var(--color-text-primary);
-}
-
-/* Stronger selector for our calendar instance */
-.dj-datetime::part(header) {
-  position: relative;
-}
-
-.dj-datetime::part(title) {
-  justify-content: center;
-}
-
-.dj-datetime::part(calendar-month-year) {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.dj-datetime::part(prev-button) {
-  position: absolute;
-  left: 8px;
-  color: var(--color-text-primary);
-}
-
-.dj-datetime::part(next-button) {
-  position: absolute;
-  right: 8px;
-  color: var(--color-text-primary);
-}
-
 //STYLING ALERTS IONIC GLOBALLY
-
 ion-alert {
   //--ion-backdrop-opacity: 0.1;
   --ion-text-color: var(--color-text-primary);

@@ -99,7 +99,8 @@
     "NO_DREAMS": "No dreams registered",
     "NO_DREAMS_DESCRIPTION": "Start by registering your first dream",
     "ADD_DREAM": "Add Dream",
-    "SEARCH_PLACEHOLDER": "Search dreams..."
+    "SEARCH_PLACEHOLDER": "Search dreams...",
+    "LOADING_MONTHS": "Loading..."
   },
   "PROFILE": {
     "TITLE": "Settings",
@@ -117,7 +118,10 @@
     "GOOGLE_CONNECTED_MESSAGE": "Your Google account has been connected successfully",
     "GOOGLE_ERROR": "Connection Error",
     "GOOGLE_ERROR_MESSAGE": "Could not connect to Google account",
-    "NOTIF_REMINDER_LABEL": "Daily dream reminder"
+    "NOTIF_REMINDER_LABEL": "Daily dream reminder",
+    "LOGOUT_HEADER": "Log out",
+    "LOGOUT_MESSAGE": "Are you sure you want to end the current session?",
+    "CONFIRM_LOGOUT": "Log out"
   },
   "DREAM_DETAIL": {
     "TITLE": "Dream",
@@ -185,7 +189,8 @@
     "SHARED": {
       "NO_DREAM_MESSAGE": {
         "TITLE": "No dreams recorded",
-        "DESCRIPTION": "Start recording your dreams for this day. Tap the '+' button to add your first dream."
+        "DESCRIPTION": "Start recording your dreams for this month. Tap the '+' button to add a dream.",
+        "DESCRIPTION_DAY": "Start recording your dreams for this day. Tap the '+' button to add a dream."
       }
     }
   }

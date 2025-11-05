@@ -1,6 +1,15 @@
 <!-- Empty State -->
 <div
-  style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.5rem; padding-top: 5rem;">
+  style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    padding-top: 5rem;
+  "
+>
   <!-- Icon Container -->
   <div class="icon-container">
     <!-- Purple gradient circle with soft pulse -->
@@ -10,27 +19,58 @@
     <ion-icon name="cloudy-night" class="main-icon"></ion-icon>
 
     <!-- Stars -->
-    <svg class="star star-top-right star-1" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z" />
+    <svg
+      class="star star-top-right star-1"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z"
+      />
     </svg>
 
-    <svg class="star star-top-left star-2" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z" />
+    <svg
+      class="star star-top-left star-2"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z"
+      />
     </svg>
 
-    <svg class="star star-bottom-right star-3" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z" />
+    <svg
+      class="star star-bottom-right star-3"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z"
+      />
     </svg>
 
-    <svg class="star star-bottom-left star-4" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z" />
+    <svg
+      class="star star-bottom-left star-4"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z"
+      />
     </svg>
   </div>
 
   <!-- Text Content -->
   <h2 class="no-d-title">
-    {{'DREAMEO.SHARED.NO_DREAM_MESSAGE.TITLE' | translate}}</h2>
-  <p style="color: #94a3b8; max-width: 20rem; line-height: 1.6;">
-    {{'DREAMEO.SHARED.NO_DREAM_MESSAGE.DESCRIPTION' | translate}}
+    {{ "DREAMEO.SHARED.NO_DREAM_MESSAGE.TITLE" | translate }}
+  </h2>
+  <p style="color: #94a3b8; max-width: 20rem; line-height: 1.6">
+    @if(isDaily){
+    {{ "DREAMEO.SHARED.NO_DREAM_MESSAGE.DESCRIPTION_DAY" | translate }}
+
+    }@else{
+    {{ "DREAMEO.SHARED.NO_DREAM_MESSAGE.DESCRIPTION" | translate }}
+
+    }
   </p>
 </div>
