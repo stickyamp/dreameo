@@ -69,6 +69,7 @@ export class ConfigService {
           body,
           schedule: { repeats: true, on: { hour: 10, minute: 0 } },
           smallIcon: "ic_notification",
+          largeIcon: "ic_notification",
           actionTypeId: "",
           extra: null,
         },
