@@ -102,7 +102,6 @@ ion-toggle {
 
 .danger-zone {
   background: transparent;
-  margin: var(--spacing-lg) 0;
   padding: 0 var(--spacing-xs);
 
   ion-item {
@@ -183,4 +182,5 @@ ion-toggle {
   margin-top: auto;
   opacity: 0.7;
   font-weight: 600;
+  padding-bottom: 80px;
 }

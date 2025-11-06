@@ -212,4 +212,80 @@ export class FirebaseBackupService {
   hasBackups(): boolean {
     return this.backupItemsSubject.value.length > 0;
   }
+
+  /**
+   * Deletes only dreams for the current user (keeps tags intact)
+   * @returns Promise<void>
+   * @throws Error if deletion fails or no user is logged in
+   */
+  async deleteAllDreams(): Promise<void> {
+    try {
+      if (!this.currentUser?.uid) {
+        throw new Error("No user is currently logged in");
+      }
+
+      const userId = this.currentUser.uid;
+      console.log(`Deleting all dreams for user: ${userId}`);
+      this.logService.log(`Eliminando sueños del usuario: ${userId}`);
+
+      const userDocRef = doc(this.firestore, "dreams", userId);
+
+      // Update the document to remove only the dreams field
+      await setDoc(userDocRef, { dreams: [] }, { merge: true });
+
+      console.log(`Successfully deleted all dreams for user: ${userId}`);
+      this.logService.log(
+        `Sueños eliminados exitosamente para usuario: ${userId}`
+      );
+
+      this.crashlytics.log(
+        `Usuario eliminó todos sus sueños: ${this.currentUser.email}`
+      );
+    } catch (error: any) {
+      console.error("Error deleting dreams:", error);
+      this.crashlytics.logError(error, "Delete Dreams Error");
+      throw new Error(
+        error.message ||
+          "Error al eliminar los sueños. Por favor, intenta nuevamente."
+      );
+    }
+  }
+
+  /**
+   * Deletes only tags for the current user (keeps dreams intact)
+   * @returns Promise<void>
+   * @throws Error if deletion fails or no user is logged in
+   */
+  async deleteAllTags(): Promise<void> {
+    try {
+      if (!this.currentUser?.uid) {
+        throw new Error("No user is currently logged in");
+      }
+
+      const userId = this.currentUser.uid;
+      console.log(`Deleting all tags for user: ${userId}`);
+      this.logService.log(`Eliminando etiquetas del usuario: ${userId}`);
+
+      const userDocRef = doc(this.firestore, "dreams", userId);
+
+      // Update the document to remove only the tags field
+      await setDoc(userDocRef, { tags: [] }, { merge: true });
+
+      console.log(`Successfully deleted all tags for user: ${userId}`);
+      this.logService.log(
+        `Etiquetas eliminadas exitosamente para usuario: ${userId}`
+      );
+
+      this.crashlytics.log(
+        `Usuario eliminó todas sus etiquetas: ${this.currentUser.email}`
+      );
+    } catch (error: any) {
+      console.error("Error deleting tags:", error);
+      this.crashlytics.logError(error, "Delete Tags Error");
+      throw new Error(
+        error.message ||
+          "Error al eliminar las etiquetas. Por favor, intenta nuevamente."
+      );
+    }
+  }
 }

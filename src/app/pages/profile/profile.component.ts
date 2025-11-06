@@ -22,6 +22,9 @@ import {
 } from "@/app/shared/services/toast-notifier";
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { APP_CONSTANTS } from "@/app/app.constants";
+import { DreamPdfService } from "@/app/shared/services/export-pdf.service.ts/export-pdf.service";
+import { TripleClickDirective } from "@/app/shared/directives/triple-click.directive";
+import { firstValueFrom } from "rxjs";
 
 interface User {
   name: string;
@@ -125,7 +128,13 @@ export class LanguagePopoverComponent {
   selector: "app-configuration",
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.scss"],
-  imports: [IonicModule, CommonModule, FormsModule, TranslateModule],
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    TripleClickDirective,
+  ],
   standalone: true,
 })
 export class ProfileComponent implements OnInit {
@@ -157,9 +166,14 @@ export class ProfileComponent implements OnInit {
     private popoverController: PopoverController,
     private cdr: ChangeDetectorRef,
     private logService: LoggerService,
-    private toastNotifierService: ToastNotifierService
+    private toastNotifierService: ToastNotifierService,
+    private dreamPdfService: DreamPdfService
   ) {
     this.showDebugTools = APP_CONSTANTS.IS_DEBUG;
+  }
+
+  enableDebugMode() {
+    this.showDebugTools = !this.showDebugTools;
   }
 
   async ngOnInit() {
@@ -395,13 +409,24 @@ export class ProfileComponent implements OnInit {
       // Clear dreams data using DreamService
       await this.dreamService.clearAllData();
 
+      const currentUser = await firstValueFrom(
+        this.firebaseAuthService.currentUser$
+      );
+      if (currentUser?.uid && currentUser?.uid.length > 0) {
+        //Clear firestore stored tags and dreams
+        await this.firebaseBackupService.deleteAllDreams();
+
+        //Clear firestore stored tags and dreams
+        await this.firebaseBackupService.deleteAllTags();
+      }
+
       // Clear localStorage (for any remaining web data)
       localStorage.clear();
 
-      // Reset dark mode to default
-      await this.configService.saveDarkModePreference(false);
-      this.configService.enableLightMode();
-      this.darkMode = false;
+      // // Reset dark mode to default
+      // await this.configService.saveDarkModePreference(true);
+      // this.configService.enableDarkMode();
+      // this.darkMode = true;
 
       console.log("All data cleaned successfully");
 
@@ -625,5 +650,34 @@ export class ProfileComponent implements OnInit {
         "bottom"
       );
     }
+  }
+
+  async exportDreamsPdf() {
+    const dreams = await this.dreamService.getAllDreams();
+    this.dreamPdfService.exportDreamsToPdf(dreams);
+  }
+
+  async deletePermanentAccount() {
+    const alert = await this.alertController.create({
+      header: this.translate.instant("DELETE_PERMANENT_ACCOUNT.HEADER"),
+      message: this.translate.instant("DELETE_PERMANENT_ACCOUNT.MESSAGE"),
+      buttons: [
+        {
+          text: this.translate.instant("DELETE_PERMANENT_ACCOUNT.CANCEL"),
+          role: "cancel",
+          cssClass: "secondary",
+        },
+        {
+          text: this.translate.instant("DELETE_PERMANENT_ACCOUNT.CONFIRM"),
+          cssClass: "danger",
+          handler: async () => {
+            await this.firebaseAuthService.deleteAccountWithReauth();
+            window.location.reload();
+            this.router.navigate(["onboarding"]);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 }
