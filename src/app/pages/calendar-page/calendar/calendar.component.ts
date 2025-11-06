@@ -40,6 +40,7 @@ export class CalendarComponent implements OnInit {
 
   // ------ NUEVAS VARIABLES PARA DREAM MAP Y PROGRESO ------
   dreamDayPoints: { x: number; y: number; date: string }[] = [];
+  isolatedDreamPoints: { x: number; y: number; date: string }[] = [];
   polylineString: string = "";
   progressPercent: number = 0;
   filledDays: number = 0;
@@ -102,31 +103,58 @@ export class CalendarComponent implements OnInit {
         daysWithDream.add(d);
       }
     }
+    
     // Área de dibujo del SVG (coincide con el viewBox 0 0 350 130)
     const width = 350;
     const height = 130;
-    const marginX = 20;
-    const marginTop = 15; // margen superior mínimo para no cortar
+    const marginX = 15; // Reducir margen lateral para usar más espacio
+    const marginTop = 15;
     const marginBottom = 15;
     const minY = marginTop;
     const maxY = height - marginBottom;
 
-    const count = stars.length;
-    this.dreamDayPoints = stars.map((s, idx) => {
-      // Distribución simple y orgánica como en la imagen de referencia
-      const progress = idx / Math.max(1, count - 1);
+    // Separar estrellas en conectadas y aisladas
+    const totalStars = stars.length;
+    let connectedStars: { date: string; day: number }[] = [];
+    let isolatedStars: { date: string; day: number }[] = [];
+    
+    if (totalStars <= 2) {
+      // Si hay muy pocas estrellas, todas van conectadas
+      connectedStars = [...stars];
+    } else if (totalStars <= 4) {
+      // Para pocas estrellas, conectar la mayoría
+      connectedStars = stars.slice(0, Math.ceil(totalStars * 0.7));
+      isolatedStars = stars.slice(Math.ceil(totalStars * 0.7));
+    } else {
+      // Para muchas estrellas, conectar solo algunas para evitar saturación
+      const connectedCount = Math.min(4, Math.ceil(totalStars * 0.5));
+      connectedStars = stars.slice(0, connectedCount);
+      isolatedStars = stars.slice(connectedCount);
+    }
+
+    // Generar posiciones para estrellas conectadas
+    this.dreamDayPoints = connectedStars.map((s, idx) => {
+      const count = connectedStars.length;
+      const progress = count > 1 ? idx / (count - 1) : 0.5;
       
       // Posición base a lo largo del ancho
       let x = marginX + (width - marginX * 2) * progress;
       
-      // Altura variable con tendencia hacia el centro
+      // Crear patrones de constelación más sutiles
       const centerY = (minY + maxY) / 2;
-      const amplitude = (maxY - minY) * 0.3;
-      let y = centerY + Math.sin(progress * Math.PI * 2) * amplitude * (Math.random() - 0.5);
+      let y;
       
-      // Agregar variación natural
-      x += (Math.random() - 0.5) * 30;
-      y += (Math.random() - 0.5) * 20;
+      if (count <= 2) {
+        y = centerY + Math.sin(progress * Math.PI) * 15;
+      } else if (count <= 3) {
+        y = centerY + Math.sin(progress * Math.PI * 1.2) * 20;
+      } else {
+        y = centerY + Math.sin(progress * Math.PI * 1.5) * 25 + Math.cos(progress * Math.PI * 2) * 10;
+      }
+      
+      // Menos variación aleatoria para líneas más suaves
+      x += (Math.random() - 0.5) * 15;
+      y += (Math.random() - 0.5) * 10;
       
       // Clamp para mantener dentro del área
       x = Math.max(marginX, Math.min(width - marginX, x));
@@ -134,6 +162,28 @@ export class CalendarComponent implements OnInit {
       
       return { x, y, date: s.date };
     });
+    
+    // Generar posiciones para estrellas aisladas
+    this.isolatedDreamPoints = isolatedStars.map((s) => {
+      let x: number = marginX + Math.random() * (width - marginX * 2);
+      let y: number = minY + Math.random() * (maxY - minY);
+      let attempts = 0;
+      const maxAttempts = 20;
+      
+      while (
+        attempts < maxAttempts &&
+        this.dreamDayPoints.some(pt => 
+          Math.abs(pt.x - x) < 30 && Math.abs(pt.y - y) < 30
+        )
+      ) {
+        x = marginX + Math.random() * (width - marginX * 2);
+        y = minY + Math.random() * (maxY - minY);
+        attempts++;
+      }
+      
+      return { x, y, date: s.date };
+    });
+    
     this.polylineString = this.dreamDayPoints
       .map((pt) => `${pt.x},${pt.y}`)
       .join(" ");
@@ -149,27 +199,64 @@ export class CalendarComponent implements OnInit {
     // Actualizar progreso del sistema de niveles basado en total de sueños
     this.updateRankProgress();
 
-    // Estrellas pequeñas de fondo distribuidas aleatoriamente
-    const numSmallStars = 50; // Número fijo como en la imagen de referencia
-    const takenZones = this.dreamDayPoints.map((p) => ({ x: p.x, y: p.y }));
+    // Estrellas pequeñas de fondo distribuidas como en la imagen
+    const numSmallStars = 22; // Aumentar para cubrir mejor el área
+    const takenZones = [
+      ...this.dreamDayPoints.map((p) => ({ x: p.x, y: p.y })),
+      ...this.isolatedDreamPoints.map((p) => ({ x: p.x, y: p.y }))
+    ];
     this.bgStars = [];
     
+    // Crear zonas preferenciales para distribución más natural cubriendo todo el ancho
+    const zones = [
+      { x: width * 0.1, y: height * 0.2, weight: 0.7 },
+      { x: width * 0.25, y: height * 0.15, weight: 0.6 },
+      { x: width * 0.4, y: height * 0.3, weight: 0.5 },
+      { x: width * 0.6, y: height * 0.25, weight: 0.7 },
+      { x: width * 0.75, y: height * 0.18, weight: 0.8 },
+      { x: width * 0.9, y: height * 0.35, weight: 0.9 }, // Zona específica para el lateral derecho
+      { x: width * 0.2, y: height * 0.75, weight: 0.5 },
+      { x: width * 0.5, y: height * 0.8, weight: 0.6 },
+      { x: width * 0.8, y: height * 0.7, weight: 0.8 }, // Otra zona para el lateral derecho inferior
+    ];
+    
+    // Garantizar distribución en todo el ancho
+    const rightSideStars = Math.ceil(numSmallStars * 0.3); // 30% para el lado derecho
+    
     for (let i = 0; i < numSmallStars; i++) {
-      let rx = marginX + Math.random() * (width - marginX * 2);
-      let ry = minY + Math.random() * (maxY - minY);
+      let rx: number, ry: number;
       
-      // Evitar solapamiento con estrellas principales
+      // Forzar algunas estrellas en el lateral derecho
+      if (i < rightSideStars) {
+        rx = width * 0.7 + Math.random() * (width * 0.25); // 70-95% del ancho
+        ry = minY + Math.random() * (maxY - minY);
+      } else if (i < zones.length && Math.random() < zones[i].weight) {
+        // Usar zona preferencial con algo de variación
+        const zone = zones[i];
+        rx = zone.x + (Math.random() - 0.5) * 50; // Aumentar variación
+        ry = zone.y + (Math.random() - 0.5) * 40;
+      } else {
+        // Distribución aleatoria en todo el ancho
+        rx = marginX + Math.random() * (width - marginX * 2);
+        ry = minY + Math.random() * (maxY - minY);
+      }
+      
+      // Clamp dentro del área completa
+      rx = Math.max(marginX, Math.min(width - marginX, rx));
+      ry = Math.max(minY, Math.min(maxY, ry));
+      
+      // Evitar solapamiento con puntos principales (distancia reducida)
       if (
         takenZones.some(
-          (z) => Math.abs(z.x - rx) < 15 && Math.abs(z.y - ry) < 15
+          (z) => Math.abs(z.x - rx) < 20 && Math.abs(z.y - ry) < 20
         )
       ) {
         i--;
         continue;
       }
       
-      // Tamaño pequeño y uniforme
-      const r = 0.5 + Math.random() * 0.5;
+      // Tamaño variado pero más pequeño
+      const r = 0.4 + Math.random() * 0.4;
       const sparkleOffsetX = 0;
       const sparkleOffsetY = 0;
       this.bgStars.push({ x: rx, y: ry, r, sparkleOffsetX, sparkleOffsetY });
@@ -525,6 +612,57 @@ export class CalendarComponent implements OnInit {
 
   getDreamCount(date: string): number {
     return this.dreamService.getDreamsByDate(date).length;
+  }
+
+  // Método para generar el path SVG de una estrella pequeña
+  getSmallStarPath(cx: number, cy: number, size: number): string {
+    const outerRadius = size * 1.2;
+    const innerRadius = size * 0.5;
+    const points = 5;
+    let path = '';
+    
+    for (let i = 0; i < points * 2; i++) {
+      const angle = (i * Math.PI) / points - Math.PI / 2;
+      const radius = i % 2 === 0 ? outerRadius : innerRadius;
+      const x = cx + Math.cos(angle) * radius;
+      const y = cy + Math.sin(angle) * radius;
+      
+      if (i === 0) {
+        path += `M ${x} ${y}`;
+      } else {
+        path += ` L ${x} ${y}`;
+      }
+    }
+    path += ' Z';
+    return path;
+  }
+
+  // Método para generar círculos pequeños
+  getSmallCirclePath(cx: number, cy: number, radius: number): string {
+    return `M ${cx - radius} ${cy} A ${radius} ${radius} 0 1 0 ${cx + radius} ${cy} A ${radius} ${radius} 0 1 0 ${cx - radius} ${cy}`;
+  }
+
+  // Método para generar el path SVG de una estrella principal grande
+  getMainStarPath(cx: number, cy: number): string {
+    const outerRadius = 5;
+    const innerRadius = 2;
+    const points = 5;
+    let path = '';
+    
+    for (let i = 0; i < points * 2; i++) {
+      const angle = (i * Math.PI) / points - Math.PI / 2;
+      const radius = i % 2 === 0 ? outerRadius : innerRadius;
+      const x = cx + Math.cos(angle) * radius;
+      const y = cy + Math.sin(angle) * radius;
+      
+      if (i === 0) {
+        path += `M ${x} ${y}`;
+      } else {
+        path += ` L ${x} ${y}`;
+      }
+    }
+    path += ' Z';
+    return path;
   }
 
   // New methods for the updated UI

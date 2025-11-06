@@ -385,7 +385,6 @@ ion-fab-button {
 }
 .dream-constellation-svg {
   width: 100%;
-  max-width: 380px;
   height: 140px;
   background: transparent;
   box-shadow: none;
@@ -490,12 +489,56 @@ ion-fab-button {
   box-sizing: border-box;
   background: linear-gradient(
     135deg,
-    #0f1419 0%,
-    #1a1f2e 25%,
-    #252a3a 50%,
-    #1e2332 75%,
-    #141824 100%
+    #050812 0%,
+    #0a0f1a 15%,
+    #0f1629 30%,
+    #1a2142 45%,
+    #252d5c 60%,
+    #1a2142 75%,
+    #0f1629 90%,
+    #050812 100%
   );
+  position: relative;
+}
+
+.dream-constellation-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at 25% 25%,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.03) 30%,
+    transparent 60%
+  ),
+  radial-gradient(
+    ellipse at 75% 75%,
+    rgba(185, 154, 255, 0.08) 0%,
+    rgba(185, 154, 255, 0.04) 25%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.dream-constellation-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.01) 25%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0.01) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 .dream-constellation-svg {
@@ -507,6 +550,21 @@ ion-fab-button {
   padding: 0;
   border: none;
   box-sizing: border-box;
+}
+
+/* Estilos estáticos para las estrellas */
+.main-star {
+  filter: url(#starGlow);
+  opacity: 1;
+}
+
+.main-star.isolated-star {
+  opacity: 0.9;
+}
+
+.small-star {
+  filter: url(#smallStarGlow);
+  opacity: 0.6;
 }
 
 .constellation-empty-message {
@@ -632,9 +690,34 @@ ion-fab-button {
   white-space: nowrap;
 }
 
+.progress-count-text-below {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  margin-top: var(--spacing-xxxs);
+  opacity: 0.8;
+}
+
+.progress-count-text-right {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.progress-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: var(--spacing-xxxs);
+}
+
 .progress-bar-container {
   width: 100%;
-  margin-bottom: var(--spacing-xxxs);
+  margin-bottom: 0;
 }
 
 .progress-bar-track {
@@ -704,7 +787,6 @@ ion-fab-button {
 }
 .dream-map-container,
 .dream-progress-container {
-  max-width: 390px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -716,7 +798,7 @@ ion-fab-button {
   min-height: 130px;
   height: 137px;
   width: 100%;
-  background: var(--color-surface);
+  background: transparent;
   display: block;
 }
 @media (max-width: 480px) {
@@ -918,10 +1000,40 @@ html.ion-palette-light {
 
   .dream-constellation-background {
     background: linear-gradient(
-      135deg, 
-      #f0f2f5 0%, 
-      #e8eaf0 50%, 
-      #f4f6f8 100%
+      135deg,
+      #e8edf7 0%,
+      #d4ddf0 15%,
+      #c0cde8 35%,
+      #adbde0 55%,
+      #c0cde8 75%,
+      #d4ddf0 90%,
+      #e8edf7 100%
+    ) !important;
+  }
+
+  .dream-constellation-background::before {
+    background: radial-gradient(
+      ellipse at 30% 20%,
+      rgba(152, 94, 252, 0.15) 0%,
+      rgba(152, 94, 252, 0.08) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse at 70% 80%,
+      rgba(185, 154, 255, 0.12) 0%,
+      rgba(185, 154, 255, 0.05) 35%,
+      transparent 65%
+    ) !important;
+  }
+
+  .dream-constellation-background::after {
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      rgba(152, 94, 252, 0.03) 25%,
+      rgba(152, 94, 252, 0.05) 50%,
+      rgba(152, 94, 252, 0.03) 75%,
+      transparent 100%
     ) !important;
   }
 
@@ -931,7 +1043,7 @@ html.ion-palette-light {
   }
 
   /* Estrellas de fondo en modo claro */
-  .dream-constellation-svg circle {
+  .dream-constellation-svg .small-star {
     fill: var(--color-accent) !important;
     opacity: 0.3 !important;
   }
@@ -943,23 +1055,18 @@ html.ion-palette-light {
   }
 
   /* Estrellas principales en modo claro */
-  .dream-constellation-svg path {
+  .dream-constellation-svg .main-star {
     fill: var(--color-accent) !important;
-    stroke: var(--color-accent) !important;
-    opacity: 0.8 !important;
-  }
-
-  /* Líneas de conexión en modo claro */
-  .dream-constellation-svg polyline {
-    stroke: var(--color-accent) !important;
-    opacity: 0.5 !important;
-  }
-
-  /* Estrellas principales en modo claro */
-  .dream-constellation-svg path[fill="var(--color-accent)"] {
-    fill: var(--color-accent) !important;
-    stroke: var(--color-text-primary) !important;
     opacity: 0.85 !important;
+  }
+
+  /* Estilos estáticos para modo claro */
+  .main-star {
+    opacity: 0.85 !important;
+  }
+
+  .small-star {
+    opacity: 0.35 !important;
   }
 
   /* Sección de progreso en modo claro */
