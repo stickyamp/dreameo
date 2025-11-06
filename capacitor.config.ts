@@ -31,9 +31,9 @@ const config: CapacitorConfig = {
       presentationOptions: ["badge", "sound"],
     },
     LocalNotifications: {
-      smallIcon: "ic_star_notification",
-      largeIcon: "ic_star_notification",
-      iconColor: "#000000",
+      smallIcon: "ic_notification_small",
+      largeIcon: "ic_star_notification_dark",
+      iconColor: "#FFFFFF",
     },
   },
   android: {

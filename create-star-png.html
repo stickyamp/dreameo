@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Icono de Estrella PNG</title>
+</head>
+<body>
+    <canvas id="canvas" width="96" height="96" style="border: 1px solid #ccc;"></canvas>
+    <br><br>
+    <button onclick="downloadIcon(24, 'ic_star_notification_24')">Descargar 24x24</button>
+    <button onclick="downloadIcon(36, 'ic_star_notification_36')">Descargar 36x36</button>
+    <button onclick="downloadIcon(48, 'ic_star_notification_48')">Descargar 48x48</button>
+    <button onclick="downloadIcon(72, 'ic_star_notification_72')">Descargar 72x72</button>
+    <button onclick="downloadIcon(96, 'ic_star_notification_96')">Descargar 96x96</button>
+
+    <script>
+        function drawStar(ctx, size) {
+            const centerX = size / 2;
+            const centerY = size / 2 - size * 0.1; // Desplazar hacia arriba
+            const outerRadius = size * 0.35;
+            const innerRadius = size * 0.15;
+            
+            ctx.fillStyle = '#0D0D0D'; // Negro intenso
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1;
+            
+            ctx.beginPath();
+            
+            for (let i = 0; i < 10; i++) {
+                const angle = (i * Math.PI) / 5;
+                const radius = i % 2 === 0 ? outerRadius : innerRadius;
+                const x = centerX + Math.cos(angle - Math.PI / 2) * radius;
+                const y = centerY + Math.sin(angle - Math.PI / 2) * radius;
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+        
+        function downloadIcon(size, filename) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Fondo transparente
+            ctx.clearRect(0, 0, size, size);
+            
+            // Dibujar estrella
+            drawStar(ctx, size);
+            
+            // Descargar
+            const link = document.createElement('a');
+            link.download = filename + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Dibujar vista previa
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        drawStar(ctx, 96);
+    </script>
+</body>
+</html>
