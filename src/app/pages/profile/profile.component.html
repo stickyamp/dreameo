@@ -59,9 +59,6 @@
         >
         </ion-toggle>
       </ion-item>
-    </ion-list>
-    <!-- Notificación diaria -->
-    <ion-list class="settings-list">
       <ion-item>
         <ion-icon name="notifications-outline" slot="start"></ion-icon>
         <ion-label>{{ "PROFILE.NOTIF_REMINDER_LABEL" | translate }}</ion-label>
@@ -74,10 +71,30 @@
         </ion-toggle>
         <ion-note slot="end" *ngIf="notificationsLoading">Cargando...</ion-note>
       </ion-item>
+
+      <ion-item button (click)="loadBackUp()" lines="none" *ngIf="isUserLogged">
+        <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
+        <ion-label>
+          {{ "PROFILE.LOAD_BACKUP" | translate }}
+        </ion-label>
+      </ion-item>
+
+      <ion-item button (click)="exportDreamsPdf()" lines="none">
+        <ion-icon name="document-outline" slot="start"></ion-icon>
+        <ion-label>{{ "PROFILE.EXPORT_DREAMS_PDF" | translate }}</ion-label>
+      </ion-item>
     </ion-list>
 
     <!-- Danger Zone -->
     <ion-list class="danger-zone">
+      <!-- Clean Data -->
+      <ion-item button (click)="cleanData()" lines="none">
+        <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
+        <ion-label color="danger">{{
+          "PROFILE.CLEAN_DATA" | translate
+        }}</ion-label>
+      </ion-item>
+
       @if(isUserLogged){
       <!-- Close Session -->
       <ion-item button (click)="closeSession()" lines="none">
@@ -87,27 +104,13 @@
         }}</ion-label>
       </ion-item>
 
-      <ion-item button (click)="loadBackUp()" lines="none">
-        <ion-icon
-          name="cloud-download-outline"
-          slot="start"
-          color="danger"
-        ></ion-icon>
-        <ion-label color="danger">
-          {{ "PROFILE.LOAD_BACKUP" | translate }}
-        </ion-label>
-      </ion-item>
-      }
-
-      <!-- Clean Data -->
-      <ion-item button (click)="cleanData()" lines="none">
-        <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
+      <ion-item button (click)="deletePermanentAccount()" lines="none">
+        <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
         <ion-label color="danger">{{
-          "PROFILE.CLEAN_DATA" | translate
+          "PROFILE.DELETE_ACCOUNT" | translate
         }}</ion-label>
       </ion-item>
-
-      @if(showDebugTools){
+      } @if(showDebugTools){
 
       <ion-item button (click)="goToDebug()" lines="none">
         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
@@ -136,7 +139,7 @@
       }
     </ion-list>
 
-    <div class="app-info-section">
+    <div class="app-info-section" tripleClick (tripleClick)="enableDebugMode()">
       <img
         src="assets/images/onboarding/icon_no_bg.png"
         width="100"

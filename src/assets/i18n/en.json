@@ -122,7 +122,9 @@
     "NOTIF_REMINDER_LABEL": "Daily dream reminder",
     "LOGOUT_HEADER": "Log out",
     "LOGOUT_MESSAGE": "Are you sure you want to end the current session?",
-    "CONFIRM_LOGOUT": "Log out"
+    "CONFIRM_LOGOUT": "Log out",
+    "EXPORT_DREAMS_PDF": "Export dreams",
+    "DELETE_ACCOUNT": "Delete account"
   },
   "DREAM_DETAIL": {
     "TITLE": "Dream",
@@ -203,10 +205,16 @@
   },
   "CLEAN_DATA": {
     "HEADER": "Clean Data",
-    "MESSAGE": "This will remove all local data including dreams, settings, and preferences. Are you sure?",
+    "MESSAGE": "This will remove all local and cloud-stored dreams, also preferences and configurations. Are you sure?",
     "CANCEL": "Cancel",
     "CONFIRM": "Clean",
     "SUCCESS_HEADER": "Success",
-    "SUCCESS_MESSAGE": "All local data has been cleared successfully."
+    "SUCCESS_MESSAGE": "All data has been cleared successfully."
+  },
+  "DELETE_PERMANENT_ACCOUNT": {
+    "HEADER": "Delete Account Permanently",
+    "MESSAGE": "Are you sure you want to permanently delete your account? This action cannot be undone and will permanently delete all data stored about you.",
+    "CANCEL": "Cancel",
+    "CONFIRM": "Delete"
   }
 }

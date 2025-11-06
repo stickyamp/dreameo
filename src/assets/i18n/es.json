@@ -122,7 +122,9 @@
     "NOTIF_REMINDER_LABEL": "Recordatorio diario de sueños",
     "LOGOUT_HEADER": "Cerrar sesión",
     "LOGOUT_MESSAGE": "¿Estás seguro de que deseas cerrar la sesión actual?",
-    "CONFIRM_LOGOUT": "Cerrar sesión"
+    "CONFIRM_LOGOUT": "Cerrar sesión",
+    "EXPORT_DREAMS_PDF": "Exportar sueños",
+    "DELETE_ACCOUNT": "Borrar cuenta"
   },
   "DREAM_DETAIL": {
     "TITLE": "Sueño",
@@ -204,10 +206,16 @@
 
   "CLEAN_DATA": {
     "HEADER": "Limpiar Datos",
-    "MESSAGE": "Esto eliminará todos los datos locales incluyendo sueños, configuraciones y preferencias. ¿Estás seguro?",
+    "MESSAGE": "Esto eliminará todos los sueños locales y almacenados en la nube, además de configuraciones y preferencias. ¿Estás seguro?",
     "CANCEL": "Cancelar",
     "CONFIRM": "Limpiar",
     "SUCCESS_HEADER": "Éxito",
-    "SUCCESS_MESSAGE": "Todos los datos locales han sido eliminados exitosamente."
+    "SUCCESS_MESSAGE": "Todos los datos han sido eliminados exitosamente."
+  },
+  "DELETE_PERMANENT_ACCOUNT": {
+    "HEADER": "Eliminar Cuenta Permanentemente",
+    "MESSAGE": "¿Estás seguro de que deseas eliminar tu cuenta permanentemente? Esta acción no se puede deshacer y eliminará de forma permanente todos los datos almacenados sobre ti.",
+    "CANCEL": "Cancelar",
+    "CONFIRM": "Eliminar"
   }
 }

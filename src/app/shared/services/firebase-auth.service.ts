@@ -9,6 +9,8 @@ import {
   GoogleAuthProvider,
   signInWithCredential,
   signInWithPopup,
+  deleteUser,
+  reauthenticateWithCredential,
 } from "@angular/fire/auth";
 import { BehaviorSubject } from "rxjs";
 import { Router } from "@angular/router";
@@ -18,7 +20,16 @@ import { googleAuthConfig } from "../../../environments/google-auth.config";
 import { Capacitor } from "@capacitor/core";
 import { CrashlyticsService } from "./crashlytics.service";
 import { LoggerService } from "./log.service";
-import { Firestore } from "@angular/fire/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  Firestore,
+  getDocs,
+  query,
+  where,
+  writeBatch,
+} from "@angular/fire/firestore";
 
 export interface UserProfile {
   uid: string;
@@ -402,5 +413,210 @@ export class FirebaseAuthService {
     }
 
     return new Error(message);
+  }
+
+  /**
+   * Completely deletes the user account from Firebase Authentication
+   * and all their data from Firestore
+   * @returns Promise<void>
+   * @throws Error if deletion fails
+   */
+  async deleteCompleteAccount(): Promise<void> {
+    try {
+      const currentUser = this.auth.currentUser;
+
+      if (!currentUser) {
+        throw new Error("No user is currently logged in");
+      }
+
+      const userId = currentUser.uid;
+      const userEmail = currentUser.email;
+
+      console.log(`Starting complete account deletion for user: ${userId}`);
+      this.crashlytics.log(
+        `Iniciando eliminación completa de cuenta: ${userEmail}`
+      );
+
+      // Step 1: Delete Firebase Authentication user account FIRST
+      // (Do this before signing out or clearing data)
+      try {
+        await deleteUser(currentUser);
+        console.log("Firebase Authentication account deleted successfully");
+        this.crashlytics.log(`Cuenta eliminada completamente: ${userEmail}`);
+      } catch (deleteError: any) {
+        // If it's a re-authentication error, throw it to be handled by deleteAccountWithReauth
+        if (deleteError.code === "auth/requires-recent-login") {
+          console.log("Re-authentication required, propagating error...");
+          throw deleteError;
+        }
+        // For other errors, handle them normally
+        throw deleteError;
+      }
+
+      // Step 2: Delete all Firestore data (dreams and tags)
+      try {
+        const dreamDocRef = doc(this.firestore, "dreams", userId);
+        await deleteDoc(dreamDocRef);
+        console.log("Firestore data deleted");
+      } catch (firestoreError: any) {
+        if (firestoreError.code !== "not-found") {
+          console.error("Error deleting Firestore data:", firestoreError);
+          // Continue anyway - account is already deleted
+        }
+      }
+
+      // Step 3: Sign out from Google Auth if on native platform
+      if (Capacitor.isNativePlatform()) {
+        try {
+          await GoogleAuth.signOut();
+          console.log("Signed out from Google Auth (native)");
+        } catch (error) {
+          console.warn("Could not sign out from Google Auth:", error);
+        }
+      }
+
+      // Step 4: Clear local preferences
+      try {
+        await Preferences.remove({ key: "firebase_user_session" });
+        await Preferences.clear();
+        console.log("Local preferences cleared");
+      } catch (error) {
+        console.warn("Error clearing preferences:", error);
+      }
+
+      // Step 5: Update state
+      this.currentUserSubject.next(null);
+      this.isAuthenticatedSubject.next(false);
+
+      // Step 6: Navigate to login page
+      await this.router.navigate(["/login"]);
+
+      console.log("Complete account deletion finished successfully");
+    } catch (error: any) {
+      console.error("Error deleting complete account:", error);
+
+      // Don't log to crashlytics if it's just a re-auth requirement
+      if (error.code !== "auth/requires-recent-login") {
+        this.crashlytics.logError(error, "Complete Account Deletion Error");
+      }
+
+      // Handle specific Firebase errors
+      if (error.code === "auth/requires-recent-login") {
+        throw new Error(
+          "Por seguridad, necesitas volver a iniciar sesión antes de eliminar tu cuenta"
+        );
+      }
+
+      if (error.code === "auth/network-request-failed") {
+        throw new Error(
+          "Error de conexión. Verifica tu internet e intenta nuevamente."
+        );
+      }
+
+      throw new Error(
+        error.message ||
+          "Error al eliminar la cuenta. Por favor, intenta nuevamente."
+      );
+    }
+  }
+
+  /**
+   * Re-authenticates the user with Google before account deletion
+   * Required by Firebase if the user hasn't logged in recently
+   * @returns Promise<void>
+   */
+  async reauthenticateBeforeDeletion(): Promise<void> {
+    try {
+      const currentUser = this.auth.currentUser;
+
+      if (!currentUser) {
+        throw new Error("No user is currently logged in");
+      }
+
+      console.log("Re-authenticating user before deletion...");
+
+      // Check if user signed in with Google
+      const isGoogleUser = currentUser.providerData.some(
+        (provider) => provider.providerId === "google.com"
+      );
+
+      if (!isGoogleUser) {
+        throw new Error(
+          "Solo se soporta reautenticación con Google actualmente"
+        );
+      }
+
+      // Re-authenticate with Google
+      if (Capacitor.isNativePlatform()) {
+        // Native platform (Android/iOS)
+        const googleUser = await GoogleAuth.signIn();
+        const credential = GoogleAuthProvider.credential(
+          googleUser.authentication.idToken
+        );
+        await reauthenticateWithCredential(currentUser, credential);
+      } else {
+        // Web platform
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(this.auth, provider);
+        // User is automatically re-authenticated with popup
+      }
+
+      console.log("Re-authentication successful");
+    } catch (error: any) {
+      console.error("Re-authentication error:", error);
+
+      if (
+        error.message?.includes("cancelled") ||
+        error.message?.includes("canceled")
+      ) {
+        throw new Error("Reautenticación cancelada");
+      }
+
+      throw new Error(
+        "Error en la reautenticación. Por favor, intenta nuevamente."
+      );
+    }
+  }
+
+  /**
+   * Helper method that handles re-authentication and deletion in one flow
+   * Use this method from your component
+   * @returns Promise<void>
+   */
+  async deleteAccountWithReauth(): Promise<void> {
+    try {
+      // First, try to delete directly
+      await this.deleteCompleteAccount();
+    } catch (error: any) {
+      console.log("Deletion error caught:", error);
+      console.log("Error code:", error.code);
+      console.log("Error message:", error.message);
+
+      // Check for re-authentication requirement by error code (more reliable)
+      if (
+        error.code === "auth/requires-recent-login" ||
+        error.message?.includes("volver a iniciar sesión") ||
+        error.message?.includes("requires-recent-login")
+      ) {
+        console.log("Re-authentication required, prompting user...");
+
+        try {
+          // Re-authenticate
+          await this.reauthenticateBeforeDeletion();
+
+          // Try deletion again with fresh credentials
+          await this.deleteCompleteAccount();
+        } catch (reauthError: any) {
+          console.error(
+            "Re-authentication or second deletion attempt failed:",
+            reauthError
+          );
+          throw reauthError;
+        }
+      } else {
+        // Re-throw other errors
+        throw error;
+      }
+    }
   }
 }
