@@ -13,6 +13,15 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { ConfigService } from "@/app/shared/services/config.service";
 import { DreamService } from "@/app/shared/services/dreams/dream.base.service";
 
+export interface Rank {
+  requiredDreams: number;
+  icon: string;
+  iconCss: string;
+  iconBackground: string;
+  iconBackgroundCss: string;
+  title: string;
+}
+
 @Component({
   selector: "app-calendar",
   templateUrl: "./calendar.component.html",
@@ -46,7 +55,13 @@ export class CalendarComponent implements OnInit {
   filledDays: number = 0;
   totalMonthDays: number = 0;
   userRankLabel: string = "CALENDAR.RANK_ROOKIE"; // placeholder
-  bgStars: { x: number; y: number; r: number; sparkleOffsetX: number; sparkleOffsetY: number }[] = [];
+  bgStars: {
+    x: number;
+    y: number;
+    r: number;
+    sparkleOffsetX: number;
+    sparkleOffsetY: number;
+  }[] = [];
 
   // Variables para el sistema de progreso por niveles
   currentRankName: string = "CALENDAR.RANK_ROOKIE";
@@ -103,7 +118,7 @@ export class CalendarComponent implements OnInit {
         daysWithDream.add(d);
       }
     }
-    
+
     // Área de dibujo del SVG (coincide con el viewBox 0 0 350 130)
     const width = 350;
     const height = 130;
@@ -117,7 +132,7 @@ export class CalendarComponent implements OnInit {
     const totalStars = stars.length;
     let connectedStars: { date: string; day: number }[] = [];
     let isolatedStars: { date: string; day: number }[] = [];
-    
+
     if (totalStars <= 2) {
       // Si hay muy pocas estrellas, todas van conectadas
       connectedStars = [...stars];
@@ -136,54 +151,57 @@ export class CalendarComponent implements OnInit {
     this.dreamDayPoints = connectedStars.map((s, idx) => {
       const count = connectedStars.length;
       const progress = count > 1 ? idx / (count - 1) : 0.5;
-      
+
       // Posición base a lo largo del ancho
       let x = marginX + (width - marginX * 2) * progress;
-      
+
       // Crear patrones de constelación más sutiles
       const centerY = (minY + maxY) / 2;
       let y;
-      
+
       if (count <= 2) {
         y = centerY + Math.sin(progress * Math.PI) * 15;
       } else if (count <= 3) {
         y = centerY + Math.sin(progress * Math.PI * 1.2) * 20;
       } else {
-        y = centerY + Math.sin(progress * Math.PI * 1.5) * 25 + Math.cos(progress * Math.PI * 2) * 10;
+        y =
+          centerY +
+          Math.sin(progress * Math.PI * 1.5) * 25 +
+          Math.cos(progress * Math.PI * 2) * 10;
       }
-      
+
       // Menos variación aleatoria para líneas más suaves
       x += (Math.random() - 0.5) * 15;
       y += (Math.random() - 0.5) * 10;
-      
+
       // Clamp para mantener dentro del área
       x = Math.max(marginX, Math.min(width - marginX, x));
       y = Math.max(minY, Math.min(maxY, y));
-      
+
       return { x, y, date: s.date };
     });
-    
+
     // Generar posiciones para estrellas aisladas
     this.isolatedDreamPoints = isolatedStars.map((s) => {
       let x: number = marginX + Math.random() * (width - marginX * 2);
       let y: number = minY + Math.random() * (maxY - minY);
       let attempts = 0;
       const maxAttempts = 20;
-      
+
       while (
         attempts < maxAttempts &&
-        this.dreamDayPoints.some(pt => 
-          Math.abs(pt.x - x) < 30 && Math.abs(pt.y - y) < 30
+        this.dreamDayPoints.some(
+          (pt) => Math.abs(pt.x - x) < 30 && Math.abs(pt.y - y) < 30
         )
       ) {
         x = marginX + Math.random() * (width - marginX * 2);
         y = minY + Math.random() * (maxY - minY);
         attempts++;
       }
-      
+
       return { x, y, date: s.date };
     });
-    
+
     this.polylineString = this.dreamDayPoints
       .map((pt) => `${pt.x},${pt.y}`)
       .join(" ");
@@ -203,10 +221,10 @@ export class CalendarComponent implements OnInit {
     const numSmallStars = 22; // Aumentar para cubrir mejor el área
     const takenZones = [
       ...this.dreamDayPoints.map((p) => ({ x: p.x, y: p.y })),
-      ...this.isolatedDreamPoints.map((p) => ({ x: p.x, y: p.y }))
+      ...this.isolatedDreamPoints.map((p) => ({ x: p.x, y: p.y })),
     ];
     this.bgStars = [];
-    
+
     // Crear zonas preferenciales para distribución más natural cubriendo todo el ancho
     const zones = [
       { x: width * 0.1, y: height * 0.2, weight: 0.7 },
@@ -219,13 +237,13 @@ export class CalendarComponent implements OnInit {
       { x: width * 0.5, y: height * 0.8, weight: 0.6 },
       { x: width * 0.8, y: height * 0.7, weight: 0.8 }, // Otra zona para el lateral derecho inferior
     ];
-    
+
     // Garantizar distribución en todo el ancho
     const rightSideStars = Math.ceil(numSmallStars * 0.3); // 30% para el lado derecho
-    
+
     for (let i = 0; i < numSmallStars; i++) {
       let rx: number, ry: number;
-      
+
       // Forzar algunas estrellas en el lateral derecho
       if (i < rightSideStars) {
         rx = width * 0.7 + Math.random() * (width * 0.25); // 70-95% del ancho
@@ -240,11 +258,11 @@ export class CalendarComponent implements OnInit {
         rx = marginX + Math.random() * (width - marginX * 2);
         ry = minY + Math.random() * (maxY - minY);
       }
-      
+
       // Clamp dentro del área completa
       rx = Math.max(marginX, Math.min(width - marginX, rx));
       ry = Math.max(minY, Math.min(maxY, ry));
-      
+
       // Evitar solapamiento con puntos principales (distancia reducida)
       if (
         takenZones.some(
@@ -254,7 +272,7 @@ export class CalendarComponent implements OnInit {
         i--;
         continue;
       }
-      
+
       // Tamaño variado pero más pequeño
       const r = 0.4 + Math.random() * 0.4;
       const sparkleOffsetX = 0;
@@ -263,88 +281,113 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  ranks: Rank[] = [
+    {
+      title: this.translate.instant("RANKS.RANK_ROOKIE"),
+      icon: "sparkles",
+      iconCss: "rank-icon-style-1",
+      iconBackground: "shield-outline",
+      iconBackgroundCss: "rank-background-style-1",
+      requiredDreams: 0,
+      //requiredDreams: 0,
+    },
+    {
+      title: this.translate.instant("RANKS.RANK_NOVICE"),
+      icon: "moon",
+      iconCss: "rank-icon-style-1",
+      iconBackground: "shield-outline",
+      iconBackgroundCss: "rank-background-style-1",
+      requiredDreams: 10,
+      //requiredDreams: 3,
+    },
+    {
+      title: this.translate.instant("RANKS.RANK_INTERMEDIATE"),
+      icon: "planet-outline",
+      iconCss: "rank-icon-style-2",
+      iconBackground: "shield",
+      iconBackgroundCss: "rank-background-style-2",
+      requiredDreams: 25,
+      //requiredDreams: 5,
+    },
+    {
+      title: this.translate.instant("RANKS.RANK_ADVANCED"),
+      icon: "flame",
+      iconCss: "rank-icon-style-2",
+      iconBackground: "shield",
+      iconBackgroundCss: "rank-background-style-2",
+      requiredDreams: 50,
+      //requiredDreams: 7,
+    },
+    {
+      title: this.translate.instant("RANKS.RANK_EXPERT"),
+      icon: "",
+      iconCss: "rank-icon-style-3",
+      iconBackground: "star",
+      iconBackgroundCss: "rank-background-style-3",
+      requiredDreams: 100,
+      //requiredDreams: 10,
+    },
+    {
+      title: this.translate.instant("RANKS.RANK_MASTER"),
+      icon: "",
+      iconCss: "rank-icon-style-4",
+      iconBackground: "skull",
+      iconBackgroundCss: "rank-background-style-4",
+      requiredDreams: 200,
+      //requiredDreams: 12,
+    },
+    {
+      title: this.translate.instant("RANKS.RANK_LORD"),
+      icon: "assets/moon",
+      iconCss: "rank-icon-style-5",
+      iconBackground: "moon",
+      iconBackgroundCss: "rank-background-style-5",
+      requiredDreams: 500,
+      //requiredDreams: 14,
+    },
+  ];
+
+  currentRank: Rank = {} as any;
+  nextRank: Rank | null = null;
+
   updateRankProgress() {
-    // Obtener el total de sueños guardados en toda la aplicación
     const allDreams = this.dreamService.getAllDreams();
     this.currentDreamsCount = allDreams.length;
 
-    // Definir niveles con rangos más amplios: Rookie (0-19), Novice (20-49), Intermediate (50-99),
-    // Advanced (100-199), Expert (200-399), Master (400+)
-    let currentRank: string;
-    let nextRank: string;
-    let dreamsNeeded: number;
-    let progressInCurrentLevel: number;
-    let rankStart: number;
+    // Find the current rank (last rank where requiredDreams <= currentDreamsCount)
+    let currentIndex = this.ranks.findIndex((rank, index) => {
+      const nextRank = this.ranks[index + 1];
+      return !nextRank || this.currentDreamsCount < nextRank.requiredDreams;
+    });
 
-    if (this.currentDreamsCount < 20) {
-      // Rookie: 0-19 sueños, necesita 20 para Novice
-      currentRank = "CALENDAR.RANK_ROOKIE";
-      nextRank = "CALENDAR.RANK_NOVICE";
-      dreamsNeeded = 20;
-      rankStart = 0;
-      progressInCurrentLevel = this.currentDreamsCount;
-    } else if (this.currentDreamsCount < 50) {
-      // Novice: 20-49 sueños, necesita 50 para Intermediate
-      currentRank = "CALENDAR.RANK_NOVICE";
-      nextRank = "CALENDAR.RANK_INTERMEDIATE";
-      dreamsNeeded = 50;
-      rankStart = 20;
-      progressInCurrentLevel = this.currentDreamsCount - 20;
-    } else if (this.currentDreamsCount < 100) {
-      // Intermediate: 50-99 sueños, necesita 100 para Advanced
-      currentRank = "CALENDAR.RANK_INTERMEDIATE";
-      nextRank = "CALENDAR.RANK_ADVANCED";
-      dreamsNeeded = 100;
-      rankStart = 50;
-      progressInCurrentLevel = this.currentDreamsCount - 50;
-    } else if (this.currentDreamsCount < 200) {
-      // Advanced: 100-199 sueños, necesita 200 para Expert
-      currentRank = "CALENDAR.RANK_ADVANCED";
-      nextRank = "CALENDAR.RANK_EXPERT";
-      dreamsNeeded = 200;
-      rankStart = 100;
-      progressInCurrentLevel = this.currentDreamsCount - 100;
-    } else if (this.currentDreamsCount < 400) {
-      // Expert: 200-399 sueños, necesita 400 para Master
-      currentRank = "CALENDAR.RANK_EXPERT";
-      nextRank = "CALENDAR.RANK_MASTER";
-      dreamsNeeded = 400;
-      rankStart = 200;
-      progressInCurrentLevel = this.currentDreamsCount - 200;
-    } else {
-      // Master: 400+ sueños, es el nivel máximo
-      currentRank = "CALENDAR.RANK_MASTER";
-      nextRank = "CALENDAR.RANK_MASTER"; // No hay siguiente nivel
-      dreamsNeeded = 400; // Mantener el umbral para el cálculo
-      rankStart = 400;
-      progressInCurrentLevel = Math.min(this.currentDreamsCount - 400, 100); // Límite para mostrar progreso
+    if (currentIndex === -1) {
+      currentIndex = this.ranks.length - 1; // Fallback (should not happen)
     }
 
-    this.currentRankName = currentRank;
-    this.nextRankName = nextRank;
-    // Mostrar el número total de sueños necesarios para el siguiente nivel
-    this.dreamsNeededForNext = dreamsNeeded;
+    this.currentRank = this.ranks[currentIndex];
+    this.nextRank = this.ranks[currentIndex + 1] ?? null; // Could be null if Master
 
-    // Calcular porcentaje de progreso hacia el siguiente nivel
-    if (
-      currentRank === "CALENDAR.RANK_MASTER" &&
-      nextRank === "CALENDAR.RANK_MASTER"
-    ) {
-      // Nivel máximo alcanzado
+    if (!this.nextRank) {
+      // Master rank (no more levels)
+      this.dreamsNeededForNext = this.currentRank.requiredDreams;
       this.progressToNextPercent = 100;
-    } else {
-      // Calcular cuántos sueños se necesitan en total para llegar al siguiente nivel
-      const dreamsRequiredForNext = dreamsNeeded - rankStart;
-      // Calcular progreso: sueños en el nivel actual / sueños necesarios para el siguiente nivel
-      const progress =
-        dreamsRequiredForNext > 0
-          ? Math.min(
-              100,
-              Math.round((progressInCurrentLevel / dreamsRequiredForNext) * 100)
-            )
-          : 0;
-      this.progressToNextPercent = progress;
+      return;
     }
+
+    // Dreams needed to reach next rank
+    this.dreamsNeededForNext = this.nextRank.requiredDreams;
+
+    const rankStart = this.currentRank.requiredDreams;
+    const progressInCurrentLevel = this.currentDreamsCount - rankStart;
+    const dreamsRequiredForNext = this.nextRank.requiredDreams - rankStart;
+
+    this.progressToNextPercent = Math.min(
+      100,
+      Math.max(
+        0,
+        Math.round((progressInCurrentLevel / dreamsRequiredForNext) * 100)
+      )
+    );
   }
 
   private updateLocalizedLabels() {
@@ -619,27 +662,29 @@ export class CalendarComponent implements OnInit {
     const outerRadius = size * 1.2;
     const innerRadius = size * 0.5;
     const points = 5;
-    let path = '';
-    
+    let path = "";
+
     for (let i = 0; i < points * 2; i++) {
       const angle = (i * Math.PI) / points - Math.PI / 2;
       const radius = i % 2 === 0 ? outerRadius : innerRadius;
       const x = cx + Math.cos(angle) * radius;
       const y = cy + Math.sin(angle) * radius;
-      
+
       if (i === 0) {
         path += `M ${x} ${y}`;
       } else {
         path += ` L ${x} ${y}`;
       }
     }
-    path += ' Z';
+    path += " Z";
     return path;
   }
 
   // Método para generar círculos pequeños
   getSmallCirclePath(cx: number, cy: number, radius: number): string {
-    return `M ${cx - radius} ${cy} A ${radius} ${radius} 0 1 0 ${cx + radius} ${cy} A ${radius} ${radius} 0 1 0 ${cx - radius} ${cy}`;
+    return `M ${cx - radius} ${cy} A ${radius} ${radius} 0 1 0 ${
+      cx + radius
+    } ${cy} A ${radius} ${radius} 0 1 0 ${cx - radius} ${cy}`;
   }
 
   // Método para generar el path SVG de una estrella principal grande
@@ -647,21 +692,21 @@ export class CalendarComponent implements OnInit {
     const outerRadius = 5;
     const innerRadius = 2;
     const points = 5;
-    let path = '';
-    
+    let path = "";
+
     for (let i = 0; i < points * 2; i++) {
       const angle = (i * Math.PI) / points - Math.PI / 2;
       const radius = i % 2 === 0 ? outerRadius : innerRadius;
       const x = cx + Math.cos(angle) * radius;
       const y = cy + Math.sin(angle) * radius;
-      
+
       if (i === 0) {
         path += `M ${x} ${y}`;
       } else {
         path += ` L ${x} ${y}`;
       }
     }
-    path += ' Z';
+    path += " Z";
     return path;
   }
 

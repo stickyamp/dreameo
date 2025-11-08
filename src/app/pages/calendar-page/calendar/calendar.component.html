@@ -63,29 +63,41 @@
         <!-- Definir filtros para efectos de brillo suave -->
         <defs>
           <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-            <feMerge> 
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          <filter id="smallStarGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-            <feMerge> 
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
+          <filter
+            id="smallStarGlow"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feGaussianBlur stdDeviation="1" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          
+
           <!-- Gradiente radial para efecto de estrella más sutil -->
           <radialGradient id="starGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.9" />
+            <stop offset="0%" style="stop-color: #ffffff; stop-opacity: 1" />
+            <stop
+              offset="100%"
+              style="stop-color: #ffffff; stop-opacity: 0.9"
+            />
           </radialGradient>
-          
+
           <radialGradient id="smallStarGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.7" />
-            <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.5" />
+            <stop offset="0%" style="stop-color: #ffffff; stop-opacity: 0.7" />
+            <stop
+              offset="100%"
+              style="stop-color: #ffffff; stop-opacity: 0.5"
+            />
           </radialGradient>
         </defs>
 
@@ -109,7 +121,7 @@
             class="small-star"
           />
         </ng-container>
-        
+
         <!-- Líneas de conexión punteadas más sutiles -->
         <polyline
           *ngIf="dreamDayPoints.length > 1"
@@ -120,7 +132,7 @@
           stroke-dasharray="2,4"
           opacity="0.4"
         />
-        
+
         <!-- Estrellas principales conectadas -->
         <ng-container *ngIf="dreamDayPoints.length > 0">
           <ng-container *ngFor="let pt of dreamDayPoints">
@@ -132,7 +144,7 @@
             />
           </ng-container>
         </ng-container>
-        
+
         <!-- Estrellas principales aisladas (sin conexión) -->
         <ng-container *ngIf="isolatedDreamPoints.length > 0">
           <ng-container *ngFor="let pt of isolatedDreamPoints">
@@ -146,7 +158,10 @@
         </ng-container>
       </svg>
     </div>
-    <div *ngIf="dreamDayPoints.length === 0" class="constellation-empty-message">
+    <div
+      *ngIf="dreamDayPoints.length === 0"
+      class="constellation-empty-message"
+    >
       <span>{{ "CALENDAR.NO_DREAMS_THIS_MONTH" | translate }}</span>
     </div>
   </div>
@@ -156,12 +171,25 @@
     <!-- Card pequeña (badge) -->
     <div class="progress-badge-card">
       <div class="progress-rank-badge">
+        @if(!currentRank.icon.includes("assets")){
         <div class="rank-icon-container">
-          <ion-icon name="shield-outline" class="rank-icon-shield"></ion-icon>
-          <ion-icon name="moon-outline" class="rank-icon-moon"></ion-icon>
+          @if(currentRank.iconBackground){
+          <ion-icon
+            [name]="currentRank.iconBackground"
+            [class]="currentRank.iconBackgroundCss"
+          ></ion-icon>
+          } @if(currentRank.icon){
+          <ion-icon
+            [name]="currentRank.icon"
+            [class]="currentRank.iconCss"
+          ></ion-icon>
+          }
         </div>
-        <div class="rank-name-main">{{ currentRankName | translate }}</div>
-        <div class="rank-name-sub">{{ "CALENDAR.DREAMER" | translate }}</div>
+
+        }@else {
+        <img src="assets/svgs/moon-rank.svg" width="40" height="40" alt="" />
+        }
+        <div class="rank-name-main">{{ currentRank.title | translate }}</div>
       </div>
     </div>
 
@@ -171,7 +199,7 @@
         <div class="progress-title-row">
           <span class="progress-title"
             >{{ "CALENDAR.PROGRESS_TO" | translate }}
-            {{ nextRankName | translate }}</span
+            {{ nextRank?.title | translate }}</span
           >
         </div>
         <div class="progress-bar-container">
@@ -187,7 +215,7 @@
             {{ "CALENDAR.KEEP_GOING" | translate }}
           </div>
           <div class="progress-count-text-right">
-            {{ currentDreamsCount }}/{{ dreamsNeededForNext }}
+            {{ currentDreamsCount }}/{{ nextRank?.requiredDreams }}
             {{ "CALENDAR.DREAMS" | translate }}
           </div>
         </div>

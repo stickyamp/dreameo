@@ -85,13 +85,6 @@
     "KEEP_GOING": "Keep going!",
     "PROGRESS_TO": "Progress to",
     "DREAMER": "Dreamer",
-    "RANK_ROOKIE": "Rookie",
-    "RANK_BEGINNER": "Beginner",
-    "RANK_NOVICE": "Novice",
-    "RANK_INTERMEDIATE": "Intermediate",
-    "RANK_ADVANCED": "Advanced",
-    "RANK_EXPERT": "Expert",
-    "RANK_MASTER": "Master",
     "DREAMS": "dreams"
   },
   "DREAMS": {
@@ -216,5 +209,14 @@
     "MESSAGE": "Are you sure you want to permanently delete your account? This action cannot be undone and will permanently delete all data stored about you.",
     "CANCEL": "Cancel",
     "CONFIRM": "Delete"
+  },
+  "RANKS": {
+    "RANK_ROOKIE": "First Awakening",
+    "RANK_NOVICE": "Dream Novice",
+    "RANK_INTERMEDIATE": "Night Walker",
+    "RANK_ADVANCED": "Lucid Dreamer",
+    "RANK_EXPERT": "Oneiric Traveler",
+    "RANK_MASTER": "Star Explorer",
+    "RANK_LORD": "Moon Lord"
   }
 }

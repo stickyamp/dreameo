@@ -85,13 +85,6 @@
     "KEEP_GOING": "¡Sigue así!",
     "PROGRESS_TO": "Progreso a",
     "DREAMER": "Soñador",
-    "RANK_ROOKIE": "Principiante",
-    "RANK_BEGINNER": "Principiante+",
-    "RANK_NOVICE": "Novato",
-    "RANK_INTERMEDIATE": "Intermedio",
-    "RANK_ADVANCED": "Avanzado",
-    "RANK_EXPERT": "Experto",
-    "RANK_MASTER": "Maestro",
     "DREAMS": "sueños"
   },
   "DREAMS": {
@@ -217,5 +210,14 @@
     "MESSAGE": "¿Estás seguro de que deseas eliminar tu cuenta permanentemente? Esta acción no se puede deshacer y eliminará de forma permanente todos los datos almacenados sobre ti.",
     "CANCEL": "Cancelar",
     "CONFIRM": "Eliminar"
+  },
+  "RANKS": {
+    "RANK_ROOKIE": "Primer Despertar",
+    "RANK_NOVICE": "Soñador Novato",
+    "RANK_INTERMEDIATE": "Caminante Nocturno",
+    "RANK_ADVANCED": "Soñador Lúcido",
+    "RANK_EXPERT": "Viajero Onírico",
+    "RANK_MASTER": "Explorador Estelar",
+    "RANK_LORD": "Señor Lunar"
   }
 }
