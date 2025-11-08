@@ -11,7 +11,7 @@
           android:pathData="M12,15.27L18.18,19l-1.64,-7.03L22,7.24l-7.19,-0.61L12,0 9.19,6.63 2,7.24l5.46,4.73L5.82,19z" 
           android:alpha="0.9"/>
     <!-- Contorno sutil para mejor definición -->
-    <path android:fillColor="none" 
+    <path android:fillColor="#000000"
           android:strokeColor="#000000"
           android:strokeWidth="0.3"
           android:pathData="M12,15.27L18.18,19l-1.64,-7.03L22,7.24l-7.19,-0.61L12,0 9.19,6.63 2,7.24l5.46,4.73L5.82,19z"/>

@@ -1,6 +1,6 @@
 import { Dream, TagModel, OfficialTags } from "@/app/models/dream.model";
 import { Injectable } from "@angular/core";
-import { Filesystem, Directory } from "@capacitor/filesystem";
+import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import { Platform } from "@ionic/angular";
 import jsPDF from "jspdf";
@@ -24,7 +24,8 @@ export class DreamPdfService {
       throw new Error("No dreams to export");
     }
 
-    // Ensure filename has .pdf extension
+    // Ensure filename has .pdf extension and remove any path separators
+    filename = filename.replace(/[\/\\]/g, "-");
     if (!filename.endsWith(".pdf")) {
       filename += ".pdf";
     }
@@ -178,15 +179,52 @@ export class DreamPdfService {
       const base64Data = await this.blobToBase64(blob);
       const base64String = base64Data.split(",")[1];
 
-      // Save to filesystem
-      const result = await Filesystem.writeFile({
-        path: filename,
-        data: base64String,
-        directory: Directory.Documents,
-        recursive: true,
-      });
+      // Use Cache directory instead of Documents for better compatibility
+      // Cache directory doesn't require special permissions on Android
+      const directory = Directory.Cache;
 
-      console.log("PDF saved to:", result.uri);
+      // First, check if we can write to the directory
+      try {
+        await Filesystem.stat({
+          path: "",
+          directory: directory,
+        });
+      } catch (error) {
+        console.log("Directory not accessible, trying to create it");
+      }
+
+      // Save to filesystem with proper error handling
+      let result;
+      try {
+        result = await Filesystem.writeFile({
+          path: filename,
+          data: base64String,
+          directory: directory,
+          recursive: true,
+        });
+        console.log("PDF saved successfully to:", result.uri);
+      } catch (writeError: any) {
+        console.error("Write error:", writeError);
+
+        // If Cache fails, try Data directory as fallback
+        console.log("Trying Data directory as fallback...");
+        result = await Filesystem.writeFile({
+          path: filename,
+          data: base64String,
+          directory: Directory.Data,
+          recursive: true,
+        });
+        console.log("PDF saved to Data directory:", result.uri);
+      }
+
+      // Check if Share is available
+      const canShare = await Share.canShare();
+      if (!canShare) {
+        console.warn("Share API not available");
+        // Optionally show a toast/alert to the user
+        alert(`PDF saved successfully at: ${result.uri}`);
+        return;
+      }
 
       // Share the file
       await Share.share({
@@ -195,9 +233,19 @@ export class DreamPdfService {
         url: result.uri,
         dialogTitle: "Share your dreams",
       });
-    } catch (error) {
+
+      console.log("PDF shared successfully");
+    } catch (error: any) {
       console.error("Error saving PDF on mobile:", error);
-      throw new Error("Failed to save PDF on mobile device");
+      console.error("Error details:", JSON.stringify(error));
+
+      // Provide more specific error message
+      let errorMessage = "Failed to save PDF on mobile device";
+      if (error.message) {
+        errorMessage += `: ${error.message}`;
+      }
+
+      throw new Error(errorMessage);
     }
   }
 
@@ -233,5 +281,48 @@ export class DreamPdfService {
     const pdfBlob = pdf.output("blob");
     const url = URL.createObjectURL(pdfBlob);
     window.open(url, "_blank");
+  }
+
+  /**
+   * Get saved PDFs from cache (mobile only)
+   */
+  async getSavedPdfs(): Promise<string[]> {
+    if (!this.platform.is("capacitor")) {
+      return [];
+    }
+
+    try {
+      const result = await Filesystem.readdir({
+        path: "",
+        directory: Directory.Cache,
+      });
+
+      return result.files
+        .filter((file) => file.name.endsWith(".pdf"))
+        .map((file) => file.name);
+    } catch (error) {
+      console.error("Error reading saved PDFs:", error);
+      return [];
+    }
+  }
+
+  /**
+   * Delete a saved PDF (mobile only)
+   */
+  async deletePdf(filename: string): Promise<void> {
+    if (!this.platform.is("capacitor")) {
+      return;
+    }
+
+    try {
+      await Filesystem.deleteFile({
+        path: filename,
+        directory: Directory.Cache,
+      });
+      console.log("PDF deleted:", filename);
+    } catch (error) {
+      console.error("Error deleting PDF:", error);
+      throw error;
+    }
   }
 }

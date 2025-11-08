@@ -44,13 +44,25 @@ export class DreamMobileService extends DreamService {
   /** 🔧 Initialize SQLite DB and tables */
   private async initDB() {
     try {
-      this.db = await this.sqlite.createConnection(
-        "dreams_db",
-        false,
-        "no-encryption",
-        1,
-        false
-      );
+      // Ensure consistency
+      await this.sqlite.checkConnectionsConsistency();
+
+      // Check if the connection already exists
+      const isConn = (await this.sqlite.isConnection("dreams_db", false))
+        .result;
+
+      if (isConn) {
+        this.db = await this.sqlite.retrieveConnection("dreams_db", false);
+      } else {
+        this.db = await this.sqlite.createConnection(
+          "dreams_db",
+          false,
+          "no-encryption",
+          1,
+          false
+        );
+      }
+
       await this.db.open();
 
       await this.db.execute(`
@@ -112,7 +124,10 @@ export class DreamMobileService extends DreamService {
     this.dreamsSubject.next(dreamsByDate);
   }
 
-  async addDream(dream: Omit<Dream, "id" | "createdAt">): Promise<Dream> {
+  async addDream(
+    dream: Omit<Dream, "id" | "createdAt">,
+    isRetry = false
+  ): Promise<Dream> {
     try {
       const newDream: Dream = {
         ...dream,
@@ -140,6 +155,9 @@ export class DreamMobileService extends DreamService {
       return newDream;
     } catch (err) {
       this.loggerService.log(`Error initializing DB ${err}`);
+      await this.initDB();
+      this.addDream(dream, true);
+
       return {} as Dream;
     }
   }

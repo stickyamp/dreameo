@@ -19,6 +19,7 @@ import {
 import { Preferences } from "@capacitor/preferences";
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { ConfigService } from "../../services/config.service";
+import { Capacitor } from "@capacitor/core";
 
 // Register Swiper custom elements
 register();
@@ -115,12 +116,16 @@ export class OnboardingComponent {
   areNotificationsEnabled = false;
   isEnablingNotifications = false;
 
-  ngOnInit() {
+  async ngOnInit() {
     // Suscribirse a cambios en el estado de autenticación de Firebase
     this.firebaseAuthService.currentUser$.subscribe(async (user) => {
       console.log("Firebase user state changed asaasasassasa:", user);
       this.isUserLoggedIn = (user && user.email.length > 0) || false;
     });
+
+    if (Capacitor.isNativePlatform()) {
+      this.areNotificationsEnabled = await this.checkNotificationPermission();
+    }
   }
 
   ngAfterViewInit() {
@@ -235,5 +240,14 @@ export class OnboardingComponent {
 
   trackBySlide(index: number, slide: OnboardingSlide): string | number {
     return slide.title; // or any unique property
+  }
+
+  async checkNotificationPermission(): Promise<boolean> {
+    if (!LocalNotifications) {
+      return false;
+      console.error("No local notifications provider");
+    }
+    const perm = await LocalNotifications.checkPermissions();
+    return perm.display === "granted";
   }
 }

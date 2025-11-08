@@ -518,6 +518,10 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  async goToDebug5() {
+    await Preferences.remove({ key: "LAST_BACKUP_DATE" });
+  }
+
   async getCachedUserPhoto(): Promise<string | null> {
     const { value } = await Preferences.get({ key: "userPhoto" });
     return value;
@@ -672,8 +676,7 @@ export class ProfileComponent implements OnInit {
           cssClass: "danger",
           handler: async () => {
             await this.firebaseAuthService.deleteAccountWithReauth();
-            window.location.reload();
-            this.router.navigate(["onboarding"]);
+            window.location.replace("/onboarding");
           },
         },
       ],

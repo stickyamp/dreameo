@@ -1,6 +1,6 @@
 ion-content {
   --background: var(--color-bg);
-    --ion-card-background: var(--color-surface);
+  --ion-card-background: var(--color-surface);
 }
 
 ion-toolbar {
@@ -14,7 +14,7 @@ ion-title {
 }
 
 .content-wrapper {
-  padding: var(--spacing-sm);
+  padding: var(--spacing-xs);
   padding-bottom: var(--spacing-md);
 }
 
@@ -42,7 +42,7 @@ ion-title {
 
     &[fill="solid"] {
       --background: var(--color-accent);
-      --color: var(--color-text-primary);;
+      --color: var(--color-text-primary);
     }
   }
 }
@@ -66,14 +66,14 @@ ion-title {
   border-radius: 16px;
 
   ion-card-content {
-    padding: 20px 12px;
+    padding: 12px 12px;
+    padding-left: 25px;
   }
 
   .stat-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
   }
 
   .stat-label {

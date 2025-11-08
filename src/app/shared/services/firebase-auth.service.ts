@@ -488,9 +488,6 @@ export class FirebaseAuthService {
       this.currentUserSubject.next(null);
       this.isAuthenticatedSubject.next(false);
 
-      // Step 6: Navigate to login page
-      await this.router.navigate(["/login"]);
-
       console.log("Complete account deletion finished successfully");
     } catch (error: any) {
       console.error("Error deleting complete account:", error);

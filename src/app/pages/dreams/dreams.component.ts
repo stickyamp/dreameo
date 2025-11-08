@@ -140,7 +140,13 @@ export class DreamsComponent implements OnInit, AfterViewInit {
 
   loadAllDreams() {
     this.allDreams = this.dreamService.getAllDreams();
-    this.initializeMonthsData();
+
+    // If months are already initialized, preserve position
+    if (this.monthsData.length > 0) {
+      this.rebuildMonthsData();
+    } else {
+      this.initializeMonthsData();
+    }
   }
 
   private initializeMonthsData() {
@@ -208,6 +214,12 @@ export class DreamsComponent implements OnInit, AfterViewInit {
       this.createMonthData(monthData.year, monthData.month)
     );
     this.updateHeaderLabels();
+
+    // Force swiper to update and maintain current position
+    if (this.swiperRef?.nativeElement?.swiper) {
+      const swiper = this.swiperRef.nativeElement.swiper;
+      swiper.update();
+    }
   }
 
   private loadPreviousMonths() {
