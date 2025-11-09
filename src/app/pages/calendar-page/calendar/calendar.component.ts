@@ -50,7 +50,9 @@ export class CalendarComponent implements OnInit {
   // ------ NUEVAS VARIABLES PARA DREAM MAP Y PROGRESO ------
   dreamDayPoints: { x: number; y: number; date: string }[] = [];
   isolatedDreamPoints: { x: number; y: number; date: string }[] = [];
+  miniConstellations: { x: number; y: number; date: string }[][] = [];
   polylineString: string = "";
+  miniConstellationLines: string[] = [];
   progressPercent: number = 0;
   filledDays: number = 0;
   totalMonthDays: number = 0;
@@ -132,6 +134,7 @@ export class CalendarComponent implements OnInit {
     const totalStars = stars.length;
     let connectedStars: { date: string; day: number }[] = [];
     let isolatedStars: { date: string; day: number }[] = [];
+    let miniConstellationStars: { date: string; day: number }[] = [];
 
     if (totalStars <= 2) {
       // Si hay muy pocas estrellas, todas van conectadas
@@ -140,11 +143,29 @@ export class CalendarComponent implements OnInit {
       // Para pocas estrellas, conectar la mayoría
       connectedStars = stars.slice(0, Math.ceil(totalStars * 0.7));
       isolatedStars = stars.slice(Math.ceil(totalStars * 0.7));
-    } else {
-      // Para muchas estrellas, conectar solo algunas para evitar saturación
-      const connectedCount = Math.min(4, Math.ceil(totalStars * 0.5));
+    } else if (totalStars <= 7) {
+      // Para cantidad media, crear línea principal y algunas mini-constelaciones
+      const connectedCount = Math.min(5, Math.ceil(totalStars * 0.55));
       connectedStars = stars.slice(0, connectedCount);
-      isolatedStars = stars.slice(connectedCount);
+      const remaining = stars.slice(connectedCount);
+      
+      // Crear mini-constelaciones de 2-3 estrellas
+      if (remaining.length >= 2) {
+        miniConstellationStars = remaining.slice(0, Math.min(3, remaining.length));
+        isolatedStars = remaining.slice(miniConstellationStars.length);
+      } else {
+        isolatedStars = remaining;
+      }
+    } else {
+      // Para muchas estrellas, crear línea principal más larga y varias mini-constelaciones
+      const connectedCount = Math.min(6, Math.ceil(totalStars * 0.5));
+      connectedStars = stars.slice(0, connectedCount);
+      const remaining = stars.slice(connectedCount);
+      
+      // Crear 1-2 mini-constelaciones (más estrellas en mini-constelaciones)
+      const miniCount = Math.min(5, Math.floor(remaining.length * 0.6));
+      miniConstellationStars = remaining.slice(0, miniCount);
+      isolatedStars = remaining.slice(miniCount);
     }
 
     // Generar posiciones para estrellas conectadas
@@ -205,6 +226,85 @@ export class CalendarComponent implements OnInit {
     this.polylineString = this.dreamDayPoints
       .map((pt) => `${pt.x},${pt.y}`)
       .join(" ");
+
+    // Crear mini-constelaciones (grupos pequeños de 2-3 estrellas conectadas)
+    this.miniConstellations = [];
+    this.miniConstellationLines = [];
+    
+    if (miniConstellationStars.length >= 2) {
+      // Dividir las estrellas en grupos de 2-3
+      const groups: { date: string; day: number }[][] = [];
+      let currentGroup: { date: string; day: number }[] = [];
+      
+      miniConstellationStars.forEach((star, idx) => {
+        currentGroup.push(star);
+        
+        // Crear grupos de 2-3 estrellas
+        const groupSize = Math.random() > 0.5 ? 2 : 3;
+        if (currentGroup.length >= groupSize || idx === miniConstellationStars.length - 1) {
+          if (currentGroup.length >= 2) {
+            groups.push([...currentGroup]);
+          } else if (currentGroup.length === 1 && groups.length > 0) {
+            // Si queda una sola estrella, agregarla al grupo anterior
+            groups[groups.length - 1].push(currentGroup[0]);
+          }
+          currentGroup = [];
+        }
+      });
+
+      // Generar posiciones para cada mini-constelación
+      groups.forEach((group, groupIdx) => {
+        const constellation: { x: number; y: number; date: string }[] = [];
+        
+        // Posición base aleatoria para el grupo, evitando el centro donde está la línea principal
+        let baseX: number;
+        let baseY: number;
+        
+        // Distribuir mini-constelaciones en diferentes zonas
+        if (groupIdx % 2 === 0) {
+          // Zona superior o inferior
+          baseX = marginX + 30 + Math.random() * (width - marginX * 2 - 80);
+          baseY = Math.random() > 0.5 ? minY + 10 : maxY - 30;
+        } else {
+          // Zonas laterales
+          baseX = Math.random() > 0.5 ? marginX + 20 : width - marginX - 60;
+          baseY = minY + 20 + Math.random() * (maxY - minY - 50);
+        }
+        
+        group.forEach((star, idx) => {
+          // Crear una pequeña formación más compacta
+          let x = baseX + (idx * 35) + (Math.random() - 0.5) * 15;
+          let y = baseY + (Math.random() - 0.5) * 25;
+          
+          // Clamp
+          x = Math.max(marginX, Math.min(width - marginX, x));
+          y = Math.max(minY, Math.min(maxY, y));
+          
+          // Evitar solapamiento con línea principal
+          let attempts = 0;
+          while (
+            attempts < 15 &&
+            this.dreamDayPoints.some(
+              (pt) => Math.abs(pt.x - x) < 40 && Math.abs(pt.y - y) < 40
+            )
+          ) {
+            x = baseX + (idx * 35) + (Math.random() - 0.5) * 25;
+            y = baseY + (Math.random() - 0.5) * 35;
+            x = Math.max(marginX, Math.min(width - marginX, x));
+            y = Math.max(minY, Math.min(maxY, y));
+            attempts++;
+          }
+          
+          constellation.push({ x, y, date: star.date });
+        });
+        
+        this.miniConstellations.push(constellation);
+        
+        // Crear línea para esta mini-constelación
+        const line = constellation.map((pt) => `${pt.x},${pt.y}`).join(" ");
+        this.miniConstellationLines.push(line);
+      });
+    }
 
     // Progreso barra (para el mapa mensual)
     this.filledDays = daysWithDream.size;

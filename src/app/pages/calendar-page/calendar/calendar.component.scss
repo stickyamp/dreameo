@@ -476,6 +476,17 @@ ion-fab-button {
   color: var(--color-text-primary);
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-xs) var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.no-dreams-header-message {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  opacity: 0.7;
 }
 .dream-constellation-background {
   width: 100%;
@@ -562,20 +573,23 @@ ion-fab-button {
   opacity: 0.9;
 }
 
+.main-star.mini-constellation-star {
+  opacity: 0.92;
+}
+
+.mini-constellation-line {
+  stroke: #ffffff;
+  stroke-width: 1;
+  stroke-dasharray: 2,4;
+  opacity: 0.35;
+}
+
 .small-star {
   filter: url(#smallStarGlow);
   opacity: 0.6;
 }
 
-.constellation-empty-message {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  opacity: 0.7;
-  text-align: center;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  margin-top: var(--spacing-xxxs);
-}
+
 .dream-progress-container {
   background: var(--color-surface);
   box-shadow: var(--shadow-elevation);
@@ -845,7 +859,7 @@ ion-fab-button {
   width: 100%;
 }
 .dream-map-container {
-  min-height: 180px;
+  min-height: 170px;
 }
 .dream-constellation-svg {
   min-height: 130px;
