@@ -9,6 +9,7 @@ import { Capacitor } from "@capacitor/core";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { FirebaseBackupService } from "./shared/services/firebase-backup.service";
 import { Preferences } from "@capacitor/preferences";
+import { LoggerService } from "./shared/services/log.service";
 
 @Component({
   selector: "app-root",
@@ -39,7 +40,8 @@ export class AppComponent implements OnInit {
     private versionService: VersionService,
     private alertController: AlertController,
     private firebaseBackupService: FirebaseBackupService,
-    private router: Router
+    private router: Router,
+    private loggerService: LoggerService
   ) {}
 
   async ngOnInit() {
@@ -65,40 +67,17 @@ export class AppComponent implements OnInit {
   }
 
   private async checkVersionAndLaunchPopup() {
+    this.loggerService.log(
+      `checkVersionAndLaunchPopup Checking if new version available`
+    );
     const updateAvailable = await this.versionService.checkForUpdate();
     //const updateAvailable = true;
+    this.loggerService.log(
+      `checkVersionAndLaunchPopup updateAvailable ${updateAvailable}`
+    );
 
     if (updateAvailable) {
-      const alert = await this.alertController.create({
-        header: "Update Required",
-        message:
-          "A new version of Dreameo is available. Please update to continue.",
-        backdropDismiss: false, // 🚫 disable tap outside
-        keyboardClose: false, // 🚫 prevent closing with keyboard
-        buttons: [
-          {
-            text: "Update",
-            handler: () => {
-              // 👇 Opens Play Store (or App Store)
-              window.open(
-                "https://play.google.com/store/apps/details?id=com.yourapp",
-                "_system"
-              );
-              // Optional: close the app if you want to enforce update
-              // App.exitApp(); // uncomment if desired (needs @capacitor/app)
-            },
-          },
-          { text: "Later", role: "cancel" },
-        ],
-      });
-
-      // Prevent hardware back button dismissal (Android)
-      alert.onDidDismiss().then(() => {
-        // Reopen the alert immediately if user somehow closed it
-        this.checkVersionAndLaunchPopup();
-      });
-
-      await alert.present();
+      await this.versionService.presentAlertUpdateAvailable();
     }
   }
 

@@ -136,6 +136,11 @@
         <ion-label color="danger"> Reset save backup cloud </ion-label>
       </ion-item>
 
+      <ion-item button (click)="goToDebug6()" lines="none">
+        <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
+        <ion-label color="danger"> Try version checker </ion-label>
+      </ion-item>
+
       <ion-item button (click)="sendTestNotification()" lines="none">
         <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
         <ion-label color="danger"> Send notification test </ion-label>
@@ -149,7 +154,7 @@
         width="100"
         height="96"
       />
-      <span class="app-version">1.0.0</span>
+      <span class="app-version">{{ appVersion }}</span>
     </div>
   </div>
 </ion-content>

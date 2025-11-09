@@ -22,7 +22,7 @@ import { LoggerService } from "@/app/shared/services/log.service";
   styleUrls: ["./add-dream.component.scss"],
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, TranslateModule],
-  providers: [provideDreamService()]
+  providers: [provideDreamService()],
 })
 export class AddDreamComponent implements OnInit {
   @Input() selectedDate!: string;
@@ -100,21 +100,20 @@ export class AddDreamComponent implements OnInit {
       .subscribe((tagsFromSource) => {
         this.tags = [...this.baseTags, ...this.getAllTags(tagsFromSource)];
 
-        if(!this.dream) return;
+        if (!this.dream) return;
 
-        this.tags = this.tags.map(item => {
-          if(this.dream!.tags?.some(i => i.name == item.name)){
-                          console.log("manuXX iiiiiiiiiii",);
+        this.tags = this.tags.map((item) => {
+          if (this.dream!.tags?.some((i) => i.name == item.name)) {
+            console.log("manuXX iiiiiiiiiii");
             return {
               ...item,
-              checked: true
-            }
-          }
-          else{
+              checked: true,
+            };
+          } else {
             return item;
           }
-        })
-              console.log("manuXX this.dream.tags", this.tags);
+        });
+        console.log("manuXX this.dream.tags", this.tags);
       });
   }
 
@@ -145,8 +144,9 @@ export class AddDreamComponent implements OnInit {
       "noviembre",
       "diciembre",
     ];
-    return `${date.getDate()} de ${months[date.getMonth()]
-      } de ${date.getFullYear()}`;
+    return `${date.getDate()} de ${
+      months[date.getMonth()]
+    } de ${date.getFullYear()}`;
   }
 
   canSave(): boolean {
@@ -161,8 +161,11 @@ export class AddDreamComponent implements OnInit {
       const success = await this.audioService.startListening();
       if (success) {
         console.log("Grabación iniciada correctamente");
-        this.dreamData.description += '\n' + success;
-
+        if (this.dreamData.description.length > 0) {
+          this.dreamData.description += "\n" + success;
+        } else {
+          this.dreamData.description = success;
+        }
       } else {
         //await this.showAlert('Error', 'No se pudo iniciar la grabación. Verifica que tengas permisos de micrófono.');
       }
@@ -242,7 +245,7 @@ export class AddDreamComponent implements OnInit {
         "Error",
         "No se pudo guardar el sueño. Inténtalo de nuevo."
       );
-      
+
       this.loggerService.log(`Error saving dream ${error}`);
     }
   }

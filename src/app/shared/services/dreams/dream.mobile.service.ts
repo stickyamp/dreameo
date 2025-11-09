@@ -447,12 +447,6 @@ export class DreamMobileService extends DreamService {
         email: "lucia.sanchez@email.com",
         darkMode: true,
       });
-
-      this.toastNotifierService.presentToast(
-        "All data cleared successfully.",
-        ToastLevelEnum.INFO,
-        "bottom"
-      );
     } catch (err) {
       console.error("Error clearing data:", err);
       this.toastNotifierService.presentToast(

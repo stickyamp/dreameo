@@ -25,6 +25,8 @@ import { APP_CONSTANTS } from "@/app/app.constants";
 import { DreamPdfService } from "@/app/shared/services/export-pdf.service.ts/export-pdf.service";
 import { TripleClickDirective } from "@/app/shared/directives/triple-click.directive";
 import { firstValueFrom } from "rxjs";
+import { VersionService } from "@/app/shared/services/version-checker.service";
+import { App } from "@capacitor/app";
 
 interface User {
   name: string;
@@ -154,6 +156,7 @@ export class ProfileComponent implements OnInit {
 
   showDebugTools: boolean = false;
 
+  appVersion: string = "0.0.0";
   constructor(
     private router: Router,
     private alertController: AlertController,
@@ -167,9 +170,17 @@ export class ProfileComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private logService: LoggerService,
     private toastNotifierService: ToastNotifierService,
-    private dreamPdfService: DreamPdfService
+    private dreamPdfService: DreamPdfService,
+    private versionService: VersionService
   ) {
     this.showDebugTools = APP_CONSTANTS.IS_DEBUG;
+    this.getAppVersion();
+  }
+
+  async getAppVersion() {
+    const info = await App.getInfo();
+    const localVersion = info.version;
+    this.appVersion = localVersion;
   }
 
   enableDebugMode() {
@@ -520,6 +531,12 @@ export class ProfileComponent implements OnInit {
 
   async goToDebug5() {
     await Preferences.remove({ key: "LAST_BACKUP_DATE" });
+  }
+
+  async goToDebug6() {
+    if (await this.versionService.checkForUpdate()) {
+      await this.versionService.presentAlertUpdateAvailable();
+    }
   }
 
   async getCachedUserPhoto(): Promise<string | null> {
