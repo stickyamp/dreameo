@@ -63,7 +63,11 @@ apply plugin: 'com.android.application'
 
 android {
     namespace "com.dreamjournal.app"
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 35
+    defaultConfig {
+        targetSdkVersion 35
+        minSdkVersion 23
+    }
 
     compileOptions {
         // Forzar Java 17 para evitar conflictos con el nivel 21
