@@ -105,6 +105,15 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  // Generador de números pseudoaleatorios con semilla
+  private seededRandom(seed: number): () => number {
+    let state = seed;
+    return () => {
+      state = (state * 1664525 + 1013904223) % 4294967296;
+      return state / 4294967296;
+    };
+  }
+
   // Construye la lógica para calcular las posiciones de los sueños como estrellas
   updateDreamJourneyMap() {
     const year = this.currentDate.getFullYear();
@@ -120,6 +129,10 @@ export class CalendarComponent implements OnInit {
         daysWithDream.add(d);
       }
     }
+
+    // Crear semilla única para este mes y año
+    const seed = year * 12 + month;
+    const random = this.seededRandom(seed);
 
     // Área de dibujo del SVG (coincide con el viewBox 0 0 350 130)
     const width = 350;
@@ -169,31 +182,63 @@ export class CalendarComponent implements OnInit {
     }
 
     // Generar posiciones para estrellas conectadas
+    // Usar la semilla para determinar el patrón base de la constelación
+    const patternVariant = Math.floor(random() * 4); // 4 variantes diferentes
+    const startOffset = random() * 0.15; // Offset inicial aleatorio (0-15% del ancho)
+    const endOffset = random() * 0.15; // Offset final aleatorio
+    
     this.dreamDayPoints = connectedStars.map((s, idx) => {
       const count = connectedStars.length;
       const progress = count > 1 ? idx / (count - 1) : 0.5;
 
-      // Posición base a lo largo del ancho
-      let x = marginX + (width - marginX * 2) * progress;
+      // Posición base a lo largo del ancho con offsets variables
+      const startX = marginX + (width - marginX * 2) * startOffset;
+      const endX = marginX + (width - marginX * 2) * (1 - endOffset);
+      let x = startX + (endX - startX) * progress;
 
-      // Crear patrones de constelación más sutiles
+      // Crear patrones de constelación más variados según la variante
       const centerY = (minY + maxY) / 2;
+      const yOffset = (random() - 0.5) * 20; // Offset vertical base
       let y;
 
       if (count <= 2) {
-        y = centerY + Math.sin(progress * Math.PI) * 15;
+        // Para 2 estrellas, variar la posición vertical
+        if (patternVariant === 0) {
+          y = centerY + Math.sin(progress * Math.PI) * 15 + yOffset;
+        } else if (patternVariant === 1) {
+          y = minY + 20 + progress * (maxY - minY - 40);
+        } else if (patternVariant === 2) {
+          y = maxY - 20 - progress * (maxY - minY - 40);
+        } else {
+          y = centerY + (progress - 0.5) * 30 + yOffset;
+        }
       } else if (count <= 3) {
-        y = centerY + Math.sin(progress * Math.PI * 1.2) * 20;
+        // Para 3 estrellas, crear diferentes formas
+        if (patternVariant === 0) {
+          y = centerY + Math.sin(progress * Math.PI * 1.2) * 20 + yOffset;
+        } else if (patternVariant === 1) {
+          y = centerY + Math.cos(progress * Math.PI) * 25 + yOffset;
+        } else if (patternVariant === 2) {
+          y = minY + 15 + Math.sin(progress * Math.PI * 0.5) * 30;
+        } else {
+          y = maxY - 15 - Math.sin(progress * Math.PI * 0.5) * 30;
+        }
       } else {
-        y =
-          centerY +
-          Math.sin(progress * Math.PI * 1.5) * 25 +
-          Math.cos(progress * Math.PI * 2) * 10;
+        // Para 4+ estrellas, patrones más complejos
+        if (patternVariant === 0) {
+          y = centerY + Math.sin(progress * Math.PI * 1.5) * 25 + Math.cos(progress * Math.PI * 2) * 10;
+        } else if (patternVariant === 1) {
+          y = centerY + Math.sin(progress * Math.PI * 2) * 20 + yOffset;
+        } else if (patternVariant === 2) {
+          y = centerY + Math.cos(progress * Math.PI * 1.8) * 25 + Math.sin(progress * Math.PI) * 10;
+        } else {
+          y = centerY + Math.sin(progress * Math.PI * 1.3) * 30 + (progress - 0.5) * 15;
+        }
       }
 
-      // Menos variación aleatoria para líneas más suaves
-      x += (Math.random() - 0.5) * 15;
-      y += (Math.random() - 0.5) * 10;
+      // Variación adicional sutil
+      x += (random() - 0.5) * 12;
+      y += (random() - 0.5) * 8;
 
       // Clamp para mantener dentro del área
       x = Math.max(marginX, Math.min(width - marginX, x));
@@ -204,8 +249,8 @@ export class CalendarComponent implements OnInit {
 
     // Generar posiciones para estrellas aisladas
     this.isolatedDreamPoints = isolatedStars.map((s) => {
-      let x: number = marginX + Math.random() * (width - marginX * 2);
-      let y: number = minY + Math.random() * (maxY - minY);
+      let x: number = marginX + random() * (width - marginX * 2);
+      let y: number = minY + random() * (maxY - minY);
       let attempts = 0;
       const maxAttempts = 20;
 
@@ -215,8 +260,8 @@ export class CalendarComponent implements OnInit {
           (pt) => Math.abs(pt.x - x) < 30 && Math.abs(pt.y - y) < 30
         )
       ) {
-        x = marginX + Math.random() * (width - marginX * 2);
-        y = minY + Math.random() * (maxY - minY);
+        x = marginX + random() * (width - marginX * 2);
+        y = minY + random() * (maxY - minY);
         attempts++;
       }
 
@@ -240,7 +285,7 @@ export class CalendarComponent implements OnInit {
         currentGroup.push(star);
         
         // Crear grupos de 2-3 estrellas
-        const groupSize = Math.random() > 0.5 ? 2 : 3;
+        const groupSize = random() > 0.5 ? 2 : 3;
         if (currentGroup.length >= groupSize || idx === miniConstellationStars.length - 1) {
           if (currentGroup.length >= 2) {
             groups.push([...currentGroup]);
@@ -263,18 +308,18 @@ export class CalendarComponent implements OnInit {
         // Distribuir mini-constelaciones en diferentes zonas
         if (groupIdx % 2 === 0) {
           // Zona superior o inferior
-          baseX = marginX + 30 + Math.random() * (width - marginX * 2 - 80);
-          baseY = Math.random() > 0.5 ? minY + 10 : maxY - 30;
+          baseX = marginX + 30 + random() * (width - marginX * 2 - 80);
+          baseY = random() > 0.5 ? minY + 10 : maxY - 30;
         } else {
           // Zonas laterales
-          baseX = Math.random() > 0.5 ? marginX + 20 : width - marginX - 60;
-          baseY = minY + 20 + Math.random() * (maxY - minY - 50);
+          baseX = random() > 0.5 ? marginX + 20 : width - marginX - 60;
+          baseY = minY + 20 + random() * (maxY - minY - 50);
         }
         
         group.forEach((star, idx) => {
           // Crear una pequeña formación más compacta
-          let x = baseX + (idx * 35) + (Math.random() - 0.5) * 15;
-          let y = baseY + (Math.random() - 0.5) * 25;
+          let x = baseX + (idx * 35) + (random() - 0.5) * 15;
+          let y = baseY + (random() - 0.5) * 25;
           
           // Clamp
           x = Math.max(marginX, Math.min(width - marginX, x));
@@ -288,8 +333,8 @@ export class CalendarComponent implements OnInit {
               (pt) => Math.abs(pt.x - x) < 40 && Math.abs(pt.y - y) < 40
             )
           ) {
-            x = baseX + (idx * 35) + (Math.random() - 0.5) * 25;
-            y = baseY + (Math.random() - 0.5) * 35;
+            x = baseX + (idx * 35) + (random() - 0.5) * 25;
+            y = baseY + (random() - 0.5) * 35;
             x = Math.max(marginX, Math.min(width - marginX, x));
             y = Math.max(minY, Math.min(maxY, y));
             attempts++;
@@ -346,17 +391,17 @@ export class CalendarComponent implements OnInit {
 
       // Forzar algunas estrellas en el lateral derecho
       if (i < rightSideStars) {
-        rx = width * 0.7 + Math.random() * (width * 0.25); // 70-95% del ancho
-        ry = minY + Math.random() * (maxY - minY);
-      } else if (i < zones.length && Math.random() < zones[i].weight) {
+        rx = width * 0.7 + random() * (width * 0.25); // 70-95% del ancho
+        ry = minY + random() * (maxY - minY);
+      } else if (i < zones.length && random() < zones[i].weight) {
         // Usar zona preferencial con algo de variación
         const zone = zones[i];
-        rx = zone.x + (Math.random() - 0.5) * 50; // Aumentar variación
-        ry = zone.y + (Math.random() - 0.5) * 40;
+        rx = zone.x + (random() - 0.5) * 50; // Aumentar variación
+        ry = zone.y + (random() - 0.5) * 40;
       } else {
         // Distribución aleatoria en todo el ancho
-        rx = marginX + Math.random() * (width - marginX * 2);
-        ry = minY + Math.random() * (maxY - minY);
+        rx = marginX + random() * (width - marginX * 2);
+        ry = minY + random() * (maxY - minY);
       }
 
       // Clamp dentro del área completa
@@ -374,7 +419,7 @@ export class CalendarComponent implements OnInit {
       }
 
       // Tamaño variado pero más pequeño
-      const r = 0.4 + Math.random() * 0.4;
+      const r = 0.4 + random() * 0.4;
       const sparkleOffsetX = 0;
       const sparkleOffsetY = 0;
       this.bgStars.push({ x: rx, y: ry, r, sparkleOffsetX, sparkleOffsetY });
