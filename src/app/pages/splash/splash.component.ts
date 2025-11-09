@@ -1,8 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostBinding } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
-import { Router } from "@angular/router";
-import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { TranslateModule } from "@ngx-translate/core";
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from "@angular/animations";
 
 @Component({
   selector: "app-splash",
@@ -10,21 +16,14 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
   styleUrls: ["./splash.component.scss"],
   standalone: true,
   imports: [CommonModule, IonicModule, TranslateModule],
+  animations: [
+    trigger("fadeIn", [
+      state("void", style({ opacity: 0 })),
+      state("*", style({ opacity: 1 })),
+      transition("void => *", animate("300ms ease-in")),
+    ]),
+  ],
 })
-export class SplashComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private translate: TranslateService
-  ) {}
-
-  ngOnInit() {
-    // Simple initialization without potential error sources
-    setTimeout(() => {
-      this.goToCalendar();
-    }, 1500);
-  }
-
-  goToCalendar() {
-    this.router.navigate(["/tabs/calendar"]);
-  }
+export class SplashComponent {
+  constructor() {}
 }

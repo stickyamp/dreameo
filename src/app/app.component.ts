@@ -1,7 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router, RouterOutlet } from "@angular/router";
-import { AlertController, IonicModule, Platform } from "@ionic/angular";
+import {
+  AlertController,
+  IonicModule,
+  ModalController,
+  Platform,
+} from "@ionic/angular";
 import { DreamService } from "./shared/services/dreams/dream.base.service";
 import { provideDreamService } from "./shared/services/providers";
 import { VersionService } from "./shared/services/version-checker.service";
@@ -10,6 +15,7 @@ import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { FirebaseBackupService } from "./shared/services/firebase-backup.service";
 import { Preferences } from "@capacitor/preferences";
 import { LoggerService } from "./shared/services/log.service";
+import { SplashService } from "./pages/splash/splash.service";
 
 @Component({
   selector: "app-root",
@@ -41,12 +47,16 @@ export class AppComponent implements OnInit {
     private alertController: AlertController,
     private firebaseBackupService: FirebaseBackupService,
     private router: Router,
-    private loggerService: LoggerService
+    private loggerService: LoggerService,
+    private splashService: SplashService
   ) {}
 
   async ngOnInit() {
     try {
       await this.platform.ready();
+
+      this.splashService.show(1500);
+
       await this.initializeApp();
       this.launchOnboarding();
     } catch (error) {

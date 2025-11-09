@@ -297,8 +297,8 @@ export class CalendarComponent implements OnInit {
       iconCss: "rank-icon-style-1",
       iconBackground: "shield-outline",
       iconBackgroundCss: "rank-background-style-1",
-      requiredDreams: 10,
-      //requiredDreams: 3,
+      //requiredDreams: 10,
+      requiredDreams: 3,
     },
     {
       title: this.translate.instant("RANKS.RANK_INTERMEDIATE"),
@@ -306,8 +306,8 @@ export class CalendarComponent implements OnInit {
       iconCss: "rank-icon-style-2",
       iconBackground: "shield",
       iconBackgroundCss: "rank-background-style-2",
-      requiredDreams: 25,
-      //requiredDreams: 5,
+      //requiredDreams: 25,
+      requiredDreams: 5,
     },
     {
       title: this.translate.instant("RANKS.RANK_ADVANCED"),
@@ -315,8 +315,8 @@ export class CalendarComponent implements OnInit {
       iconCss: "rank-icon-style-2",
       iconBackground: "shield",
       iconBackgroundCss: "rank-background-style-2",
-      requiredDreams: 50,
-      //requiredDreams: 7,
+      //requiredDreams: 50,
+      requiredDreams: 7,
     },
     {
       title: this.translate.instant("RANKS.RANK_EXPERT"),
@@ -324,8 +324,8 @@ export class CalendarComponent implements OnInit {
       iconCss: "rank-icon-style-3",
       iconBackground: "star",
       iconBackgroundCss: "rank-background-style-3",
-      requiredDreams: 100,
-      //requiredDreams: 10,
+      //requiredDreams: 100,
+      requiredDreams: 10,
     },
     {
       title: this.translate.instant("RANKS.RANK_MASTER"),
@@ -333,8 +333,8 @@ export class CalendarComponent implements OnInit {
       iconCss: "rank-icon-style-4",
       iconBackground: "skull",
       iconBackgroundCss: "rank-background-style-4",
-      requiredDreams: 200,
-      //requiredDreams: 12,
+      //requiredDreams: 200,
+      requiredDreams: 12,
     },
     {
       title: this.translate.instant("RANKS.RANK_LORD"),
@@ -342,8 +342,8 @@ export class CalendarComponent implements OnInit {
       iconCss: "rank-icon-style-5",
       iconBackground: "moon",
       iconBackgroundCss: "rank-background-style-5",
-      requiredDreams: 500,
-      //requiredDreams: 14,
+      //requiredDreams: 500,
+      requiredDreams: 14,
     },
   ];
 
