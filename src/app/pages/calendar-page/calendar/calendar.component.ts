@@ -161,10 +161,13 @@ export class CalendarComponent implements OnInit {
       const connectedCount = Math.min(5, Math.ceil(totalStars * 0.55));
       connectedStars = stars.slice(0, connectedCount);
       const remaining = stars.slice(connectedCount);
-      
+
       // Crear mini-constelaciones de 2-3 estrellas
       if (remaining.length >= 2) {
-        miniConstellationStars = remaining.slice(0, Math.min(3, remaining.length));
+        miniConstellationStars = remaining.slice(
+          0,
+          Math.min(3, remaining.length)
+        );
         isolatedStars = remaining.slice(miniConstellationStars.length);
       } else {
         isolatedStars = remaining;
@@ -174,7 +177,7 @@ export class CalendarComponent implements OnInit {
       const connectedCount = Math.min(6, Math.ceil(totalStars * 0.5));
       connectedStars = stars.slice(0, connectedCount);
       const remaining = stars.slice(connectedCount);
-      
+
       // Crear 1-2 mini-constelaciones (más estrellas en mini-constelaciones)
       const miniCount = Math.min(5, Math.floor(remaining.length * 0.6));
       miniConstellationStars = remaining.slice(0, miniCount);
@@ -186,7 +189,7 @@ export class CalendarComponent implements OnInit {
     const patternVariant = Math.floor(random() * 4); // 4 variantes diferentes
     const startOffset = random() * 0.15; // Offset inicial aleatorio (0-15% del ancho)
     const endOffset = random() * 0.15; // Offset final aleatorio
-    
+
     this.dreamDayPoints = connectedStars.map((s, idx) => {
       const count = connectedStars.length;
       const progress = count > 1 ? idx / (count - 1) : 0.5;
@@ -226,13 +229,22 @@ export class CalendarComponent implements OnInit {
       } else {
         // Para 4+ estrellas, patrones más complejos
         if (patternVariant === 0) {
-          y = centerY + Math.sin(progress * Math.PI * 1.5) * 25 + Math.cos(progress * Math.PI * 2) * 10;
+          y =
+            centerY +
+            Math.sin(progress * Math.PI * 1.5) * 25 +
+            Math.cos(progress * Math.PI * 2) * 10;
         } else if (patternVariant === 1) {
           y = centerY + Math.sin(progress * Math.PI * 2) * 20 + yOffset;
         } else if (patternVariant === 2) {
-          y = centerY + Math.cos(progress * Math.PI * 1.8) * 25 + Math.sin(progress * Math.PI) * 10;
+          y =
+            centerY +
+            Math.cos(progress * Math.PI * 1.8) * 25 +
+            Math.sin(progress * Math.PI) * 10;
         } else {
-          y = centerY + Math.sin(progress * Math.PI * 1.3) * 30 + (progress - 0.5) * 15;
+          y =
+            centerY +
+            Math.sin(progress * Math.PI * 1.3) * 30 +
+            (progress - 0.5) * 15;
         }
       }
 
@@ -275,18 +287,21 @@ export class CalendarComponent implements OnInit {
     // Crear mini-constelaciones (grupos pequeños de 2-3 estrellas conectadas)
     this.miniConstellations = [];
     this.miniConstellationLines = [];
-    
+
     if (miniConstellationStars.length >= 2) {
       // Dividir las estrellas en grupos de 2-3
       const groups: { date: string; day: number }[][] = [];
       let currentGroup: { date: string; day: number }[] = [];
-      
+
       miniConstellationStars.forEach((star, idx) => {
         currentGroup.push(star);
-        
+
         // Crear grupos de 2-3 estrellas
         const groupSize = random() > 0.5 ? 2 : 3;
-        if (currentGroup.length >= groupSize || idx === miniConstellationStars.length - 1) {
+        if (
+          currentGroup.length >= groupSize ||
+          idx === miniConstellationStars.length - 1
+        ) {
           if (currentGroup.length >= 2) {
             groups.push([...currentGroup]);
           } else if (currentGroup.length === 1 && groups.length > 0) {
@@ -300,11 +315,11 @@ export class CalendarComponent implements OnInit {
       // Generar posiciones para cada mini-constelación
       groups.forEach((group, groupIdx) => {
         const constellation: { x: number; y: number; date: string }[] = [];
-        
+
         // Posición base aleatoria para el grupo, evitando el centro donde está la línea principal
         let baseX: number;
         let baseY: number;
-        
+
         // Distribuir mini-constelaciones en diferentes zonas
         if (groupIdx % 2 === 0) {
           // Zona superior o inferior
@@ -315,16 +330,16 @@ export class CalendarComponent implements OnInit {
           baseX = random() > 0.5 ? marginX + 20 : width - marginX - 60;
           baseY = minY + 20 + random() * (maxY - minY - 50);
         }
-        
+
         group.forEach((star, idx) => {
           // Crear una pequeña formación más compacta
-          let x = baseX + (idx * 35) + (random() - 0.5) * 15;
+          let x = baseX + idx * 35 + (random() - 0.5) * 15;
           let y = baseY + (random() - 0.5) * 25;
-          
+
           // Clamp
           x = Math.max(marginX, Math.min(width - marginX, x));
           y = Math.max(minY, Math.min(maxY, y));
-          
+
           // Evitar solapamiento con línea principal
           let attempts = 0;
           while (
@@ -333,18 +348,18 @@ export class CalendarComponent implements OnInit {
               (pt) => Math.abs(pt.x - x) < 40 && Math.abs(pt.y - y) < 40
             )
           ) {
-            x = baseX + (idx * 35) + (random() - 0.5) * 25;
+            x = baseX + idx * 35 + (random() - 0.5) * 25;
             y = baseY + (random() - 0.5) * 35;
             x = Math.max(marginX, Math.min(width - marginX, x));
             y = Math.max(minY, Math.min(maxY, y));
             attempts++;
           }
-          
+
           constellation.push({ x, y, date: star.date });
         });
-        
+
         this.miniConstellations.push(constellation);
-        
+
         // Crear línea para esta mini-constelación
         const line = constellation.map((pt) => `${pt.x},${pt.y}`).join(" ");
         this.miniConstellationLines.push(line);
@@ -428,7 +443,7 @@ export class CalendarComponent implements OnInit {
 
   ranks: Rank[] = [
     {
-      title: this.translate.instant("RANKS.RANK_ROOKIE"),
+      title: "RANKS.RANK_ROOKIE",
       icon: "sparkles",
       iconCss: "rank-icon-style-1",
       iconBackground: "shield-outline",
@@ -437,7 +452,7 @@ export class CalendarComponent implements OnInit {
       //requiredDreams: 0,
     },
     {
-      title: this.translate.instant("RANKS.RANK_NOVICE"),
+      title: "RANKS.RANK_NOVICE",
       icon: "moon",
       iconCss: "rank-icon-style-1",
       iconBackground: "shield-outline",
@@ -446,7 +461,7 @@ export class CalendarComponent implements OnInit {
       requiredDreams: 3,
     },
     {
-      title: this.translate.instant("RANKS.RANK_INTERMEDIATE"),
+      title: "RANKS.RANK_INTERMEDIATE",
       icon: "planet-outline",
       iconCss: "rank-icon-style-2",
       iconBackground: "shield",
@@ -455,7 +470,7 @@ export class CalendarComponent implements OnInit {
       requiredDreams: 5,
     },
     {
-      title: this.translate.instant("RANKS.RANK_ADVANCED"),
+      title: "RANKS.RANK_ADVANCED",
       icon: "flame",
       iconCss: "rank-icon-style-2",
       iconBackground: "shield",
@@ -464,7 +479,7 @@ export class CalendarComponent implements OnInit {
       requiredDreams: 7,
     },
     {
-      title: this.translate.instant("RANKS.RANK_EXPERT"),
+      title: "RANKS.RANK_EXPERT",
       icon: "",
       iconCss: "rank-icon-style-3",
       iconBackground: "star",
@@ -473,7 +488,7 @@ export class CalendarComponent implements OnInit {
       requiredDreams: 10,
     },
     {
-      title: this.translate.instant("RANKS.RANK_MASTER"),
+      title: "RANKS.RANK_MASTER",
       icon: "",
       iconCss: "rank-icon-style-4",
       iconBackground: "skull",
@@ -482,7 +497,7 @@ export class CalendarComponent implements OnInit {
       requiredDreams: 12,
     },
     {
-      title: this.translate.instant("RANKS.RANK_LORD"),
+      title: "RANKS.RANK_LORD",
       icon: "assets/moon",
       iconCss: "rank-icon-style-5",
       iconBackground: "moon",
