@@ -23,16 +23,17 @@ const config: CapacitorConfig = {
     },
     GoogleAuth: {
       scopes: ["profile", "email"],
+      // IMPORTANTE: Este debe ser el Web Client ID (tipo 3) para que Firebase pueda validar el token
       serverClientId:
         "998030673719-ns2js6lqoaac12aicev3ser2v3n0m8lo.apps.googleusercontent.com",
       forceCodeForRefreshToken: true,
+      // El androidClientId se configura automáticamente desde google-services.json
     },
     PushNotifications: {
       presentationOptions: ["badge", "sound"],
     },
     LocalNotifications: {
       smallIcon: "ic_notification_small",
-      largeIcon: "ic_star_notification_dark",
       iconColor: "#FFFFFF",
     },
   },
