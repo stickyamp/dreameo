@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Dreameo</string>
-    <string name="title_activity_main">Dreameo</string>
-    <string name="package_name">com.dreamjournal.app</string>
-    <string name="custom_url_scheme">com.dreamjournal.app</string>
+    <string name="app_name">Dreamt</string>
+    <string name="title_activity_main">Dreamt</string>
+    <string name="package_name">com.dreamt.moonstick.app</string>
+    <string name="custom_url_scheme">com.dreamt.moonstick.app</string>
     <string name="server_client_id">998030673719-ns2js6lqoaac12aicev3ser2v3n0m8lo.apps.googleusercontent.com</string>
 
 </resources>

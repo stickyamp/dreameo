@@ -1,4 +1,4 @@
-package com.dreamjournal.app;
+package com.dreamt.moonstick.app;
 
 import android.os.Bundle;
 import android.webkit.WebSettings;

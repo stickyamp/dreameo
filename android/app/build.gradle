@@ -1,7 +1,7 @@
 // apply plugin: 'com.android.application'
 
 // android {
-//     namespace "com.dreamjournal.app"
+//     namespace "com.dreamt.moonstick.app"
 //     compileSdkVersion rootProject.ext.compileSdkVersion
 //     compileOptions {
 //         // Enforce Java 17 to avoid accidental use of unsupported source level 21
@@ -9,7 +9,7 @@
 //         targetCompatibility JavaVersion.VERSION_17
 //     }
 //     defaultConfig {
-//         applicationId "com.dreamjournal.app"
+//         applicationId "com.dreamt.moonstick.app"
 //         minSdkVersion rootProject.ext.minSdkVersion
 //         targetSdkVersion rootProject.ext.targetSdkVersion
 //         versionCode 1
@@ -62,7 +62,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.dreamjournal.app"
+    namespace "com.dreamt.moonstick.app"
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -72,10 +72,10 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.dreamjournal.app"
+        applicationId "com.dreamt.moonstick.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

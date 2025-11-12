@@ -1,7 +1,7 @@
 import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.dreamjournal.app",
+  appId: "com.dreamt.moonstick.app",
   appName: "Dreameo",
   webDir: "dist",
   server: {
