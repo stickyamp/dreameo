@@ -7,7 +7,7 @@
 
     <groupId>com.dreameo.backend</groupId>
     <artifactId>java-backend</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>java-backend</name>
     <description>Backend Dreameo con Spring Boot</description>
     <packaging>jar</packaging>
