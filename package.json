@@ -13,7 +13,12 @@
     "e2e": "ng e2e",
     "ionic:build": "ng build",
     "ionic:serve": "ng serve",
-    "serve": "ng serve"
+    "serve": "ng serve",
+    "verify:auth": "node verify-google-auth.js",
+    "verify:release": "node check-release-config.js",
+    "get:sha1": "node get-release-sha1.js",
+    "help": "node show-docs.js",
+    "help:scripts": "type SCRIPTS-AYUDA.md"
   },
   "private": true,
   "dependencies": {

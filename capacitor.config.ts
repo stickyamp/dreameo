@@ -22,6 +22,11 @@ const config: CapacitorConfig = {
       backgroundColor: "#000000",
       overlaysWebView: false,
     },
+    Keyboard: {
+      resize: "body",
+      style: "dark",
+      resizeOnFullScreen: true,
+    },
     GoogleAuth: {
       scopes: ["profile", "email"],
       // IMPORTANTE: Este debe ser el Web Client ID (tipo 3) para que Firebase pueda validar el token

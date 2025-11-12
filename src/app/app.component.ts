@@ -16,6 +16,7 @@ import { FirebaseBackupService } from "./shared/services/firebase-backup.service
 import { Preferences } from "@capacitor/preferences";
 import { LoggerService } from "./shared/services/log.service";
 import { SplashService } from "./pages/splash/splash.service";
+import { StatusBar, Style } from "@capacitor/status-bar";
 
 @Component({
   selector: "app-root",
@@ -66,6 +67,8 @@ export class AppComponent implements OnInit {
 
   private async initializeApp() {
     if (Capacitor.isNativePlatform()) {
+      // Configurar StatusBar para evitar superposición
+      await this.configureStatusBar();
       this.checkVersionAndLaunchPopup();
     } else {
       GoogleAuth.initialize();
@@ -74,6 +77,21 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.backUpDreamsIfNeeded();
     }, 5000);
+  }
+
+  private async configureStatusBar() {
+    try {
+      // Asegurar que el StatusBar no se superponga con el contenido
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      
+      // Configurar el estilo según el tema
+      await StatusBar.setStyle({ style: Style.Dark });
+      
+      // Configurar el color de fondo
+      await StatusBar.setBackgroundColor({ color: '#000000' });
+    } catch (error) {
+      console.error('Error configuring StatusBar:', error);
+    }
   }
 
   private async checkVersionAndLaunchPopup() {
