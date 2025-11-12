@@ -61,6 +61,13 @@
 
 apply plugin: 'com.android.application'
 
+// Cargar las propiedades del keystore
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace "com.dreamt.moonstick.app"
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -85,10 +92,26 @@ android {
         }
     }
 
+    // Configuración de firma para release
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            // Debug usa el keystore por defecto de Android
         }
     }
 }

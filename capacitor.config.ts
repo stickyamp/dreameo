@@ -18,8 +18,9 @@ const config: CapacitorConfig = {
       splashImmersive: false,
     },
     StatusBar: {
-      style: "light",
+      style: "dark",
       backgroundColor: "#000000",
+      overlaysWebView: false,
     },
     GoogleAuth: {
       scopes: ["profile", "email"],
