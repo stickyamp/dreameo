@@ -25,6 +25,12 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+/* Safe area insets: evita que el contenido se superponga con las barras del sistema */
+:root {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 //GLOBAL VARIABLES
 :root,
 .ion-palette-dark,
@@ -195,12 +201,19 @@ textarea {
   font-family: var(--ion-font-family) !important;
 }
 
+.ion-page {
+  position: relative !important;
+}
+
 ion-content {
   --overflow: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: env(safe-area-inset-bottom);
 }
-
+ion-content:not(:has(ion-header)) {
+  padding-top: env(safe-area-inset-top);
+}
 
 
 .dream-container {
@@ -362,4 +375,12 @@ ion-toast.custom-bottom-toast {
   --color: var(--color-text-primary);
   --button-color: var(--color-accent);
   /* account for iPhone safe area if you want: */
+}
+ion-tab-bar,
+ion-footer {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+ion-tab-bar {
+  /* Asegura que el fondo cubra toda la zona segura */
+  background-color: var(--ion-tab-bar-background, var(--color-bg));
 }
