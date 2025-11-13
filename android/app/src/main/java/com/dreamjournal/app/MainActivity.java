@@ -3,7 +3,6 @@ package com.dreamt.moonstick.app;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.view.View;
 import com.getcapacitor.BridgeActivity;
 import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
 
@@ -30,10 +29,10 @@ public class MainActivity extends BridgeActivity {
             settings.setMediaPlaybackRequiresUserGesture(false);
 
             // Improve rendering performance
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            webView.setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null);
 
             // Optional: improve scroll performance
-            webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+            webView.setOverScrollMode(android.view.View.OVER_SCROLL_NEVER);
         }
     }
 }

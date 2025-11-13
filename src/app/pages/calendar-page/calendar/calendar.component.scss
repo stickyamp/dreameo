@@ -2,16 +2,14 @@
 
 .calendar-container {
   --background: var(--color-bg);
-  --padding-top: env(safe-area-inset-top);
-  --padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
-  --padding-start: env(safe-area-inset-left);
-  --padding-end: env(safe-area-inset-right);
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   font-family: "Manrope", sans-serif;
   min-height: 100vh;
+  padding: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 6rem;
 }
 
 // Header Section

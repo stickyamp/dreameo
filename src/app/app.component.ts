@@ -67,7 +67,6 @@ export class AppComponent implements OnInit {
 
   private async initializeApp() {
     if (Capacitor.isNativePlatform()) {
-      // Configurar StatusBar para evitar superposición
       await this.configureStatusBar();
       this.checkVersionAndLaunchPopup();
     } else {
@@ -81,13 +80,13 @@ export class AppComponent implements OnInit {
 
   private async configureStatusBar() {
     try {
-      // Asegurar que el StatusBar no se superponga con el contenido
+      // No overlay - el contenido no se dibuja detrás de las barras
       await StatusBar.setOverlaysWebView({ overlay: false });
       
-      // Configurar el estilo según el tema
+      // Estilo oscuro (iconos claros)
       await StatusBar.setStyle({ style: Style.Dark });
       
-      // Configurar el color de fondo
+      // Color negro para las barras
       await StatusBar.setBackgroundColor({ color: '#000000' });
     } catch (error) {
       console.error('Error configuring StatusBar:', error);

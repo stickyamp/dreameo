@@ -201,14 +201,7 @@ ion-content {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Safe area insets para evitar superposición con elementos del sistema */
-/* Solo aplica padding si hay safe areas (dispositivos con notch o gestos) */
-ion-app {
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
-}
+
 
 .dream-container {
   background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
