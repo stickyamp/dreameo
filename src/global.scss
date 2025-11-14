@@ -201,8 +201,6 @@ ion-content {
   -webkit-overflow-scrolling: touch;
 }
 
-
-
 .dream-container {
   background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
   min-height: 100vh;
@@ -362,4 +360,14 @@ ion-toast.custom-bottom-toast {
   --color: var(--color-text-primary);
   --button-color: var(--color-accent);
   /* account for iPhone safe area if you want: */
+}
+
+:root {
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+.android {
+  --ion-safe-area-top: 0px;
+  --ion-safe-area-bottom: 0px;
 }
