@@ -371,3 +371,22 @@ ion-toast.custom-bottom-toast {
   --ion-safe-area-top: 0px;
   --ion-safe-area-bottom: 0px;
 }
+.safe-space-top{
+  padding-top: var(--ion-safe-area-top);
+}
+.safe-area-header {
+  
+  --min-height: 0;
+}
+
+.safe-area-toolbar {
+  --min-height: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+
+
+  padding-top: var(--ion-safe-area-top) !important;
+  min-height: var(--ion-safe-area-top) !important;
+}

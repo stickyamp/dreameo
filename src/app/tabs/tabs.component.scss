@@ -44,6 +44,7 @@
 .menu-add {
   --background: var(--menu-add-button);
   --color: var(--color-text-primary);
+  margin-bottom: var(--ion-safe-area-bottom);
 }
 
 // Ajustar posición del FAB para que esté centrado sobre el tab bar
@@ -51,5 +52,5 @@ ion-fab {
   // Posicionar el botón para que esté centrado sobre el tab bar
   // Tab bar tiene ~56px de altura, botón FAB tiene ~56px de diámetro
   // Queremos que el centro del botón esté alineado con el borde superior del tab bar
-  bottom: 28px !important; // Mitad de la altura del tab bar (56px / 2)
+  bottom: 10px !important; // Mitad de la altura del tab bar (56px / 2)
 }

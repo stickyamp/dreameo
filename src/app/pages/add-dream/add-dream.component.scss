@@ -15,6 +15,7 @@ ion-toolbar {
 .dream-toolbar {
   --background: var(--color-surface);
   color: var(--color-text-primary);
+  
 }
 
 .save-btn-header {
@@ -105,6 +106,7 @@ ion-chip[color="warning"] {
   z-index: 100;
   display: flex;
   gap: var(--spacing-sm);
+  padding-bottom: var(--ion-safe-area-bottom);
 }
 
 .form-title-wrapper {
