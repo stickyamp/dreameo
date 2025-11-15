@@ -277,6 +277,7 @@ ion-content {
 .dream-toolbar {
   --ion-toolbar-background: var(--color-surface);
   --background: var(--color-surface);
+  padding-top: var(--ion-safe-area-top);
 }
 
 .dream-searchbar {
@@ -438,6 +439,7 @@ ion-searchbar {
   position: relative;
   gap: 0;
   color: var(--color-text-primary);
+  padding-top: var(--ion-safe-area-top) !important;
 }
 
 .dream-toolbar-row .fade-in-right {
@@ -646,6 +648,11 @@ ion-searchbar.dream-searchbar .searchbar-input-container.sc-ion-searchbar-md {
   border: none !important;
   box-sizing: border-box !important;
   line-height: 52px !important;
+  padding-top: var(--ion-safe-area-top) !important;
+}
+
+ion-header{
+  padding-top: var(--ion-safe-area-top) !important;
 }
 
 ion-searchbar.dream-searchbar::part(container),
@@ -700,6 +707,8 @@ input.searchbar-input.sc-ion-searchbar-md {
 
 .dream-toolbar-row {
   align-items: center !important;
+
+
 }
 
 .dream-toolbar-row ion-title {
@@ -816,4 +825,6 @@ html.ion-palette-light .dream-toolbar-row ion-icon[name="search-outline"] {
 .menu-add {
   --background: var(--menu-add-button);
   --color: var(--color-text-primary);
+  margin-bottom: var(--ion-safe-area-bottom);
+
 }
