@@ -46,35 +46,10 @@
   --color: var(--color-text-primary);
 }
 
-// // Ajustar posición del FAB para que esté centrado sobre el tab bar
-// ion-fab {
-//   position: fixed !important;
-//   bottom: 32px !important;
-// }
-
-// // Ajuste adicional para plataformas móviles nativas (Capacitor)
-// .plt-capacitor {
-//   ion-fab {
-//     bottom: 10px !important;
-//   }
-// }
-
-// // Ajuste específico para Android
-// .plt-android {
-//   ion-fab {
-//     bottom: 10px !important;
-//   }
-// }
-
-// // Ajuste específico para iOS
-// .plt-ios {
-//   ion-fab {
-//     bottom: 10px !important;
-//   }
-// }
-/* Posiciona correctamente el botón flotante centrado sobre la barra inferior */
-ion-fab.fab-center {
-  bottom: 32px;
-  z-index: 999;
+// Ajustar posición del FAB para que esté centrado sobre el tab bar
+ion-fab {
+  // Posicionar el botón para que esté centrado sobre el tab bar
+  // Tab bar tiene ~56px de altura, botón FAB tiene ~56px de diámetro
+  // Queremos que el centro del botón esté alineado con el borde superior del tab bar
+  bottom: 28px !important; // Mitad de la altura del tab bar (56px / 2)
 }
-

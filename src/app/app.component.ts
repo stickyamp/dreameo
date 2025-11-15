@@ -65,39 +65,23 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // private async initializeApp() {
-  //   if (Capacitor.isNativePlatform()) {
-  //     await this.configureStatusBar();
-  //     this.checkVersionAndLaunchPopup();
-  //   } else {
-  //     GoogleAuth.initialize();
-  //   }
-
-  //   setTimeout(() => {
-  //     this.backUpDreamsIfNeeded();
-  //   }, 5000);
-  // }
   private async initializeApp() {
-  if (Capacitor.isNativePlatform()) {
-    // Espera un poco para asegurar que el ion-app esté renderizado
-    setTimeout(async () => {
+    if (Capacitor.isNativePlatform()) {
       await this.configureStatusBar();
       this.checkVersionAndLaunchPopup();
-    }, 300);
-  } else {
-    GoogleAuth.initialize();
-  }
+    } else {
+      GoogleAuth.initialize();
+    }
 
-  // Backup se mantiene igual
-  setTimeout(() => {
-    this.backUpDreamsIfNeeded();
-  }, 5000);
-}
+    setTimeout(() => {
+      this.backUpDreamsIfNeeded();
+    }, 5000);
+  }
 
   private async configureStatusBar() {
     try {
-      // Overlay - el contenido se dibuja detrás de las barras
-      await StatusBar.setOverlaysWebView({ overlay: true });
+      // No overlay - el contenido no se dibuja detrás de las barras
+      await StatusBar.setOverlaysWebView({ overlay: false });
       
       // Estilo oscuro (iconos claros)
       await StatusBar.setStyle({ style: Style.Dark });
